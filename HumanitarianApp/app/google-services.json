@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "961394315027",
+    "project_id": "ievent-d9176",
+    "storage_bucket": "ievent-d9176.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961394315027:android:c49dea84868a64391954e6",
+        "android_client_info": {
+          "package_name": "com.example.ievent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa97SjkVk1WAf4G_MN10WUB9MpvFIt2PA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
