@@ -3,7 +3,18 @@
     <style name="Base.Theme.IEvent" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorAccent</item>
     </style>
 
     <style name="Theme.IEvent" parent="Base.Theme.IEvent" />
+
+    <!-- Style for rounded green buttons -->
+    <style name="RoundedButton" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">16dp</item>
+    </style>
 </resources>
