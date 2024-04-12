@@ -32,7 +32,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_login" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editText_login_EmailAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editText_login_EmailAddress" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editText_login_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

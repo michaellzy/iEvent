@@ -2,21 +2,29 @@ package com.example.ievent.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
+import com.example.ievent.database.UserDataManager;
+import com.example.ievent.entity.User;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 public class SignupActivity  extends AppCompatActivity{
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private EditText confirmEditText;
+    private TextInputEditText userNameText;
+    private TextInputEditText emailEditText;
+    private TextInputEditText passwordEditText;
+    private TextInputEditText confirmEditText;
     private FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
@@ -31,6 +39,7 @@ public class SignupActivity  extends AppCompatActivity{
         passwordEditText = findViewById(R.id.editText_signup_pwd);
         confirmEditText = findViewById(R.id.editText_signup_confirm);
         progressBar = findViewById(R.id.progress_register);
+        userNameText = findViewById(R.id.editText_signup_uname);
         Button loginButton = findViewById(R.id.button_signup_login);
         Button signUpButton = findViewById(R.id.button_signup_signup);
 
@@ -43,32 +52,81 @@ public class SignupActivity  extends AppCompatActivity{
     }
 
     private void createUser() {
+        String userName = userNameText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmEditText.getText().toString().trim();
-        progressBar.setVisibility(View.VISIBLE);
+        runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(confirmPassword)) {
             if (!password.equals(confirmPassword)) {
+                progressBar.setVisibility(View.GONE);
                 // if pwd != confirm, show the fail message
-                Toast.makeText(SignupActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
+                passwordEditText.setError("passwords do not match");
+                confirmEditText.setError("passwords do not match");
+                // Toast.makeText(SignupActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             } else {
-                // pwd correct
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, task -> {
-                            progressBar.setVisibility(View.GONE);
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                // Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                // check if the username is already exists
+                UserDataManager.getInstance().isValidUserName(userName, isValid -> {
+                    if (isValid) {
+                        // create new user if all conditions are satisfied
+                        User user = new User(email, userName);
+                        // store the new user into the database
+                        UserDataManager.getInstance().addNewUser(user);
+                        // pwd correct
+                        mAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(this, task -> {
+                                    progressBar.setVisibility(View.GONE);
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                        // Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(SignupActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        userNameText.setError("Username already exists");
+                        // Toast.makeText(this, "Username already exists!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         } else {
-            Toast.makeText(this, "Email and password fields cannot be empty.", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "One of the field is empty.", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && view != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    /***
+     * when user touches empty space, the keyboard automatically hides
+     * generated by chatGPT
+     * @param event The touch screen event.
+     *
+     * @return whether the keyboard should hide
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof TextInputEditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    hideKeyboard(v);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
