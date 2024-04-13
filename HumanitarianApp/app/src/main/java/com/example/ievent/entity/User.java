@@ -4,7 +4,11 @@ public class User {
     private String userName;
     private String email;
 
-    public User(String email, String userName){
+    private String uid;
+
+    public User() {}
+    public User(String uid, String email, String userName){
+        this.uid = uid;
         this.email = email;
         this.userName = userName;
     }
@@ -21,7 +25,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getUid() {
+        return uid;
     }
 }

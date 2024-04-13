@@ -35,30 +35,31 @@ public class UserDataManager {
         return instance;
     }
 
-    /***
-     * check the duplicate key(userName) in database. The user can not register
-     * if the user name is already exists
-     * @param userName the user name that the user filled in sign up page.
-     * @param listener a callback interface to handle the result of firestore query
-     */
-    public synchronized void isValidUserName(String userName, UserDataListener listener) {
-        DocumentReference docRef = userRef.document(userName);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                listener.onUserNameValid(!document.exists());
-            } else {
-                Log.d(TAG, "Query failed with: " + task.getException());
-            }
-        });
-    }
 
     /***
      * store new user to the database during sign up phase
      * @param user the new user to add to
      */
-    public synchronized void addNewUser(User user) {
-        userRef.document(user.getUserName()).set(user);
+    public synchronized void addNewUser(String uid, User user) {
+        userRef.document(uid).set(user);
+    }
+
+    public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
+        DocumentReference docRef = userRef.document(uid);
+        docRef.get().addOnCompleteListener(task -> {
+            DocumentSnapshot document = task.getResult();
+           if (task.isSuccessful()) {
+               if (document.exists()) {
+                   User user = document.toObject(User.class);
+                   listener.onCurrentUser(user);
+               } else {
+                   listener.onFailure("No such document");
+               }
+           } else {
+               listener.onFailure("get failed with " + task.getException().getMessage());
+           }
+        });
+
     }
 
 

@@ -18,8 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
+import com.example.ievent.database.UserDataManager;
+import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -79,10 +83,16 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    // login succeed, jump to main
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    if (firebaseUser != null) {
+                        // login succeed, jump to main
+                        String uid = firebaseUser.getUid();
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("UID", uid);
+                        startActivity(intent);
+                        finish();
+                    }
                 } else {
                     // login failed, show failed message
                     passwordEditText.setError("Invalid password");
@@ -96,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (TextUtils.isEmpty(password)) {
-                passwordEditText.setError("password can not be empty");
+                passwordEditText.setError("Password can not be empty");
             }
             // Toast.makeText(this, "Email and password are required.", Toast.LENGTH_SHORT).show();
         }

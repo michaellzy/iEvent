@@ -20,6 +20,9 @@ import com.example.ievent.database.UserDataManager;
 import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SignupActivity  extends AppCompatActivity{
     private TextInputEditText userNameText;
     private TextInputEditText emailEditText;
@@ -65,33 +68,32 @@ public class SignupActivity  extends AppCompatActivity{
                 confirmEditText.setError("passwords do not match");
                 // Toast.makeText(SignupActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             } else {
-                // check if the username is already exists
-                UserDataManager.getInstance().isValidUserName(userName, isValid -> {
-                    if (isValid) {
-                        // create new user if all conditions are satisfied
-                        User user = new User(email, userName);
-                        // store the new user into the database
-                        UserDataManager.getInstance().addNewUser(user);
-                        // pwd correct
-                        mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(this, task -> {
-                                    progressBar.setVisibility(View.GONE);
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                        // Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(SignupActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        userNameText.setError("Username already exists");
-                        // Toast.makeText(this, "Username already exists!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // pwd correct
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            progressBar.setVisibility(View.GONE);
+                            if (task.isSuccessful()) {
+                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                if (firebaseUser != null) {
+                                    String uid = mAuth.getCurrentUser().getUid();
+                                    User user = new User(uid, email, userName);
+                                    UserDataManager.getInstance().addNewUser(uid, user);
+                                    Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                    // Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                    intent.putExtra("UID", uid);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } else {
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    // This will check for email collisions
+                                    emailEditText.setError("This email is already registered");
+                                } else {
+                                    Toast.makeText(SignupActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         } else {
             progressBar.setVisibility(View.GONE);
