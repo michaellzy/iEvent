@@ -23,14 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignupActivity  extends AppCompatActivity{
+public class SignupActivity  extends BaseActivity{
     private TextInputEditText userNameText;
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
     private TextInputEditText confirmEditText;
-    private FirebaseAuth mAuth;
-
     private ProgressBar progressBar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -44,6 +44,7 @@ public class UserDataManager {
         userRef.document(uid).set(user);
     }
 
+
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
         DocumentReference docRef = userRef.document(uid);
         docRef.get().addOnCompleteListener(task -> {
@@ -61,8 +62,4 @@ public class UserDataManager {
         });
 
     }
-
-
-
-
 }

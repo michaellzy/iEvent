@@ -10,7 +10,7 @@ import com.example.ievent.database.UserDataManager;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
 
-public class MainActivity extends AppCompatActivity implements UserDataListener {
+public class MainActivity extends BaseActivity implements UserDataListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
