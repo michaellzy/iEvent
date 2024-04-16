@@ -1,12 +1,10 @@
 package com.example.ievent.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.ievent.R;
-import com.example.ievent.database.UserDataManager;
+import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
 

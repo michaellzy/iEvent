@@ -1,7 +1,4 @@
-package com.example.ievent.database;
-
-import android.nfc.Tag;
-import android.util.Log;
+package com.example.ievent.database.data_manager;
 
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
@@ -20,9 +17,11 @@ public class UserDataManager {
     private static UserDataManager instance;
     private CollectionReference userRef;
 
+
     private UserDataManager() {
         userRef = FirebaseFirestore.getInstance().collection("Users");
     }
+
 
     public static synchronized UserDataManager getInstance() {
         if (instance == null) {
@@ -43,6 +42,7 @@ public class UserDataManager {
     public synchronized void addNewUser(String uid, User user) {
         userRef.document(uid).set(user);
     }
+
 
 
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
