@@ -22,6 +22,7 @@ public class MainActivity extends BaseActivity implements UserDataListener {
 //                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
         UserDataManager.getInstance().getLoggedInUser(userId, this);
     }
 
