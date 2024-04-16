@@ -7,6 +7,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  * use Firestore database to load, store and update user information
  * This is a Singleton class with thread-safe implementation
@@ -52,12 +55,16 @@ public class UserDataManager {
            if (task.isSuccessful()) {
                if (document.exists()) {
                    User user = document.toObject(User.class);
-                   listener.onCurrentUser(user);
+
+                   ArrayList<User> users = new ArrayList<>();
+                   users.add(user);
+
+                   listener.onSuccess(users);
                } else {
                    listener.onFailure("No such document");
                }
            } else {
-               listener.onFailure("get failed with " + task.getException().getMessage());
+               listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
            }
         });
 

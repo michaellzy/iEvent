@@ -1,5 +1,7 @@
 package com.example.ievent.entity;
 
+import com.google.firebase.firestore.PropertyName;
+
 import java.util.ArrayList;
 
 public class Event {
@@ -10,22 +12,13 @@ public class Event {
     private String organizer;
     private String location;
 
+    @PropertyName("date-time")
     private String dateTime;
     private int price;
     private String img;
     private ArrayList<User> participants;
 
-    public Event(String type, String title, String description, String organizer, String location, String dateTime, int price, String img, ArrayList<User> participants) {
-        this.type = type;
-        this.title = title;
-        this.description = description;
-        this.organizer = organizer;
-        this.location = location;
-        this.dateTime = dateTime;
-        this.price = price;
-        this.img = img;
-        this.participants = participants;
-    }
+    public Event() {}
 
     public String getType() {
         return type;
@@ -67,10 +60,12 @@ public class Event {
         this.location = location;
     }
 
+    @PropertyName("date-time")
     public String getDateTime() {
         return dateTime;
     }
 
+    @PropertyName("date-time")
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
