@@ -1,11 +1,14 @@
 package com.example.ievent.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ievent.R;
@@ -30,8 +33,11 @@ public class BaseActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
+    private RecyclerView recommended_recyclerview;
+    private RecyclerView your_event_recyclerview;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,13 @@ public class BaseActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         viewPager = findViewById(R.id.viewPager);
+
+        //adapter
+        recommended_recyclerview=findViewById(R.id.recycler_view_recommended);
+        recommended_recyclerview=findViewById(R.id.recycler_view_your_event);
+
+
+
 
 
         setupViewPager(viewPager);
