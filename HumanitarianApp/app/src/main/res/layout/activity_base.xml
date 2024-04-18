@@ -27,11 +27,11 @@
         android:layout_marginTop="8dp" />
 
 
-    <!-- Horizontal RecyclerView for activity photos -->
+    <!-- Your event section -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_your_event"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

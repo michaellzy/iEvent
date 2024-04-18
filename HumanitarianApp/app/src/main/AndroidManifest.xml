@@ -15,6 +15,9 @@
         android:theme="@style/Theme.IEvent"
         tools:targetApi="31">
         <activity
+            android:name=".activity.EventDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.BaseActivity"
             android:exported="false" />
         <activity
