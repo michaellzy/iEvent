@@ -6,13 +6,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.ievent.R;
-import com.example.ievent.database.listener.UserDataListener;
-import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
@@ -22,8 +19,6 @@ public class SearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-//        String userId = getIntent().getStringExtra("UID");
-//        UserDataManager.getInstance().getLoggedInUser(userId, this);
         Button filterbutton = findViewById(R.id.filter_button);
 
         filterbutton.setOnClickListener(new View.OnClickListener() {
@@ -46,18 +41,14 @@ public class SearchActivity extends BaseActivity {
                 if (itemId == R.id.navigation_home) {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     // finish();
-//                    viewPager.setCurrentItem(0);
                     return true;
                 } else if (itemId == R.id.navigation_search) {
 //                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-//                    viewPager.setCurrentItem(1);
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
 //                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-//                    viewPager.setCurrentItem(2);
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
-//                    viewPager.setCurrentItem(3);
                     return true;
                 }
                 return false;

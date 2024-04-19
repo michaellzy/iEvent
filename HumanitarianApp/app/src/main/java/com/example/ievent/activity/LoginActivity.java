@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends BaseActivity {
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
-    private FirebaseAuth mAuth;
 
     private ProgressBar progressBar;
 
@@ -79,10 +78,7 @@ public class LoginActivity extends BaseActivity {
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                     if (firebaseUser != null) {
                         // login succeed, jump to main
-                        String uid = firebaseUser.getUid();
-
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("UID", uid);
                         startActivity(intent);
                         finish();
                     }

@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
-import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,11 +73,9 @@ public class SignupActivity  extends BaseActivity{
                                 if (firebaseUser != null) {
                                     String uid = mAuth.getCurrentUser().getUid();
                                     User user = new User(uid, email, userName);
-                                    UserDataManager.getInstance().addNewUser(uid, user);
+                                    db.addNewUser(uid, user);
                                     Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                                    // Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                     Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                                    intent.putExtra("UID", uid);
                                     startActivity(intent);
                                     finish();
                                 }
