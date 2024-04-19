@@ -1,16 +1,10 @@
----
-typora-root-url: ./media
----
-
 # G7
 
 ## Team Meeting 1- Week 7 - April 10th - 13:00 - 17:00
 
 **Absent:**
 None
-**Lead/scribe:**
-
-Zhiyuan Lu (u7690985)
+**Lead/scribe:**Zhiyuan Lu (u7690985)
 
 ## Agreed Procedure
 
@@ -57,9 +51,9 @@ Stand up Procedure:
 
 - The sketched UI layouts are shown below:
 
-  ![ui-design-1](./Media/Assets/ui-design-1.png)
+  ![ui-design-1](Media/Assets/ui-design-1.png)
 
-  ![ui-design-2](/Assets/ui-design-2.png)
+  ![ui-design-2](Media/Assets/ui-design-2.png)
 
 - Roles:
 
