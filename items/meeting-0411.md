@@ -51,9 +51,9 @@ Stand up Procedure:
 
 - The sketched UI layouts are shown below:
 
-  ![ui-design-1](Media/Assets/ui-design-1.png)
+  ![ui-design-1](media/Assets/ui-design-1.png)
 
-  ![ui-design-2](Media/Assets/ui-design-2.png)
+  ![ui-design-2](media/Assets/ui-design-2.png)
 
 - Roles:
 
