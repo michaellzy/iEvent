@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.ievent.R;
-import com.example.ievent.database.UserDataManager;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

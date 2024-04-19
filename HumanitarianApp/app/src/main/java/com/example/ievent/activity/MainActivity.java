@@ -2,8 +2,6 @@ package com.example.ievent.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,18 +10,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.ievent.R;
-import com.example.ievent.adapter.RecommendedActivitiesAdapter;
-import com.example.ievent.adapter.YourEventsAdapter;
-import com.example.ievent.database.UserDataManager;
+import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements UserDataListener {
-    private RecyclerView recommended_recyclerview;
-    private RecyclerView your_event_recyclerview;
+import java.util.ArrayList;
 
+public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,24 +62,16 @@ public class MainActivity extends AppCompatActivity implements UserDataListener 
 //                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
-
-        recommended_recyclerview=findViewById(R.id.recycler_view_recommended);
-        recommended_recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        your_event_recyclerview=findViewById(R.id.recycler_view_your_event);
-        your_event_recyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-
-        // UserDataManager.getInstance().getLoggedInUser(userId, this);
-    }
-
-
-    @Override
-    public void onCurrentUser(User user) {
-        Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//        UserDataManager.getInstance().getLoggedInUser(userId, new UserDataListener() {
+//            @Override
+//            public void onSuccess(ArrayList<User> data) {
+//                Toast.makeText(MainActivity.this, "Welcome, " + data.get(0).getUserName(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(String errorMessage) {
+//
+//            }
+//        });
     }
 }

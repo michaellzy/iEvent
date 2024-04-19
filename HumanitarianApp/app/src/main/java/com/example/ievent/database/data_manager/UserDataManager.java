@@ -1,7 +1,4 @@
-package com.example.ievent.database;
-
-import android.nfc.Tag;
-import android.util.Log;
+package com.example.ievent.database.data_manager;
 
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.User;
@@ -9,6 +6,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * use Firestore database to load, store and update user information
@@ -20,9 +20,11 @@ public class UserDataManager {
     private static UserDataManager instance;
     private CollectionReference userRef;
 
+
     private UserDataManager() {
         userRef = FirebaseFirestore.getInstance().collection("Users");
     }
+
 
     public static synchronized UserDataManager getInstance() {
         if (instance == null) {
@@ -45,6 +47,7 @@ public class UserDataManager {
     }
 
 
+
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
         DocumentReference docRef = userRef.document(uid);
         docRef.get().addOnCompleteListener(task -> {
@@ -52,12 +55,16 @@ public class UserDataManager {
            if (task.isSuccessful()) {
                if (document.exists()) {
                    User user = document.toObject(User.class);
-                   listener.onCurrentUser(user);
+
+                   ArrayList<User> users = new ArrayList<>();
+                   users.add(user);
+
+                   listener.onSuccess(users);
                } else {
                    listener.onFailure("No such document");
                }
            } else {
-               listener.onFailure("get failed with " + task.getException().getMessage());
+               listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
            }
         });
 
