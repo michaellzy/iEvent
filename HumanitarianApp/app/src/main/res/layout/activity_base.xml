@@ -9,51 +9,7 @@
 
     <!-- User profile section -->
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#da7891"/>
-<!--    android:src="@drawable/profile"-->
 
-    <TextView
-        android:text="@string/your_event"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_marginTop="8dp" />
-
-
-    <!-- Your event section -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_your_event"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="horizontal"
-        tools:listitem="@layout/activity_base_your_event"/>
-
-    <!-- Recommended Activities section -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/recommended_activities" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_recommended"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:padding="10dp"
-        tools:listitem="@layout/activity_base_recommended"
-        />
 
 
     <androidx.viewpager.widget.ViewPager

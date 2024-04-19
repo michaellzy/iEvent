@@ -1,0 +1,253 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter options"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 4x3 按钮组 -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="5"
+        android:rowCount="3"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false">
+
+        <!-- 动态添加按钮，这里是一个示例按钮 -->
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="All"
+            android:textOff="All"
+            android:textAllCaps="false"
+            android:checked="true"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Boat Party"
+            android:textOff="Boat Party"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Bollywood"
+            android:textOff="Bollywood"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Climate Change"
+            android:textOff="Climate Change"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Comedy"
+            android:textOff="Comedy"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Disability"
+            android:textOff="Disability"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Indigenous"
+            android:textOff="Indigenous"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Libraries Act"
+            android:textOff="Libraries Act"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Mental Health"
+            android:textOff="Mental Health"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Motorbike Tours"
+            android:textOff="Motorbike Tours"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Music Festivals"
+            android:textOff="Music Festivals"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Museum of Australia"
+            android:textOff="Museum of Australia"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="School Holidays"
+            android:textOff="School Holidays"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Warehouse Sale"
+            android:textOff="Warehouse Sale"
+            android:textAllCaps="false"
+
+            android:checked="false"/>
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:textOn="Wellness"
+            android:textOff="Wellness"
+            android:textAllCaps="false"
+            android:checked="false"/>
+    </GridLayout>
+
+    <!-- 两个并排的小输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="min price"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:layout_gravity="center_vertical" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="max price"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+    <!-- 调用时间的输入框 -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Time"
+        android:focusable="false"
+        android:inputType="date" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Distance"/>
+
+    <!-- 3个并排的按钮 -->
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="2"
+        android:progress="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="within 1km"
+            android:checked="false"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="1km-3km"
+            android:checked="false"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="3km+"
+            android:checked="false"/>
+    </LinearLayout>
+
+</LinearLayout>
