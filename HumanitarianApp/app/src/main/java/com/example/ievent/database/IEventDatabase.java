@@ -59,4 +59,9 @@ public class IEventDatabase{
     public void getAllEventsByType(String type, EventDataListener listener) {
         EventDataManager.getInstance().getAllEventsByType(type, listener);
     }
+
+    public void getEvents(int pageSize, EventDataListener listener) {
+        EventDataManager.getInstance().loadEvents(pageSize, listener);
+    }
+
 }

@@ -4,13 +4,20 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -26,7 +33,7 @@ public class EventDataManager {
     /** reference of events collection in firestore*/
     private final CollectionReference eventRef;
 
-
+    private DocumentSnapshot lastVisible;
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("events");
     }
@@ -71,6 +78,38 @@ public class EventDataManager {
                 }
             } else {
                 listener.onFailure("Error getting documents: " + Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+    }
+
+    public synchronized void loadEvents(int pageSize, EventDataListener listener) {
+        Query query = eventRef.limit(pageSize);
+
+        if (lastVisible != null) {
+            query = query.startAfter(lastVisible);
+        }
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<Event> eventList = new ArrayList<>();
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    for (DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()) {
+                        Event event = snapshot.toObject(Event.class);
+                        eventList.add(event);
+                    }
+                    lastVisible = queryDocumentSnapshots.getDocuments()
+                            .get(queryDocumentSnapshots.size() - 1);
+
+                    listener.onSuccess(eventList);
+                } else {
+                    // add empty list
+                    listener.onSuccess(eventList);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure("Error loading events: " + e.getMessage());
             }
         });
     }

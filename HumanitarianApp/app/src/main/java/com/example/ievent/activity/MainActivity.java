@@ -1,6 +1,8 @@
 package com.example.ievent.activity;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +11,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.ievent.R;
+import com.example.ievent.adapter.RecommendedActivitiesAdapter;
+import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -17,13 +22,37 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
+    private RecyclerView recyclerViewRec;
+    private RecommendedActivitiesAdapter recEventAdapter;
+
+    private boolean isLoading = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("MainActivity", "onCreate executed");
 
-
+        recyclerViewRec = findViewById(R.id.recycler_view_recommended);
+        recEventAdapter = new RecommendedActivitiesAdapter(new ArrayList<>());
+        recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewRec.setAdapter(recEventAdapter);
+        loadMoreEvents();
+        recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItem = layoutManager.getItemCount();
+                int lastVisible = layoutManager.findLastCompletelyVisibleItemPosition();
+                if (totalItem <= (lastVisible + 3)) {
+                    if (!isLoading) {
+                        loadMoreEvents();
+                        isLoading = true;
+                    }
+                }
+            }
+        });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -56,6 +85,27 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFailure(String errorMessage) {
 
+            }
+        });
+    }
+
+    private void loadMoreEvents() {
+        db.getEvents(40, new EventDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Event> data) {
+                runOnUiThread(() -> {
+                    recEventAdapter.setEvents(data);
+                    isLoading = false;
+                    recEventAdapter.notifyDataSetChanged();
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    isLoading = false;
+                });
             }
         });
     }

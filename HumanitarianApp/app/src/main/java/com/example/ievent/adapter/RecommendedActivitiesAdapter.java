@@ -1,5 +1,6 @@
 package com.example.ievent.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ievent.R;
+import com.example.ievent.entity.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // 对于推荐活动的RecyclerView
 public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<RecommendedActivitiesAdapter.ViewHolder> {
-//    private List<ActivityModel> activitiesList;
+    private List<Event> eventList;
 
-//    public RecommendedActivitiesAdapter(List<ActivityModel> activitiesList) {
-//        this.activitiesList = activitiesList;
-//    }
+    public RecommendedActivitiesAdapter(List<Event> eventList) {
+        this.eventList = eventList;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,16 +29,27 @@ public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<Recommend
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 //        ActivityModel activity = activitiesList.get(position);
         // 在这里设置你的ImageView和TextViews
+        Event event = eventList.get(position);
+        holder.name.setText(event.getTitle());
+        holder.time.setText(event.getDateTime());
+        holder.price.setText("$" + event.getPrice());
+        holder.organizer.setText("iEvent");
     }
 
     @Override
     public int getItemCount() {
 //        return activitiesList.size();
-        return -1;
+        return eventList.size();
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        eventList.addAll(events);
+        // notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
