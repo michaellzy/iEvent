@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
@@ -25,6 +27,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView recyclerViewRec;
     private RecommendedActivitiesAdapter recEventAdapter;
 
+    private ProgressBar progressBar;
     private boolean isLoading = false;
 
     @Override
@@ -32,11 +35,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("MainActivity", "onCreate executed");
+        progressBar = findViewById(R.id.progressBar_main);
 
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
         recEventAdapter = new RecommendedActivitiesAdapter(new ArrayList<>());
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
+
+        // show events stored in Firestore
         loadMoreEvents();
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -90,13 +96,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadMoreEvents() {
-        db.getEvents(40, new EventDataListener() {
+        progressBar.setVisibility(View.VISIBLE);
+        db.getEvents(25, new EventDataListener() {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
                     recEventAdapter.setEvents(data);
                     isLoading = false;
                     recEventAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 });
             }
 
