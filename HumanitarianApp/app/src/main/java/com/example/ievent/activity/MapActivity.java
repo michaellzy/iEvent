@@ -25,7 +25,6 @@ import com.google.android.libraries.places.api.net.SearchByTextRequest;
 import java.util.Arrays;
 import java.util.List;
 
-import io.grpc.android.BuildConfig;
 
 /**
  * This class is used to display the map.
@@ -125,10 +124,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .position(target)
                 .title(destination));
 
-        searchDestination(destination);
+        searchDestination("Coles");
     }
 
     public void searchDestination(String destination) {
+        Log.i("ssssss", "searchDestination: ");
         // search the destination from the google map api and set the destinationLatLng
         // Specify the list of fields to return.
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
@@ -147,6 +147,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         placesClient.searchByText(searchByTextRequest)
                 .addOnSuccessListener(response -> {
                     List<Place> places = response.getPlaces();
+                    for (Place place : places) {
+                        Log.i("Places test", "Place found: " + place.getName());
+                    }
                 });
 
     }
