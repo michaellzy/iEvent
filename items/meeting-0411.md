@@ -60,6 +60,49 @@ Stand up Procedure:
   - Zhiyuan Lu, Tengkai Wang - work on databases
   - Xuan Li, Qianwen Shen - Work on information processing and interface interactions
   - Haolin Li - Searching Algorithms (include tokenizer and parser)
+  
+- Design pattern to use:
+
+  - Singleton - use in Firestore database
+  - Observer - use in organizer publishes notifications to followers.
+  - Iterator: Iterate events information
+
+
+
+
+## Project Plan
+
+**week7**
+
+- Get the required events data set 
+- Use Firestore to save events info and user info
+- UI sketch and layout design
+- Complete the function of sign-in, sign-up
+- Layout of the main page
+
+**week8**
+
+- create user profile page
+- implement search function by using tokenizer and parser
+- implement GPS location
+- AVL tree implement and integrate with database
+- Event add, delete and show on main page
+
+**week9**
+
+- Layout of notification page
+- Implement the P2P-DM function
+- Implement the Interact-Follow function
+
+**week10**
+
+- Implement the FB-Persist function
+- Junit test
+
+**Week11**
+
+- Documentation and presentation 
+
 
 ## Action Items
 
