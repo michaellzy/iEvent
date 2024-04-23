@@ -72,6 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void setVariables() throws PackageManager.NameNotFoundException {
         // get the destination from the intent
         destination = getIntent().getStringExtra("destination");
+        Toast.makeText(this, destination, Toast.LENGTH_SHORT).show();
         if(destination == null){
             destination = "18 Argyle Street The Rocks, NSW 2000";
         }

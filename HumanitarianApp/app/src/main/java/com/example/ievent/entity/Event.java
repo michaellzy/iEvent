@@ -4,7 +4,7 @@ import com.google.firebase.firestore.PropertyName;
 
 import java.util.ArrayList;
 
-public class Event {
+public class Event implements java.io.Serializable{
     private String type;
     private String title;
     private String description;
@@ -109,6 +109,34 @@ public class Event {
                 ", img='" + img + '\'' +
                 ", participants=" + participants +
                 '}';
+    }
+
+    public static void preprocessData(Event e){
+        if(e.getTitle() == null || e.getTitle().isEmpty()) {
+            e.setTitle("No title");
+        }
+
+        if(e.getDateTime() == null || e.getDateTime().isEmpty()) {
+            e.setDateTime("No date");
+        }
+
+        if(e.getLocation() == null || e.getLocation().isEmpty()) {
+            e.setLocation("Online");
+        }
+
+        if(e.getDescription() == null || e.getDescription().isEmpty()) {
+            e.setDescription("This organizer is too lazy to write a description.");
+        }
+
+        if(e.getOrganizer() == null || e.getOrganizer().isEmpty()) {
+            e.setOrganizer("Unknown");
+        }
+
+        if(e.getImg() == null || e.getImg().isEmpty()) {
+            e.setImg("https://t.mwm.moe/fj");
+        }
+
+
     }
 
 }

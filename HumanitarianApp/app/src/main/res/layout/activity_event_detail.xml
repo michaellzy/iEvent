@@ -50,48 +50,59 @@
                     android:id="@+id/imageView_detail_organizer_pic"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
+                    android:layout_marginStart="20dp"
                     android:contentDescription="organizer_pic"
-                    tools:srcCompat="@tools:sample/avatars"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView_detail_event_pic"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/colorPrimary"
                     tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="33dp" />
+                    tools:srcCompat="@tools:sample/avatars" />
+
 
                 <ImageView
                     android:id="@+id/imageView_add"
                     android:layout_width="51dp"
                     android:layout_height="47dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView_chat"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
                     app:srcCompat="@drawable/ic_add"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="197dp"
-                    tools:layout_editor_absoluteY="234dp" />
+                    tools:ignore="MissingConstraints" />
 
                 <ImageView
                     android:id="@+id/imageView_chat"
                     android:layout_width="39dp"
                     android:layout_height="43dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView_map"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
                     app:srcCompat="@drawable/ic_chat"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="258dp"
-                    tools:layout_editor_absoluteY="238dp" />
+                    tools:ignore="MissingConstraints" />
 
                 <ImageView
                     android:id="@+id/imageView_map"
                     android:layout_width="37dp"
                     android:layout_height="54dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView_fav"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
                     app:srcCompat="@drawable/ic_map"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="308dp"
-                    tools:layout_editor_absoluteY="230dp" />
+                    tools:ignore="MissingConstraints" />
 
                 <ImageView
                     android:id="@+id/imageView_fav"
                     android:layout_width="38dp"
                     android:layout_height="47dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
                     app:srcCompat="@drawable/ic_love"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="357dp"
-                    tools:layout_editor_absoluteY="235dp" />
+                    tools:ignore="MissingConstraints" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
