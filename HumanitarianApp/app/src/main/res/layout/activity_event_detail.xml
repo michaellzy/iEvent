@@ -37,14 +37,14 @@
 
                 <ImageView
                     android:id="@+id/imageView_detail_back_btn"
-                    android:layout_width="31dp"
-                    android:layout_height="36dp"
+                    android:layout_width="36dp"
+                    android:layout_height="41dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="TODO"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_arrow_left"
-                    android:contentDescription="TODO" />
+                    app:srcCompat="@drawable/ic_left_arrow" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_detail_organizer_pic"
