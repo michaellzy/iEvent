@@ -57,6 +57,12 @@
             android:name=".activity.SearchActivity"
             android:exported="false"></activity>
 
+        <activity
+            android:name=".activity.UserAcitivity"
+            android:exported="true"></activity>
+
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAG91VToePHRKypKvLeOEvM76gaEix7Lsg"/>
