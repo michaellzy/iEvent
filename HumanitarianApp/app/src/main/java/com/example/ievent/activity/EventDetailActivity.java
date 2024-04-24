@@ -42,12 +42,19 @@ public class EventDetailActivity extends AppCompatActivity {
         // rewrite the empty fields
         Event.preprocessData(event);
 
+
         // bind event to map button
         eventDetailBinding.imageViewMap.setOnClickListener(v -> {
             // Open map activity and add description to the intent
             android.content.Intent intent = new android.content.Intent(this, MapActivity.class);
             // here put the name of destination
             intent.putExtra("destination", event.getLocation());
+            startActivity(intent);
+        });
+
+        eventDetailBinding.imageViewDetailOrganizerPic.setOnClickListener(v -> {
+            // Open organizer profile activity
+            android.content.Intent intent = new android.content.Intent(this, UserAcitivity.class);
             startActivity(intent);
         });
 
