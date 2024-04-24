@@ -1,7 +1,7 @@
 package com.example.ievent.entity;
 
 public class User {
-    private String userName;
+    private String userName = "XXX";
     private String email;
 
     private String uid;
