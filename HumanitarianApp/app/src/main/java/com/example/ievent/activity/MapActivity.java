@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * This class is used to display the map.
  */
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback {
     ActivityMapBinding mapActivityBinding;
 
 
