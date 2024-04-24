@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
@@ -32,6 +30,7 @@ public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
 
     private RecyclerView recyclerViewRec;
+
     private RecommendedActivitiesAdapter recEventAdapter;
 
     private ProgressBar progressBar;
@@ -105,7 +104,9 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-
+        binding.profileImage.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+        });
         Glide.with(this)
                 .load(R.drawable.default_avatar)
                 .into(binding.profileImage);
