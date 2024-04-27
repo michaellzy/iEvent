@@ -8,4 +8,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recommended_activities">Recommended Activities</string>
     <string name="your_event">Your Events</string>
+    <string name="release_event">+</string>
 </resources>

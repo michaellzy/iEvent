@@ -21,6 +21,7 @@ import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
@@ -90,6 +91,17 @@ public class MainActivity extends BaseActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        // Initialize FloatingActionButton and set its click listener
+        FloatingActionButton fabRelease = findViewById(R.id.fab_release);
+        fabRelease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent to open EventReleaseActivity
+                Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
+                startActivity(intent);
             }
         });
         db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
