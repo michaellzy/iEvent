@@ -30,10 +30,12 @@ import java.util.Objects;
 public class EventDataManager {
     private static EventDataManager instance;
 
+
     /** reference of events collection in firestore*/
     private final CollectionReference eventRef;
 
     private DocumentSnapshot lastVisible;
+
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("events");
     }
@@ -57,17 +59,13 @@ public class EventDataManager {
         eventRef.add(e);
     }
 
-
-    /**
-     * get all events from the database based on the type and return them
-     * @param type the type of the event
-     */
-    public synchronized void getAllEventsByType(String type, EventDataListener listener) {
-        ArrayList<Event> events = new ArrayList<>();
-        eventRef.whereEqualTo("type", type).get().addOnCompleteListener(task -> {
+    // ----------------------------------- SEARCH SECTION START------------------------------------ //
+    public synchronized void HandleQuery(Query query, EventDataListener listener) {
+        query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot snapshots = task.getResult();
                 if(snapshots != null) {
+                    ArrayList<Event> events = new ArrayList<>();
                     for (DocumentSnapshot document : snapshots.getDocuments()) {
                         Event event = document.toObject(Event.class);
                         events.add(event);
@@ -81,6 +79,28 @@ public class EventDataManager {
             }
         });
     }
+
+    /**
+     * get all events from the database based on the type and return them
+     * @param type the type of the event
+     */
+    public synchronized void getAllEventsByType(String type, EventDataListener listener) {
+        Query q = eventRef.whereEqualTo("type", type);
+        HandleQuery(q, listener);
+    }
+
+    /**
+     * get all events from the database based on the name of events and return them
+     * @param name the name of the event
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getAllEventByFuzzyName(String name, EventDataListener listener) {
+       Query q =  eventRef.whereGreaterThanOrEqualTo("title", name)
+               .whereLessThanOrEqualTo("title", "\\uf8ff" + name + "\\uf8ff");
+        HandleQuery(q, listener);
+    }
+
+    // ----------------------------------- SEARCH SECTION END ------------------------------------ //
 
     public synchronized void loadEvents(int pageSize, EventDataListener listener) {
         Query query = eventRef.limit(pageSize);
