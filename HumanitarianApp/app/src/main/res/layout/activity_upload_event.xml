@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ReleaseActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity = "center"
+        android:padding="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/upload_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_add_pic"/>
+
+        <EditText
+            android:id="@+id/upload_event_type"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/input_boarder"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:hint="Event Name"/>
+
+        <EditText
+            android:id="@+id/upload_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/input_boarder"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:hint="Select a Type"/>
+
+
+
+        <EditText
+            android:id="@+id/upload_event_location"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/input_boarder"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:hint="Location"/>
+
+        <EditText
+            android:id="@+id/upload_event_price"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/input_boarder"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:hint="Price (AUD)"/>
+
+        <EditText
+            android:id="@+id/upload_event_date"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/input_boarder"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:hint="Pick a Date"/>
+
+        <EditText
+            android:id="@+id/upload_start_time"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart= "-100sp"
+            android:hint="Start Time"
+            style="@style/UnderlineEditText" />
+
+        <EditText
+            android:id="@+id/upload_end_time"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart= "100sp"
+            android:layout_marginTop="-60dp"
+            android:hint="End Time"
+            style="@style/UnderlineEditText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-40dp"
+            android:text="To"
+            android:textSize="25sp"/>
+
+        <EditText
+            android:id="@+id/upload_event_description"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:hint="Event Info"
+            style="@style/UnderlineEditText"/>
+
+        <Button
+            android:id="@+id/upload_button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Post Event" />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</ScrollView>

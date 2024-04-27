@@ -38,10 +38,6 @@
         tools:layout_editor_absoluteY="138dp"
         tools:ignore="MissingConstraints" />
 
-    <!-- Time of Activity Input -->
-
-
-
     <EditText
         android:id="@+id/release_activity_time"
         android:layout_width="0dp"
@@ -52,8 +48,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/release_activity_name"
         app:layout_constraintTop_toBottomOf="@id/release_activity_name" />
-
-    <!-- Price of Activity Input -->
 
 
     <EditText
@@ -67,9 +61,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/release_activity_time"
         app:layout_constraintTop_toBottomOf="@id/release_activity_time" />
-
-
-    <!-- Location of Activity Input -->
 
 
     <EditText
