@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,16 +26,24 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
+
+    private ActivityMainBinding binding;
+
     private RecyclerView recyclerViewRec;
+
     private RecommendedActivitiesAdapter recEventAdapter;
 
     private ProgressBar progressBar;
+
     private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
 
@@ -93,6 +103,13 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+
+        binding.profileImage.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+        });
+        Glide.with(this)
+                .load(R.drawable.default_avatar)
+                .into(binding.profileImage);
     }
 
     private void loadMoreEvents() {
