@@ -1,6 +1,9 @@
 package com.example.ievent.activity;
 import android.os.Bundle;
+
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,22 +11,33 @@ import com.example.ievent.adapter.userfragmentfollowers;
 import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
+import com.example.ievent.databinding.ActivityUserBinding;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 
 public class UserAcitivity extends BaseActivity {
 
     private RecyclerView recyclerView;
+
     private TabLayout tabLayout;
+
+    private ActivityUserBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
 
-        recyclerView = findViewById(R.id.textView_username_profile);
-        tabLayout = findViewById(R.id.tabLayout);
+
+        binding = ActivityUserBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+
+        recyclerView = binding.textViewUsernameProfile;
+        tabLayout = binding.tabLayout;
 
         // Initial setup
         setupRecyclerView("Post");
@@ -32,7 +46,7 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Change RecyclerView content based on selected tab
-                String type = tab.getText().toString();
+                String type = Objects.requireNonNull(tab.getText()).toString();
                 setupRecyclerView(type);
             }
 
@@ -46,6 +60,22 @@ public class UserAcitivity extends BaseActivity {
                 // Handle tab reselected if needed
             }
         });
+
+        setVariable();
+    }
+
+
+    private void setVariable(){
+
+
+
+        binding.profileImage.setOnClickListener(v -> {
+            // Open image picker
+        });
+
+        Glide.with(this)
+                .load(R.drawable.default_avatar)
+                .into(binding.profileImage);
     }
 
     private void setupRecyclerView(String type) {
