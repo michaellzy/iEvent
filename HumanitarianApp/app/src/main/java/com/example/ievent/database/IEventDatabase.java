@@ -51,13 +51,29 @@ public class IEventDatabase{
         UserDataManager.getInstance().getLoggedInUser(uid, listener);
     }
 
+    // ----------------------------------- EVENTS ----------------------------------- //
 
     public void addNewEvent(Event e) {
         EventDataManager.getInstance().addNewEvent(e);
     }
 
+    /**
+     * get all events by type
+     * @param type the type of the event
+     * @param listener the listener to handle the data
+     */
     public void getAllEventsByType(String type, EventDataListener listener) {
         EventDataManager.getInstance().getAllEventsByType(type, listener);
+    }
+
+
+    /**
+     * get all events by name of the event
+     * @param name the name of the event
+     * @param listener the listener to handle the data
+     */
+    public void getAllEventsByFuzzyName(String name, EventDataListener listener) {
+        EventDataManager.getInstance().getAllEventByFuzzyName(name, listener);
     }
 
     public void getEvents(int pageSize, EventDataListener listener) {

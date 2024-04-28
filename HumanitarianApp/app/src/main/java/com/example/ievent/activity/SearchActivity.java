@@ -2,17 +2,23 @@ package com.example.ievent.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.ievent.R;
+import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.entity.Event;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
 
 public class SearchActivity extends BaseActivity {
     @Override
@@ -21,16 +27,13 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         Button filterbutton = findViewById(R.id.filter_button);
 
-        filterbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(SearchActivity.this);
+        filterbutton.setOnClickListener(v -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(SearchActivity.this);
 
-                View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_layout, null);
-                bottomSheetDialog.setContentView(bottomSheetView);
+            View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_layout, null);
+            bottomSheetDialog.setContentView(bottomSheetView);
 
-                bottomSheetDialog.show();
-            }
+            bottomSheetDialog.show();
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_search);
@@ -59,6 +62,7 @@ public class SearchActivity extends BaseActivity {
         initSearchWidgets();
         setUpData();
     }
+
     private void initSearchWidgets(){
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
 
@@ -74,7 +78,27 @@ public class SearchActivity extends BaseActivity {
             }
         });
     }
+
     private void setUpData(){
+        Toast.makeText(this, "Loading data", Toast.LENGTH_SHORT).show();
+
         // gets data here
+        db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Event> events) {
+                // set up the data here
+                // input the event title into a local file
+                for (Event event : events) {
+                    Log.i("EVENT1111", "onSuccess: " + event.getTitle());
+
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                // handle the error here
+                Log.i("EVENT1111", "onFailure: " + error);
+            }
+        });
     }
 }
