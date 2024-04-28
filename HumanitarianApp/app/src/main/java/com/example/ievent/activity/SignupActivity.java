@@ -14,8 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
+import com.example.ievent.entity.Organizer;
+import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
-import com.example.ievent.entity.UserFactory;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -74,9 +75,11 @@ public class SignupActivity  extends BaseActivity{
                                 if (firebaseUser != null) {
                                     String uid = mAuth.getCurrentUser().getUid();
                                     // User user = new User(uid);
-                                    User user = UserFactory.createUser("user", uid);
-                                    user.setUserName(userName);
-                                    user.setEmail(email);
+//                                    User user = UserFactory.createUser("user", uid);
+//                                    user.setUserName(userName);
+//                                    user.setEmail(email);
+                                    User user = new Participant(uid, email, userName);
+                                    Organizer org = new Organizer(uid);
                                     db.addNewUser(uid, user);
                                     Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignupActivity.this, MainActivity.class);

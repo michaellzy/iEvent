@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ievent.R;
+import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
 
     public userfragmentfollowers() {
         this.UserList = new ArrayList<>();
-        this.UserList.add(new User("XXX", "XXXX", "XXXX"));
+        this.UserList.add(new Participant("XXX", "XXXX", "XXXX"));
     }
 
     @Override

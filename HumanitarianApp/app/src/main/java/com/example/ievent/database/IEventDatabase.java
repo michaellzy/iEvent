@@ -3,8 +3,10 @@ package com.example.ievent.database;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 
 
@@ -40,6 +42,14 @@ public class IEventDatabase{
      */
     public void addNewUser(String uid, User user) {
         UserDataManager.getInstance().addNewUser(uid, user);
+    }
+
+    public void addNewOrganizer(String uid, Organizer organizer) {
+        UserDataManager.getInstance().addOrganizer(uid, organizer);
+    }
+
+    public void getOrganizer(String uid, OrgDataListener listener) {
+        UserDataManager.getInstance().getOrganizer(uid, listener);
     }
 
     /***

@@ -1,23 +1,15 @@
 package com.example.ievent.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Spannable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.ievent.R;
-import com.example.ievent.database.listener.UserDataListener;
-import com.example.ievent.databinding.ActivityEventDetailBinding;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
-import com.example.ievent.entity.UserFactory;
 
 import java.util.ArrayList;
 
@@ -45,20 +37,18 @@ public class ReleaseActivity extends BaseActivity {
         uploadEventBinding.uploadButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+                db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                     @Override
-                    public void onSuccess(ArrayList<User> data) {
-                        User user = data.get(0);
-                        User organizer = UserFactory.createUser("organizer", user.getUid());
-                        if (organizer instanceof Organizer) {
-                            Toast.makeText(ReleaseActivity.this, "Welcome " + organizer.getUserName(), Toast.LENGTH_SHORT).show();
-                            ((Organizer) organizer).publishNewEvent(null);
-                        }
+                    public void onSuccess(ArrayList<Organizer> data) {
+                        Organizer org = data.get(0);
+                        Toast.makeText(ReleaseActivity.this, "this user is already an organizer!",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
-
+                        Toast.makeText(ReleaseActivity.this, "this user is not currently an organizer",Toast.LENGTH_SHORT).show();
+                        Organizer org = new Organizer(mAuth.getCurrentUser().getUid());
+                        db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
                     }
                 });
             }
