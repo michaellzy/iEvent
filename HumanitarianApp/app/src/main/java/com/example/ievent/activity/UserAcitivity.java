@@ -1,9 +1,17 @@
 package com.example.ievent.activity;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +20,9 @@ import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
 import com.example.ievent.databinding.ActivityUserBinding;
+import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,6 +35,8 @@ public class UserAcitivity extends BaseActivity {
     private TabLayout tabLayout;
 
     private ActivityUserBinding binding;
+
+    private ActivityResultLauncher cropImageActivityResultLauncher;
 
 
     @Override
@@ -62,6 +74,31 @@ public class UserAcitivity extends BaseActivity {
         });
 
         setVariable();
+
+        cropImageActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+                            Bitmap resultUri = cropResult.getBitmap();
+                            // save the image as a local image
+                            Log.i("URLLLLL", "onCreate: "+resultUri.toString());
+
+                            Glide.with(this)
+                                    .load(resultUri)
+                                    .into(binding.profileImage);
+
+                        }
+                    } else if (result.getResultCode() == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                        if (result.getData() != null) {
+                            CropImage.ActivityResult cropResult = CropImage.getActivityResult(result.getData());
+                            Exception error = cropResult.getError();
+                        }
+                    }
+                }
+        );
     }
 
 
@@ -71,6 +108,7 @@ public class UserAcitivity extends BaseActivity {
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
+            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, 1, 1);
         });
 
         Glide.with(this)
