@@ -7,6 +7,10 @@ public class User {
     private String uid;
 
     public User() {}
+
+    public User(String uid) {
+        this.uid = uid;
+    }
     public User(String uid, String email, String userName){
         this.uid = uid;
         this.email = email;
@@ -23,6 +27,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUid() {
