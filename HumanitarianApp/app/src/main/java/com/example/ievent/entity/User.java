@@ -1,14 +1,25 @@
 package com.example.ievent.entity;
 
-import org.checkerframework.checker.units.qual.A;
 
-import java.util.ArrayList;
 
 public class User {
     private String userName;
     private String email;
 
     private String uid;
+
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
+    private String avatar;
 
     public User() {}
 
@@ -21,6 +32,7 @@ public class User {
         this.email = email;
         this.userName = userName;
     }
+
     public String getUserName() {
         return userName;
     }
@@ -29,15 +41,11 @@ public class User {
         this.userName = userName;
     }
 
-
     public String getEmail() {
         return email;
     }
 
-
     public String getUid() {
         return uid;
     }
-
-
 }

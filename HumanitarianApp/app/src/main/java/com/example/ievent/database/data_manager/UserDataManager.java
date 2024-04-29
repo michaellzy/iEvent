@@ -8,9 +8,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Objects;
+
 
 /**
  * use Firestore database to load, store and update user information
@@ -19,7 +19,9 @@ import java.util.Objects;
 public class UserDataManager {
 
     final String TAG = "userDatabase";
+
     private static UserDataManager instance;
+
     private CollectionReference userRef;
     private CollectionReference orgRef;
 
@@ -29,7 +31,6 @@ public class UserDataManager {
         userRef = FirebaseFirestore.getInstance().collection("Users");
         orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
-
 
     public static synchronized UserDataManager getInstance() {
         if (instance == null) {

@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ievent.database.IEventDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 
+
 public class BaseActivity extends AppCompatActivity {
     protected FirebaseAuth mAuth;
     protected IEventDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +20,4 @@ public class BaseActivity extends AppCompatActivity {
         db = IEventDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
     }
-
 }

@@ -66,6 +66,8 @@ public class ReleaseActivity extends BaseActivity {
             startActivityForResult(intentUpload, 1);
         });
 
+
+
         eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, eventTypeList);
         uploadEventBinding.autoCompleteEventType.setAdapter(eventTypeAdapter);
         uploadEventBinding.autoCompleteEventType.setOnItemClickListener((parent, view, position, id) -> {
@@ -90,6 +92,7 @@ public class ReleaseActivity extends BaseActivity {
                     uploadEventBinding.uploadStartTime.getText().toString() + " to " +
                     uploadEventBinding.uploadEndTime.getText().toString();
             eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Organizer> data) {
