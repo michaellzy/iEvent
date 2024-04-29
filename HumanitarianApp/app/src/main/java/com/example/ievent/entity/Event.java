@@ -20,6 +20,17 @@ public class Event implements java.io.Serializable{
 
     public Event() {}
 
+    public Event(String type, String title, String description, String organizer, String location, String dateTime, int price, String img) {
+        this.type = type;
+        this.title = title;
+        this.description = description;
+        this.organizer = organizer;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.price = price;
+        this.img = img;
+    }
+
     public String getType() {
         return type;
     }

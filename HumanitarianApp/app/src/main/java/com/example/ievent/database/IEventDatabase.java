@@ -101,4 +101,8 @@ public class IEventDatabase{
     public void downloadAvatar(ImageView imageView, String uid){
         MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
     }
+
+    public void uploadEventImage(Uri file, DataListener<String> listener) {
+        MediaManager.getInstance().uploadEventImg(file, listener);
+    }
 }

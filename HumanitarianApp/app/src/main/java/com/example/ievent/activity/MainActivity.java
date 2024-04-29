@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity {
 
     private boolean isLoading = false;
 
+    private boolean isAllEvents = false;
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -134,6 +136,13 @@ public class MainActivity extends BaseActivity {
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
             @Override
+            public void isAllData(boolean isALl) {
+                if (isALl) {
+                    isLoading = false;
+                }
+            }
+
+            @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
                     recEventAdapter.setEvents(data);
@@ -150,6 +159,7 @@ public class MainActivity extends BaseActivity {
                     isLoading = false;
                 });
             }
+
         });
     }
 }

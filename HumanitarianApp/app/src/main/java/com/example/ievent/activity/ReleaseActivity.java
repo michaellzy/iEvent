@@ -1,21 +1,34 @@
 package com.example.ievent.activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
+import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
+import com.example.ievent.global.ImageCropper;
+import com.google.android.material.textfield.TextInputEditText;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,25 +37,16 @@ import java.util.Locale;
 public class ReleaseActivity extends BaseActivity {
 
     ActivityUploadEventBinding uploadEventBinding;
-    private String imageURI;
+    private String imageUri;
 
     private Uri uri;
 
-    private String eventTitle;
-
-    private String eventType;
-
-    private String eventLocation;
-
-    private int eventPrice;
-
-    private String eventDateTime;
-
-    private String eventDescription;
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private ArrayAdapter<String> eventTypeAdapter;
+
+    private ActivityResultLauncher cropImageActivityResultLauncher;
 
 
     final String[] eventTypeList = {"Boat Party", "Bollywood", "Climate Change", "Comedy", "Disability",
@@ -60,11 +64,16 @@ public class ReleaseActivity extends BaseActivity {
 
         setupDatePicker();
 
+//        uploadEventBinding.uploadImage.setOnClickListener(v -> {
+//            Intent intentUpload = new Intent(Intent.ACTION_PICK);
+//            intentUpload.setType("image/*");
+//            startActivityForResult(intentUpload, 1);
+//        });
+
         uploadEventBinding.uploadImage.setOnClickListener(v -> {
-            Intent intentUpload = new Intent(Intent.ACTION_PICK);
-            intentUpload.setType("image/*");
-            startActivityForResult(intentUpload, 1);
+            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, false, 4,3);
         });
+        cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
 
 
 
@@ -75,40 +84,62 @@ public class ReleaseActivity extends BaseActivity {
             uploadEventBinding.autoCompleteEventType.setText(selectedEventType, false);
         });
 
-        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> validateAndUploadEvent());
+        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> uploadEvent());
     }
 
-    private void validateAndUploadEvent() {
+    private void saveEventData() {
         try {
             Intent intent = getIntent();
             String userName = intent.getStringExtra("userName");
             String email = intent.getStringExtra("email");
-
-            eventTitle = uploadEventBinding.uploadEventName.getText().toString();
-            eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
-            eventPrice = Integer.parseInt(uploadEventBinding.uploadEventPrice.getText().toString());
-            eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
-            eventDateTime = uploadEventBinding.uploadEventDate.getText().toString() + ", " +
+            //TODO: error checking for none events
+            String eventTitle = uploadEventBinding.uploadEventName.getText().toString();
+            String eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
+            int eventPrice = Integer.parseInt(uploadEventBinding.uploadEventPrice.getText().toString());
+            String eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
+            String eventDateTime = uploadEventBinding.uploadEventDate.getText().toString() + ", " +
                     uploadEventBinding.uploadStartTime.getText().toString() + " to " +
                     uploadEventBinding.uploadEndTime.getText().toString();
-            eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+            String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+            String organizer = mAuth.getCurrentUser().getUid();
+
+            Event event = new Event(eventType, eventTitle, eventDescription, organizer, eventLocation, eventDateTime, eventPrice, imageUri);
 
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Organizer> data) {
-                    Toast.makeText(ReleaseActivity.this, "This user is already an organizer!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(ReleaseActivity.this, "This user is already an organizer!", Toast.LENGTH_SHORT).show();
+                    db.addNewEvent(event);
+                    Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(String errorMessage) {
-                    Toast.makeText(ReleaseActivity.this, "This user is not currently an organizer", Toast.LENGTH_SHORT).show();
+
                     Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), userName, email);
                     db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
+                    db.addNewEvent(event);
+                    Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter a valid price", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void uploadEvent() {
+        db.uploadEventImage(this.uri, new DataListener<String>() {
+            @Override
+            public void onSuccess(ArrayList<String> data) {
+                imageUri = data.get(0);
+                saveEventData();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
     }
 
     private void setupDatePicker() {
@@ -122,7 +153,7 @@ public class ReleaseActivity extends BaseActivity {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, yearSelect, monthOfYear, dayOfMonth) -> {
-                    // 格式化日期字符串
+
                     c.set(Calendar.YEAR, yearSelect);
                     c.set(Calendar.MONTH, monthOfYear);
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -147,15 +178,25 @@ public class ReleaseActivity extends BaseActivity {
         timePickerDialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            this.uri = data.getData();
-            uploadEventBinding.uploadImage.setImageURI(this.uri);
-            uploadEventBinding.uploadImage.setVisibility(View.VISIBLE);
 
+    private ActivityResultLauncher getCropImageActivityResultLauncher() {
+        return registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if (data == null) return;
+
+                        CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+                        this.uri = cropResult.getUri();
+                        uploadEventBinding.uploadImage.setImageURI(this.uri);
+                        uploadEventBinding.uploadImage.setVisibility(View.VISIBLE);
+
+
+                        // Upload the image to Firebase Storage
+                    }
+                }
+            );
         }
     }
-
-}

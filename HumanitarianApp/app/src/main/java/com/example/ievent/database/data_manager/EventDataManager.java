@@ -25,7 +25,7 @@ public class EventDataManager {
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
-        eventRef = FirebaseFirestore.getInstance().collection("events");
+        eventRef = FirebaseFirestore.getInstance().collection("tesetevents");
     }
 
     public synchronized static EventDataManager getInstance(){
@@ -57,6 +57,12 @@ public class EventDataManager {
                     for (DocumentSnapshot document : snapshots.getDocuments()) {
                         Event event = document.toObject(Event.class);
                         events.add(event);
+                    }
+                    if (!snapshots.getDocuments().isEmpty()) {
+                        lastVisible = snapshots.getDocuments().get(snapshots.size() - 1);
+                    } else {
+                        // No documents were returned, so we've loaded all available data
+                        listener.isAllData(true);
                     }
                     listener.onSuccess(events);
                 } else {
