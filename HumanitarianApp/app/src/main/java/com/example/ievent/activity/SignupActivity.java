@@ -79,7 +79,6 @@ public class SignupActivity  extends BaseActivity{
 //                                    user.setUserName(userName);
 //                                    user.setEmail(email);
                                     User user = new Participant(uid, email, userName);
-                                    Organizer org = new Organizer(uid);
                                     db.addNewUser(uid, user);
                                     Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignupActivity.this, MainActivity.class);

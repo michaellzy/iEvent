@@ -100,21 +100,24 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 // Intent to open EventReleaseActivity
-                Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
-                startActivity(intent);
+                db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+                    @Override
+                    public void onSuccess(ArrayList<User> data) {
+                        User curUser = data.get(0);
+                        Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
+                        intent.putExtra("userName", curUser.getUserName());
+                        intent.putExtra("email", curUser.getEmail());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
             }
         });
-        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
-            @Override
-            public void onSuccess(ArrayList<User> data) {
-                Toast.makeText(MainActivity.this, "Welcome" + data.get(0).getUserName(),Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(String errorMessage) {
-
-            }
-        });
 
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));

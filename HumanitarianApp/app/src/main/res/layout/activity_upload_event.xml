@@ -8,112 +8,129 @@
     android:orientation="vertical"
     tools:context=".activity.ReleaseActivity">
 
-    <LinearLayout
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity = "center"
-        android:padding="30dp"
-        >
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
 
-        <ImageView
-            android:id="@+id/upload_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_add_pic"/>
 
-        <EditText
-            android:id="@+id/upload_event_type"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/input_boarder"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:hint="Event Name"/>
-
-        <EditText
-            android:id="@+id/upload_event_name"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/input_boarder"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:hint="Select a Type"/>
-
-
-
-        <EditText
-            android:id="@+id/upload_event_location"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/input_boarder"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:hint="Location"/>
-
-        <EditText
-            android:id="@+id/upload_event_price"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/input_boarder"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:hint="Price (AUD)"/>
-
-        <EditText
-            android:id="@+id/upload_event_date"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/input_boarder"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"
-            android:hint="Pick a Date"/>
-
-        <EditText
-            android:id="@+id/upload_start_time"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginStart= "-100sp"
-            android:hint="Start Time"
-            style="@style/UnderlineEditText" />
-
-        <EditText
-            android:id="@+id/upload_end_time"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginStart= "100sp"
-            android:layout_marginTop="-60dp"
-            android:hint="End Time"
-            style="@style/UnderlineEditText" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-40dp"
-            android:text="To"
-            android:textSize="25sp"/>
+            android:orientation="vertical"
+            android:gravity = "center"
+            android:padding="30dp"
+            >
 
-        <EditText
-            android:id="@+id/upload_event_description"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:hint="Event Info"
-            style="@style/UnderlineEditText"/>
+            <ImageView
+                android:id="@+id/upload_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_add_pic"/>
 
-        <Button
-            android:id="@+id/upload_button_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Post Event" />
+            <EditText
+                android:id="@+id/upload_event_name"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/input_boarder"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:hint="Event Name"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/upload_event_type"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:hint="Select a Type"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/autoComplete_event_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/input_boarder"
+                    android:inputType="none"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </LinearLayout>
 
 
+            <EditText
+                android:id="@+id/upload_event_location"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/input_boarder"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:hint="Location"/>
 
+            <EditText
+                android:id="@+id/upload_event_price"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/input_boarder"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:hint="Price (AUD)"/>
+
+            <EditText
+                android:id="@+id/upload_event_date"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/input_boarder"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:hint="Pick a Date"/>
+
+            <EditText
+                android:id="@+id/upload_start_time"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginStart= "-90sp"
+                android:hint="Start Time"
+                style="@style/UnderlineEditText" />
+
+            <EditText
+                android:id="@+id/upload_end_time"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginStart= "90sp"
+                android:layout_marginTop="-60dp"
+                android:hint="End Time"
+                style="@style/UnderlineEditText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-40dp"
+                android:text="To"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/upload_event_description"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:hint="Event Info"
+                style="@style/UnderlineEditText"/>
+
+            <Button
+                android:id="@+id/upload_button_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Post Event" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 

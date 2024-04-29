@@ -128,8 +128,8 @@ public class Event implements java.io.Serializable{
             e.setDescription("This organizer is too lazy to write a description.");
         }
 
-        if(e.getOrganizer() == null || e.getOrganizer().isEmpty()) {
-            e.setOrganizer("Unknown");
+        if(e.getOrganizer() == null ) {
+            e.setOrganizer(null);
         }
 
         if(e.getImg() == null || e.getImg().isEmpty()) {
