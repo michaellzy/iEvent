@@ -28,68 +28,84 @@ public class ReleaseActivity extends BaseActivity {
 
     private Uri uri;
 
+    private String eventTitle;
+
+    private String eventType;
+
+    private String eventLocation;
+
+    private int eventPrice;
+
+    private String eventDateTime;
+
+    private String eventDescription;
+
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private ArrayAdapter<String> eventTypeAdapter;
 
 
-    final String[] eventType = {"Boat Party", "Bollywood", "Climate Change", "Comedy", "Disability",
+    final String[] eventTypeList = {"Boat Party", "Bollywood", "Climate Change", "Comedy", "Disability",
     "Indigenous", "Libraries Act", "Mental Health", "Motorbike Tour", "Music Festivals",
     "Museum of Australia", "School Holidays", "Warehouse Sale", "Wellness", "Other"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        String userName = intent.getStringExtra("userName");
-        String email = intent.getStringExtra("email");
         uploadEventBinding = ActivityUploadEventBinding.inflate(getLayoutInflater());
         setContentView(uploadEventBinding.getRoot());
-        EditText startTime = findViewById(R.id.upload_start_time);
-        EditText endTime = findViewById(R.id.upload_end_time);
 
-        startTime.setOnClickListener(v -> showTimePickerDialog(startTime));
-        endTime.setOnClickListener(v -> showTimePickerDialog(endTime));
+        uploadEventBinding.uploadStartTime.setOnClickListener(v -> showTimePickerDialog(uploadEventBinding.uploadStartTime));
+        uploadEventBinding.uploadEndTime.setOnClickListener(v -> showTimePickerDialog(uploadEventBinding.uploadEndTime));
 
         setupDatePicker();
 
         uploadEventBinding.uploadImage.setOnClickListener(v -> {
             Intent intentUpload = new Intent(Intent.ACTION_PICK);
             intentUpload.setType("image/*");
-            startActivityForResult(intentUpload, PICK_IMAGE_REQUEST);
+            startActivityForResult(intentUpload, 1);
         });
 
-        String eventName = uploadEventBinding.uploadEventName.getText().toString();
-        eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, eventType);
+        eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, eventTypeList);
         uploadEventBinding.autoCompleteEventType.setAdapter(eventTypeAdapter);
-        uploadEventBinding.autoCompleteEventType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedEventType = parent.getItemAtPosition(position).toString();
-                uploadEventBinding.autoCompleteEventType.setText(selectedEventType, false);
-            }
+        uploadEventBinding.autoCompleteEventType.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedEventType = parent.getItemAtPosition(position).toString();
+            uploadEventBinding.autoCompleteEventType.setText(selectedEventType, false);
         });
 
-        uploadEventBinding.uploadButtonConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
-                    @Override
-                    public void onSuccess(ArrayList<Organizer> data) {
-                        Organizer org = data.get(0);
-                        Toast.makeText(ReleaseActivity.this, "this user is already an organizer!",Toast.LENGTH_SHORT).show();
-                    }
+        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> validateAndUploadEvent());
+    }
 
-                    @Override
-                    public void onFailure(String errorMessage) {
-                        Toast.makeText(ReleaseActivity.this, "this user is not currently an organizer",Toast.LENGTH_SHORT).show();
-                        Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), userName, email);
-                        db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
-                    }
-                });
-            }
-        });
+    private void validateAndUploadEvent() {
+        try {
+            Intent intent = getIntent();
+            String userName = intent.getStringExtra("userName");
+            String email = intent.getStringExtra("email");
 
+            eventTitle = uploadEventBinding.uploadEventName.getText().toString();
+            eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
+            eventPrice = Integer.parseInt(uploadEventBinding.uploadEventPrice.getText().toString());
+            eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
+            eventDateTime = uploadEventBinding.uploadEventDate.getText().toString() + ", " +
+                    uploadEventBinding.uploadStartTime.getText().toString() + " to " +
+                    uploadEventBinding.uploadEndTime.getText().toString();
+            eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+            db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
+                @Override
+                public void onSuccess(ArrayList<Organizer> data) {
+                    Toast.makeText(ReleaseActivity.this, "This user is already an organizer!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(ReleaseActivity.this, "This user is not currently an organizer", Toast.LENGTH_SHORT).show();
+                    Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), userName, email);
+                    db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
+                }
+            });
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Please enter a valid price", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupDatePicker() {
@@ -102,10 +118,14 @@ public class ReleaseActivity extends BaseActivity {
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year1, monthOfYear, dayOfMonth) -> {
+                (view, yearSelect, monthOfYear, dayOfMonth) -> {
                     // 格式化日期字符串
-                    String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
-                    uploadEventBinding.uploadEventDate.setText(selectedDate);
+                    c.set(Calendar.YEAR, yearSelect);
+                    c.set(Calendar.MONTH, monthOfYear);
+                    c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    // String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
+                    String formattedDate = String.format(Locale.getDefault(), "%1$tA, %1$td %1$tB, %1$tY", c);
+                    uploadEventBinding.uploadEventDate.setText(formattedDate);
                 }, year, month, day);
         datePickerDialog.show();
     }
