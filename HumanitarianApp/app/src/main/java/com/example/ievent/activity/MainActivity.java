@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
