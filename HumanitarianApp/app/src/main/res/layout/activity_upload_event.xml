@@ -88,7 +88,9 @@
                 android:background="@drawable/input_boarder"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
-                android:hint="Pick a Date"/>
+                android:hint="Pick a Date"
+                android:focusable="false"
+                android:cursorVisible="false"/>
 
             <EditText
                 android:id="@+id/upload_start_time"
@@ -96,6 +98,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart= "-90sp"
                 android:hint="Start Time"
+                android:focusable="false"
                 style="@style/UnderlineEditText" />
 
             <EditText
@@ -105,6 +108,7 @@
                 android:layout_marginStart= "90sp"
                 android:layout_marginTop="-60dp"
                 android:hint="End Time"
+                android:focusable="false"
                 style="@style/UnderlineEditText" />
 
             <TextView
@@ -117,11 +121,15 @@
             <EditText
                 android:id="@+id/upload_event_description"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
                 android:hint="Event Info"
-                style="@style/UnderlineEditText"/>
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:gravity="top|start"
+                android:scrollbars="vertical"
+                android:background="@drawable/edit_text_background"/>
 
             <Button
                 android:id="@+id/upload_button_confirm"

@@ -1,19 +1,25 @@
 package com.example.ievent.activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ievent.R;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ReleaseActivity extends BaseActivity {
 
@@ -39,6 +45,13 @@ public class ReleaseActivity extends BaseActivity {
         String email = intent.getStringExtra("email");
         uploadEventBinding = ActivityUploadEventBinding.inflate(getLayoutInflater());
         setContentView(uploadEventBinding.getRoot());
+        EditText startTime = findViewById(R.id.upload_start_time);
+        EditText endTime = findViewById(R.id.upload_end_time);
+
+        startTime.setOnClickListener(v -> showTimePickerDialog(startTime));
+        endTime.setOnClickListener(v -> showTimePickerDialog(endTime));
+
+        setupDatePicker();
 
         uploadEventBinding.uploadImage.setOnClickListener(v -> {
             Intent intentUpload = new Intent(Intent.ACTION_PICK);
@@ -79,6 +92,37 @@ public class ReleaseActivity extends BaseActivity {
 
     }
 
+    private void setupDatePicker() {
+        uploadEventBinding.uploadEventDate.setOnClickListener(v -> showDatePickerDialog());
+    }
+    private void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // 格式化日期字符串
+                    String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
+                    uploadEventBinding.uploadEventDate.setText(selectedDate);
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void showTimePickerDialog(final EditText timeField) {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                (view, hourOfDay, minuteOfHour) -> {
+                    // 格式化时间字符串
+                    String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minuteOfHour);
+                    timeField.setText(formattedTime);
+                }, hour, minute, true);
+        timePickerDialog.show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
