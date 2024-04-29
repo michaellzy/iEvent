@@ -19,6 +19,7 @@ import com.example.ievent.adapter.userfragmentfollowers;
 import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.databinding.ActivityUserBinding;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
@@ -75,36 +76,11 @@ public class UserAcitivity extends BaseActivity {
 
         setVariable();
 
-        cropImageActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
-                            Bitmap resultUri = cropResult.getBitmap();
-                            // save the image as a local image
-                            Log.i("URLLLLL", "onCreate: "+resultUri.toString());
-
-                            Glide.with(this)
-                                    .load(resultUri)
-                                    .into(binding.profileImage);
-
-                        }
-                    } else if (result.getResultCode() == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                        if (result.getData() != null) {
-                            CropImage.ActivityResult cropResult = CropImage.getActivityResult(result.getData());
-                            Exception error = cropResult.getError();
-                        }
-                    }
-                }
-        );
+        cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
     }
 
 
     private void setVariable(){
-
-
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
@@ -132,6 +108,52 @@ public class UserAcitivity extends BaseActivity {
                 break;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+
+    private ActivityResultLauncher getCropImageActivityResultLauncher() {
+        return registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+
+                        if(data == null) return;
+
+                        CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+                        Uri resultUri = cropResult.getUri();
+
+
+                        // save the image as a local image
+                        Log.i("URLLLLL", "onCreate: "+resultUri.toString());
+
+
+                        // Load the image into the ImageView
+                        Glide.with(this)
+                                .load(resultUri)
+                                .into(binding.profileImage);
+
+                        // Upload the image to Firebase Storage
+                        String uid = mAuth.getUid() == null ? "11111" : mAuth.getUid();
+                        db.uploadAvatar(uid, resultUri, new DataListener<String>() {
+                            @Override
+                            public void onSuccess(ArrayList<String> data) {
+
+                            }
+
+                            @Override
+                            public void onFailure(String message) {
+                                Toast.makeText(UserAcitivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if (result.getResultCode() == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                        if (result.getData() != null) {
+                            CropImage.ActivityResult cropResult = CropImage.getActivityResult(result.getData());
+                            Exception error = cropResult.getError();
+                        }
+                    }
+                }
+        );
     }
 
 }
