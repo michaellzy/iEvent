@@ -38,6 +38,12 @@ public class MainActivity extends BaseActivity {
     private boolean isLoading = false;
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -104,12 +110,10 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
-        Glide.with(this)
-                .load(R.drawable.default_avatar)
-                .into(binding.profileImage);
     }
 
     private void loadMoreEvents() {

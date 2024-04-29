@@ -81,15 +81,15 @@ public class UserAcitivity extends BaseActivity {
 
 
     private void setVariable(){
+        // Set the profile image
+        db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid());
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
-            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, 1, 1);
+            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
         });
 
-        Glide.with(this)
-                .load(R.drawable.default_avatar)
-                .into(binding.profileImage);
+
     }
 
     private void setupRecyclerView(String type) {
@@ -124,21 +124,15 @@ public class UserAcitivity extends BaseActivity {
                         Uri resultUri = cropResult.getUri();
 
 
-                        // save the image as a local image
-                        Log.i("URLLLLL", "onCreate: "+resultUri.toString());
-
-
-                        // Load the image into the ImageView
-                        Glide.with(this)
-                                .load(resultUri)
-                                .into(binding.profileImage);
-
                         // Upload the image to Firebase Storage
                         String uid = mAuth.getUid() == null ? "11111" : mAuth.getUid();
                         db.uploadAvatar(uid, resultUri, new DataListener<String>() {
                             @Override
                             public void onSuccess(ArrayList<String> data) {
-
+                                Glide.with(UserAcitivity.this)
+                                        .load(resultUri)
+                                        .into(binding.profileImage);
+                                Toast.makeText(UserAcitivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
