@@ -95,7 +95,7 @@ public class ReleaseActivity extends BaseActivity {
             //TODO: error checking for none events
             String eventTitle = uploadEventBinding.uploadEventName.getText().toString();
             String eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
-            int eventPrice = Integer.parseInt(uploadEventBinding.uploadEventPrice.getText().toString());
+            double eventPrice = Double.parseDouble(uploadEventBinding.uploadEventPrice.getText().toString());
             String eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
             String eventDateTime = uploadEventBinding.uploadEventDate.getText().toString() + ", " +
                     uploadEventBinding.uploadStartTime.getText().toString() + " to " +

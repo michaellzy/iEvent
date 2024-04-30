@@ -93,6 +93,10 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
+    public void updateEvent(EventDataListener listener) {
+        EventDataManager.getInstance().updateEvents(listener);
+    }
+
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);

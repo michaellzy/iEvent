@@ -14,13 +14,13 @@ public class Event implements java.io.Serializable{
 
     @PropertyName("date-time")
     private String dateTime;
-    private int price;
+    private Double price;
     private String img;
     private ArrayList<User> participants;
 
     public Event() {}
 
-    public Event(String type, String title, String description, String organizer, String location, String dateTime, int price, String img) {
+    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img) {
         this.type = type;
         this.title = title;
         this.description = description;
@@ -81,11 +81,11 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

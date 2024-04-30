@@ -37,7 +37,9 @@ public class MainActivity extends BaseActivity {
 
     private boolean isLoading = false;
 
-    private boolean isAllEvents = false;
+    private boolean isUpdating = false;
+
+    private ArrayList<Event> events;
 
     @Override
     protected void onRestart() {
@@ -55,8 +57,9 @@ public class MainActivity extends BaseActivity {
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
 
+        events = new ArrayList<>();
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
-        recEventAdapter = new RecommendedActivitiesAdapter(new ArrayList<>());
+        recEventAdapter = new RecommendedActivitiesAdapter(events);
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
 
@@ -77,6 +80,9 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+//        if (!isLoading && isUpdating)
+//            updatedEvent();
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -133,6 +139,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadMoreEvents() {
+        if (isUpdating) return;
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
             @Override
@@ -145,9 +152,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
-                    recEventAdapter.setEvents(data);
+                    if (!isUpdating) {
+                        events.clear();
+                        events.addAll(data);
+                        recEventAdapter.notifyDataSetChanged();
+                    }
                     isLoading = false;
-                    recEventAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
                 });
             }
@@ -157,9 +167,39 @@ public class MainActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
                     isLoading = false;
+                    progressBar.setVisibility(View.GONE);
                 });
             }
 
+        });
+    }
+
+    private void updatedEvent() {
+        isUpdating = true;
+        db.updateEvent(new EventDataListener() {
+            @Override
+            public void isAllData(boolean isALl) {
+                //;
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Event> data) {
+                runOnUiThread(() -> {
+                    for (int i = 0; i < data.size(); i++) {
+                        events.add(i, data.get(i));
+                        recEventAdapter.notifyItemInserted(i);
+                        isUpdating = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    isUpdating = false;
+                });
+            }
         });
     }
 }
