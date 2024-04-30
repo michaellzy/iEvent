@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 //        if (!isLoading && isUpdating)
-        updatedEvent();
+        updateEvents();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -171,7 +171,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void updatedEvent() {
+    private void updateEvents() {
         isUpdating = true;
         db.updateEvent(new EventDataListener() {
             @Override
@@ -182,11 +182,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
-                    for (int i = 0; i < data.size(); i++) {
-                        events.add(i, data.get(i));
-                        recEventAdapter.notifyItemInserted(i);
-                        isUpdating = false;
-                    }
+                    events.addAll(0, data);
+                    recEventAdapter.notifyItemRangeInserted(0, data.size());
+                    isUpdating = false;
                 });
             }
 
