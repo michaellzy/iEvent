@@ -1,7 +1,6 @@
 package com.example.ievent.entity;
 
 import com.google.firebase.firestore.PropertyName;
-
 import java.util.ArrayList;
 
 public class Event {
