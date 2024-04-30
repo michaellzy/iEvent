@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 //        if (!isLoading && isUpdating)
-//            updatedEvent();
+        updatedEvent();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);

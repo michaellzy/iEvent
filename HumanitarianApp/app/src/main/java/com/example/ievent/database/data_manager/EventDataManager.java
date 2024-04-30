@@ -30,7 +30,7 @@ public class EventDataManager {
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
-        eventRef = FirebaseFirestore.getInstance().collection("testevents");
+        eventRef = FirebaseFirestore.getInstance().collection("events");
     }
 
     public synchronized static EventDataManager getInstance(){
