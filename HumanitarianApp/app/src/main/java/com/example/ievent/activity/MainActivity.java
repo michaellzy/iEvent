@@ -3,7 +3,6 @@ package com.example.ievent.activity;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
@@ -22,7 +19,6 @@ import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
@@ -36,6 +32,12 @@ public class MainActivity extends BaseActivity {
     private ProgressBar progressBar;
 
     private boolean isLoading = false;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MainActivity extends BaseActivity {
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
 
-        // show events stored in Firestore
+        // show events stored in FireStore
         loadMoreEvents();
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -104,12 +106,10 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
-        Glide.with(this)
-                .load(R.drawable.default_avatar)
-                .into(binding.profileImage);
     }
 
     private void loadMoreEvents() {

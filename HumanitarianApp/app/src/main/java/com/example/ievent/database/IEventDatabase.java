@@ -1,7 +1,12 @@
 package com.example.ievent.database;
 
+import android.net.Uri;
+import android.widget.ImageView;
+
 import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.MediaManager;
 import com.example.ievent.database.data_manager.UserDataManager;
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
@@ -12,8 +17,6 @@ import com.example.ievent.entity.User;
  *  the database interface, all data operations will be processed inside the class
  */
 public class IEventDatabase{
-
-    private User currentUser;
 
     private static IEventDatabase instance;
 
@@ -80,4 +83,12 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
+    // ----------------------------------- Media Operations ----------------------------------- //
+    public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
+        MediaManager.getInstance().uploadAvatar(uid, file, listener);
+    }
+
+    public void downloadAvatar(ImageView imageView, String uid){
+        MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
+    }
 }
