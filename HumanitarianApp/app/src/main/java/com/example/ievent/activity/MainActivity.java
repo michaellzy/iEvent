@@ -150,12 +150,11 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
                     if (!isUpdating) {
-                        events.clear();
                         events.addAll(data);
                         recEventAdapter.notifyDataSetChanged();
+                        isLoading = false;
+                        progressBar.setVisibility(View.GONE);
                     }
-                    isLoading = false;
-                    progressBar.setVisibility(View.GONE);
                 });
             }
 
