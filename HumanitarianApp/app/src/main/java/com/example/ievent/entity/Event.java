@@ -13,11 +13,22 @@ public class Event implements java.io.Serializable{
 
     @PropertyName("date-time")
     private String dateTime;
-    private int price;
+    private Double price;
     private String img;
     private ArrayList<User> participants;
 
     public Event() {}
+
+    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img) {
+        this.type = type;
+        this.title = title;
+        this.description = description;
+        this.organizer = organizer;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.price = price;
+        this.img = img;
+    }
 
     public String getType() {
         return type;
@@ -69,11 +80,11 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
     }
 
-    public int getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -127,8 +138,8 @@ public class Event implements java.io.Serializable{
             e.setDescription("This organizer is too lazy to write a description.");
         }
 
-        if(e.getOrganizer() == null || e.getOrganizer().isEmpty()) {
-            e.setOrganizer("Unknown");
+        if(e.getOrganizer() == null ) {
+            e.setOrganizer(null);
         }
 
         if(e.getImg() == null || e.getImg().isEmpty()) {

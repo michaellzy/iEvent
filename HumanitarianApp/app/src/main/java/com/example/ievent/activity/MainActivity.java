@@ -18,6 +18,7 @@ import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
@@ -32,6 +33,10 @@ public class MainActivity extends BaseActivity {
     private ProgressBar progressBar;
 
     private boolean isLoading = false;
+
+    private boolean isUpdating = false;
+
+    private ArrayList<Event> events;
 
     @Override
     protected void onRestart() {
@@ -49,8 +54,9 @@ public class MainActivity extends BaseActivity {
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
 
+        events = new ArrayList<>();
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
-        recEventAdapter = new RecommendedActivitiesAdapter(new ArrayList<>());
+        recEventAdapter = new RecommendedActivitiesAdapter(events);
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
 
@@ -71,6 +77,9 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+//        if (!isLoading && isUpdating)
+        updateEvents();
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -94,17 +103,31 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
-        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
-            @Override
-            public void onSuccess(ArrayList<User> data) {
-                Toast.makeText(MainActivity.this, "Welcome" + data.get(0).getUserName(),Toast.LENGTH_SHORT).show();
-            }
 
+        // Initialize FloatingActionButton and set its click listener
+        FloatingActionButton fabRelease = findViewById(R.id.fab_release);
+        fabRelease.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(String errorMessage) {
+            public void onClick(View view) {
+                // Intent to open EventReleaseActivity
+                db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+                    @Override
+                    public void onSuccess(ArrayList<User> data) {
+                        User curUser = data.get(0);
+                        Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
+                        intent.putExtra("userName", curUser.getUserName());
+                        intent.putExtra("email", curUser.getEmail());
+                        startActivity(intent);
+                    }
 
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
             }
         });
+
 
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
@@ -113,15 +136,25 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadMoreEvents() {
+        if (isUpdating) return;
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
             @Override
+            public void isAllData(boolean isALl) {
+                if (isALl) {
+                    isLoading = false;
+                }
+            }
+
+            @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
-                    recEventAdapter.setEvents(data);
-                    isLoading = false;
-                    recEventAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
+                    if (!isUpdating) {
+                        events.addAll(data);
+                        recEventAdapter.notifyDataSetChanged();
+                        isLoading = false;
+                        progressBar.setVisibility(View.GONE);
+                    }
                 });
             }
 
@@ -130,6 +163,35 @@ public class MainActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
                     isLoading = false;
+                    progressBar.setVisibility(View.GONE);
+                });
+            }
+
+        });
+    }
+
+    private void updateEvents() {
+        isUpdating = true;
+        db.updateEvent(new EventDataListener() {
+            @Override
+            public void isAllData(boolean isALl) {
+                //;
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Event> data) {
+                runOnUiThread(() -> {
+                    events.addAll(0, data);
+                    recEventAdapter.notifyItemRangeInserted(0, data.size());
+                    isUpdating = false;
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    isUpdating = false;
                 });
             }
         });

@@ -96,4 +96,23 @@ public class MediaManager {
         });
     }
 
+    public void uploadEventImg(Uri file, DataListener<String> listener){
+        StorageReference eventRef = storageRef.child("eventImages").child(file.getLastPathSegment());
+
+        // check bitmap is valid
+        UploadTask uploadTask = eventRef.putFile(file);
+
+        // start the upload task
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            listener.onFailure(exception.getMessage());
+        }).addOnSuccessListener(taskSnapshot -> {
+            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                ArrayList<String> uriList = new ArrayList<>();
+                uriList.add(uri.toString());
+                listener.onSuccess(uriList);
+            });
+        });
+    }
+
 }

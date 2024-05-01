@@ -8,8 +8,10 @@ import com.example.ievent.database.data_manager.MediaManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 
 
@@ -44,6 +46,14 @@ public class IEventDatabase{
      */
     public void addNewUser(String uid, User user) {
         UserDataManager.getInstance().addNewUser(uid, user);
+    }
+
+    public void addNewOrganizer(String uid, Organizer organizer) {
+        UserDataManager.getInstance().addOrganizer(uid, organizer);
+    }
+
+    public void getOrganizer(String uid, OrgDataListener listener) {
+        UserDataManager.getInstance().getOrganizer(uid, listener);
     }
 
     /***
@@ -84,6 +94,10 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
+    public void updateEvent(EventDataListener listener) {
+        EventDataManager.getInstance().updateEvents(listener);
+    }
+
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
@@ -91,5 +105,9 @@ public class IEventDatabase{
 
     public void downloadAvatar(ImageView imageView, String uid){
         MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
+    }
+
+    public void uploadEventImage(Uri file, DataListener<String> listener) {
+        MediaManager.getInstance().uploadEventImg(file, listener);
     }
 }

@@ -7,8 +7,11 @@ import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -86,6 +89,12 @@ public class EventDataManager {
                         Event event = document.toObject(Event.class);
                         events.add(event);
                     }
+                    if (!snapshots.getDocuments().isEmpty()) {
+                        lastVisible = snapshots.getDocuments().get(snapshots.size() - 1);
+                    } else {
+                        // No documents were returned, so we've loaded all available data
+                        listener.isAllData(true);
+                    }
                     listener.onSuccess(events);
                 } else {
                     listener.onFailure("No such document");
@@ -132,5 +141,24 @@ public class EventDataManager {
         }
 
         HandleQuery(query, listener);
+    }
+
+    public synchronized void updateEvents(EventDataListener listener) {
+        eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    listener.onFailure("Listen failed " + error);
+                }
+
+                ArrayList<Event> newEvents = new ArrayList<>();
+                for (DocumentChange dc: value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        newEvents.add(dc.getDocument().toObject(Event.class));
+                    }
+                }
+                listener.onSuccess(newEvents);
+            }
+        });
     }
 }

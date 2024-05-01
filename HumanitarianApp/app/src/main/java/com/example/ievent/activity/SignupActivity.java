@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ievent.R;
+import com.example.ievent.entity.Organizer;
+import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +74,11 @@ public class SignupActivity  extends BaseActivity{
                                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                 if (firebaseUser != null) {
                                     String uid = mAuth.getCurrentUser().getUid();
-                                    User user = new User(uid, email, userName);
+                                    // User user = new User(uid);
+//                                    User user = UserFactory.createUser("user", uid);
+//                                    user.setUserName(userName);
+//                                    user.setEmail(email);
+                                    User user = new Participant(uid, email, userName);
                                     db.addNewUser(uid, user);
                                     Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignupActivity.this, MainActivity.class);

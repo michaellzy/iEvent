@@ -1,6 +1,8 @@
 package com.example.ievent.database.data_manager;
 
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,10 +23,13 @@ public class UserDataManager {
     private static UserDataManager instance;
 
     private CollectionReference userRef;
+    private CollectionReference orgRef;
 
 
     private UserDataManager() {
+
         userRef = FirebaseFirestore.getInstance().collection("Users");
+        orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
 
     public static synchronized UserDataManager getInstance() {
@@ -46,7 +51,9 @@ public class UserDataManager {
     public synchronized void addNewUser(String uid, User user) {
         userRef.document(uid).set(user);
     }
-
+    public synchronized void addOrganizer(String uid, Organizer org) {
+        orgRef.document(uid).set(org);
+    }
 
 
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
@@ -67,6 +74,26 @@ public class UserDataManager {
            } else {
                listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
            }
+        });
+    }
+
+    public synchronized void getOrganizer(String uid, OrgDataListener listener) {
+        DocumentReference docRef = orgRef.document(uid);
+        docRef.get().addOnCompleteListener(task -> {
+            DocumentSnapshot document = task.getResult();
+            if (task.isSuccessful()) {
+                if (document.exists()) {
+                    // User user = document.toObject(User.class);
+                    Organizer org = document.toObject(Organizer.class);
+                    ArrayList<Organizer> organizers = new ArrayList<>();
+                    organizers.add(org);
+                    listener.onSuccess(organizers);
+                } else {
+                    listener.onFailure("No such organizer exist, should register one");
+                }
+            } else {
+                listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
+            }
         });
 
     }
