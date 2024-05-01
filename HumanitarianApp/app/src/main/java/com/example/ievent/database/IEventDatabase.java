@@ -54,6 +54,17 @@ public class IEventDatabase{
         UserDataManager.getInstance().getLoggedInUser(uid, listener);
     }
 
+    /**
+     * update the user avatar
+     * @param uid the user id
+     * @param avatar the new avatar
+     * @param listener the listener to handle the data
+     */
+    public void updateUserAvatar(String uid, String avatar, UserDataListener listener) {
+        UserDataManager.getInstance().updateUserAvatar(uid, avatar, listener);
+    }
+
+
     // ----------------------------------- EVENTS ----------------------------------- //
 
     public void addNewEvent(Event e) {

@@ -49,6 +49,12 @@ public class UserDataManager {
 
 
 
+
+    /**
+     *  get the current user
+     * @param uid the user id
+     * @param listener the listener to handle the data
+     */
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
         DocumentReference docRef = userRef.document(uid);
         docRef.get().addOnCompleteListener(task -> {
@@ -70,4 +76,19 @@ public class UserDataManager {
         });
 
     }
+
+    // ——————————————————————————————————————----- update user information —————————————————————————————————————— //
+    /**
+     * update the user avatar
+     * @param uid the user id
+     * @param avatar the new avatar
+     */
+    public synchronized void updateUserAvatar(String uid, String avatar, UserDataListener listener) {
+        userRef.document(uid).update("avatar", avatar)
+                .addOnSuccessListener(aVoid ->{
+                    listener.onSuccess(new ArrayList<>());
+                })
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
+
 }

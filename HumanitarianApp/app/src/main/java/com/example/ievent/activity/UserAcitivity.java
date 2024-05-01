@@ -1,14 +1,11 @@
 package com.example.ievent.activity;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.ievent.R;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,7 +17,9 @@ import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityUserBinding;
+import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -132,7 +131,18 @@ public class UserAcitivity extends BaseActivity {
                                 Glide.with(UserAcitivity.this)
                                         .load(resultUri)
                                         .into(binding.profileImage);
-                                Toast.makeText(UserAcitivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+
+                                db.updateUserAvatar(mAuth.getUid(), data.get(0), new UserDataListener() {
+                                    @Override
+                                    public void onSuccess(ArrayList<User> data) {
+                                        Toast.makeText(UserAcitivity.this, "Image upload successful", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String message) {
+                                        Toast.makeText(UserAcitivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
 
                             @Override
