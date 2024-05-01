@@ -19,6 +19,7 @@ public class IEventDatabase{
 
 
     private IEventDatabase(){
+        EventDataManager.getInstance();
     }
 
 

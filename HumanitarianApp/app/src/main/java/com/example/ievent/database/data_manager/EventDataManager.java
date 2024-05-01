@@ -1,5 +1,9 @@
 package com.example.ievent.database.data_manager;
 
+import android.util.Log;
+
+import com.example.ievent.database.data_structure.IEventAVLTree;
+import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
 import com.google.firebase.firestore.CollectionReference;
@@ -9,6 +13,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -22,10 +27,33 @@ public class EventDataManager {
     /** reference of events collection in firestore*/
     private final CollectionReference eventRef;
 
+    private IEventAVLTree eventAVLTree;
+
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("events");
+
+        eventAVLTree = new IEventAVLTree(new IEventData(0, new LinkedList<>()));
+
+        Log.i("AVLTree", "EventDataManager: Initialized");
+        getAllEventsByType("wellness", new EventDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Event> events) {
+//                eventAVLTree = IEventAVLTree.insertEvents(events, IEventAVLTree.keyType.Price, eventAVLTree);
+//
+//                StringBuilder sb = new StringBuilder();
+//                for (IEventData iEventData : eventAVLTree.inOrder()) {
+//                    sb.append(iEventData.getKey()).append(" ");
+//                }
+//                Log.i("AVLTree", "onSuccess: " + sb);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("AVLTree", "onFailure: " + error);
+            }
+        });
     }
 
     public synchronized static EventDataManager getInstance(){
