@@ -27,33 +27,75 @@ public class EventDataManager {
     /** reference of events collection in firestore*/
     private final CollectionReference eventRef;
 
-    private IEventAVLTree eventAVLTree;
+    /** AVL tree to store events ordered by the key */
+    private IEventAVLTree eventAVLTree = new IEventAVLTree(new IEventData(0, new LinkedList<>()));
 
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("events");
 
-        eventAVLTree = new IEventAVLTree(new IEventData(0, new LinkedList<>()));
-
-        Log.i("AVLTree", "EventDataManager: Initialized");
-        getAllEventsByType("wellness", new EventDataListener() {
-            @Override
-            public void onSuccess(ArrayList<Event> events) {
-//                eventAVLTree = IEventAVLTree.insertEvents(events, IEventAVLTree.keyType.Price, eventAVLTree);
+//        getAllEventsByType("wellness", new EventDataListener() {
+//            @Override
+//            public void onSuccess(ArrayList<Event> events) {
 //
-//                StringBuilder sb = new StringBuilder();
-//                for (IEventData iEventData : eventAVLTree.inOrder()) {
-//                    sb.append(iEventData.getKey()).append(" ");
+//                String s = "";
+//                for (Event e : events) {
+//                    s += e.getPrice() + " ";
 //                }
-//                Log.i("AVLTree", "onSuccess: " + sb);
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.e("AVLTree", "onFailure: " + error);
-            }
-        });
+//                Log.i("AVLTree", "onSuccess: " + s);
+//
+////                eventAVLTree = eventAVLTree.insert(new IEventData(0, new LinkedList<>()))
+////                        .insert(new IEventData(3, new LinkedList<>()))
+////                        .insert(new IEventData(2, new LinkedList<>()))
+////                        .insert(new IEventData(2, new LinkedList<>()));
+//
+//
+////                eventAVLTree = eventAVLTree.insertEvents(events, IEventAVLTree.KeyType.PRICE);
+////                StringBuilder sb = new StringBuilder();
+////                for (IEventData iEventData : eventAVLTree.inOrder()) {
+////                    sb.append(iEventData.getKey()).append(" ");
+////                }
+////                Log.i("AVLTree", "onSuccess: " + sb);
+////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(-1000, 1000).size() + "");
+//
+////                StringBuilder sb = new StringBuilder();
+////                for (String id : eventAVLTree.getEventIdsInRange(0, 0)) {
+////                    sb.append(id).append("\n");
+////                }
+////                Log.i("AVLTree", "onSuccess: " + sb);
+//
+//
+//
+////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
+////                eventAVLTree.deleteByIdRef("Carer Wellness Program - Thirroul - NSW", 0);
+//////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
+////                eventAVLTree = eventAVLTree.insertEvents(events, IEventAVLTree.KeyType.PRICE);
+////                StringBuilder sb = new StringBuilder();
+//
+//
+////                ArrayList<String> ids = eventAVLTree.getEventIdsInRange(0, 0);
+////                for (String string : ids) {
+////                    eventAVLTree = eventAVLTree.deleteByIdRef(string, 0);
+////                    Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
+////                }
+////
+////
+////                sb = new StringBuilder();
+////                for (IEventData iEventData : eventAVLTree.inOrder()) {
+////                    sb.append(iEventData.getKey()).append(" ");
+////                }
+////                Log.i("AVLTree", "onSuccess: " + sb);
+//
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(String error) {
+//                Log.e("AVLTree", "onFailure: " + error);
+//            }
+//        });
     }
 
     public synchronized static EventDataManager getInstance(){
