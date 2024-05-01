@@ -1,10 +1,24 @@
 package com.example.ievent.entity;
 
 public class User {
-    private String userName;
+    private String userName = "XXX";
+
     private String email;
 
     private String uid;
+
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
+    private String avatar;
 
     public User() {}
     public User(String uid, String email, String userName){

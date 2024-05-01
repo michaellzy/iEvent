@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/activity_base_recommended_background_selector"
     android:padding="10dp">
 
     <ImageView
         android:id="@+id/imageView_recommended_activities"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="10dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -52,14 +49,5 @@
             android:text="Organizer"
             android:textSize="16sp" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/icon_love"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_love" />
 
 </RelativeLayout>
