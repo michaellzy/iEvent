@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import com.example.ievent.database.data_structure.IEventAVLTree;
 import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.entity.Event;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -38,8 +39,27 @@ public class EventDataManager {
 
     private DocumentSnapshot lastVisible;
 
+    private ArrayList<EventUpdateListener> listeners = new ArrayList<>();
+
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
+        eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    notifyError("Listen failed " + error);
+                    return;
+                }
+
+                ArrayList<Event> newEvents = new ArrayList<>();
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        newEvents.add(dc.getDocument().toObject(Event.class));
+                    }
+                }
+                notifyEventUpdate(newEvents);
+            }
+        });
 
 
 //        getAllEventsByType("wellness", new EventDataListener() {
@@ -112,6 +132,26 @@ public class EventDataManager {
 //                Log.e("AVLTree", "onFailure: " + error);
 //            }
 //        });
+    }
+
+    public void addEventListener(EventUpdateListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeEventListener(EventUpdateListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyEventUpdate(ArrayList<Event> events) {
+        for (EventUpdateListener listener : listeners) {
+            listener.onEventsUpdated(events);
+        }
+    }
+
+    private void notifyError(String error) {
+        for (EventUpdateListener listener : listeners) {
+            listener.onError(error);
+        }
     }
 
     public synchronized static EventDataManager getInstance(){

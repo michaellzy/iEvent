@@ -76,9 +76,9 @@ public class ReleaseActivity extends BaseActivity {
 
         uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> {
             uploadEvent();
-            Intent returnIntent = new Intent();
+            // Intent returnIntent = new Intent();
             // Put the data you want to send back to MainActivity in the Intent
-            setResult(RESULT_OK, returnIntent);
+            // setResult(RESULT_OK, returnIntent);
             finish();
         });
 

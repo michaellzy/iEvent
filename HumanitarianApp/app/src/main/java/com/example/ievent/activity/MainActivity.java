@@ -16,7 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
+import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
@@ -25,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -47,7 +50,6 @@ public class MainActivity extends BaseActivity {
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         // manageDataOperations();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,21 +111,21 @@ public class MainActivity extends BaseActivity {
         });
 
         // Initialize the ActivityResultLauncher
-        mStartForResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
-                            Intent data = result.getData();
-                            // Handle the data returned by the child activity.
-                            Toast.makeText(MainActivity.this, "Result OK!", Toast.LENGTH_SHORT).show();
-                            if (data != null) {
-                                updateEvents();
-                            }
-                        }
-                    }
-                });
+//        mStartForResult = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if (result.getResultCode() == RESULT_OK) {
+//                            Intent data = result.getData();
+//                            // Handle the data returned by the child activity.
+//                            Toast.makeText(MainActivity.this, "Result OK!", Toast.LENGTH_SHORT).show();
+//                            if (data != null) {
+//                                updateEvents();
+//                            }
+//                        }
+//                    }
+//                });
 
         // Initialize FloatingActionButton and set its click listener
         FloatingActionButton fabRelease = findViewById(R.id.fab_release);
@@ -138,14 +140,34 @@ public class MainActivity extends BaseActivity {
                         Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
                         intent.putExtra("userName", curUser.getUserName());
                         intent.putExtra("email", curUser.getEmail());
-                        mStartForResult.launch(intent);
-
+                        // mStartForResult.launch(intent);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
 
                     }
+                });
+            }
+        });
+
+        EventDataManager.getInstance().addEventListener(new EventUpdateListener() {
+            @Override
+            public void onEventsUpdated(List<Event> data) {
+                runOnUiThread(() -> {
+                    // Additional check for safety
+                    events.addAll(0, data);
+                    recEventAdapter.notifyItemRangeInserted(0, data.size());
+                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
                 });
             }
         });
