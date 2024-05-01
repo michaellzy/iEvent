@@ -111,6 +111,8 @@ public class ReleaseActivity extends BaseActivity {
                     // Toast.makeText(ReleaseActivity.this, "This user is already an organizer!", Toast.LENGTH_SHORT).show();
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
+                    Organizer curOrg = data.get(0);
+                    curOrg.organizeEvent(event);
                 }
 
                 @Override
