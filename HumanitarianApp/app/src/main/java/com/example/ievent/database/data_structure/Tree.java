@@ -1,7 +1,10 @@
 package com.example.ievent.database.data_structure;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * The following interface defines required methods of any Tree.
@@ -147,7 +150,76 @@ public abstract class Tree<T extends Comparable<T>> {
                 list.addAll(treeToListInOrder(tree.rightNode));
             }
         }
-
 		return list;
 	}
+
+    /**
+     * Encodes a tree to a single string.
+     *
+     * @return The serialized string representation of the tree.
+     */
+    public String serialize() {
+        return serialize(this);
+    }
+
+    /**
+     * Static method to serialize a tree to a single string.
+     *
+     * @param root The root of the tree to be serialized.
+     * @return The serialized string representation of the tree.
+     */
+    public static <T extends Comparable<T>> String serialize(Tree<T> root) {
+        if (root == null) {
+            return null;
+        }
+        Stack<Tree<T>> stack = new Stack<>();
+        stack.push(root);
+
+        List<String> list = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            Tree<T> currentNode = stack.pop();
+
+            // If current node is null, store marker
+            if (currentNode == null) {
+                list.add("#");
+            } else {
+                // Else, store current node
+                // and recur for its children
+//                list.add();
+                stack.push(currentNode.rightNode);
+                stack.push(currentNode.leftNode);
+            }
+        }
+        return String.join(",", list);
+    }
+
+    /**
+     * Decodes your encoded data to a tree.
+     *
+     * @param data The serialized string representation of the tree.
+     * @return The root of the deserialized tree.
+     */
+    public static <T extends Comparable<T>> Tree<T> deserialize(String data) {
+        if (data == null) {
+            return null;
+        }
+        String[] arr = data.split(",");
+        return deserializeHelper(arr);
+    }
+
+    private static <T extends Comparable<T>> Tree<T> deserializeHelper(String[] arr) {
+        if (arr[t].equals("#")) {
+            t++;
+            return null;
+        }
+
+        // Create node with this item
+        // and recur for children
+        T value = (T) arr[t];
+        t++;
+        Tree<T> root = new TreeNode<>(value);
+        root.leftNode = deserializeHelper(arr);
+        root.rightNode = deserializeHelper(arr);
+        return root;
+    }
 }
