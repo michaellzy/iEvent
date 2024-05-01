@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+import com.example.ievent.adapter.SharedViewModel;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
@@ -75,8 +77,6 @@ public class ReleaseActivity extends BaseActivity {
         });
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
 
-
-
         eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, eventTypeList);
         uploadEventBinding.autoCompleteEventType.setAdapter(eventTypeAdapter);
         uploadEventBinding.autoCompleteEventType.setOnItemClickListener((parent, view, position, id) -> {
@@ -84,7 +84,21 @@ public class ReleaseActivity extends BaseActivity {
             uploadEventBinding.autoCompleteEventType.setText(selectedEventType, false);
         });
 
-        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> uploadEvent());
+        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> {
+            uploadEvent();
+            Intent returnIntent = new Intent();
+            // Put the data you want to send back to MainActivity in the Intent
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        });
+
+
+//        SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+//        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> {
+//            uploadEvent();
+//            viewModel.notifyEventUploaded();  // Notify that the event was uploaded
+//            finish();
+//        });
     }
 
     private void saveEventData() {
@@ -118,7 +132,7 @@ public class ReleaseActivity extends BaseActivity {
                 @Override
                 public void onFailure(String errorMessage) {
 
-                    Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), userName, email);
+                    Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), email, userName);
                     db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();

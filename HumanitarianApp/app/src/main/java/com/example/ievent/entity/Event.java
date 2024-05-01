@@ -8,12 +8,14 @@ public class Event implements java.io.Serializable{
     private String title;
     private String description;
 
+    private String eventId;
+
     private String organizer;
     private String location;
 
     @PropertyName("date-time")
     private String dateTime;
-    private Double price;
+    private double price;
     private String img;
     private ArrayList<User> participants;
 
@@ -80,7 +82,7 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -105,6 +107,13 @@ public class Event implements java.io.Serializable{
         this.participants = participants;
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
 
     @Override
     public String toString() {

@@ -1,6 +1,11 @@
 package com.example.ievent.activity;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
@@ -12,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
+import com.example.ievent.adapter.SharedViewModel;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityMainBinding;
@@ -34,15 +40,17 @@ public class MainActivity extends BaseActivity {
 
     private boolean isLoading = false;
 
-    private boolean isUpdating = false;
 
     private ArrayList<Event> events;
+    private ActivityResultLauncher<Intent> mStartForResult;
 
     @Override
     protected void onRestart() {
         super.onRestart();
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        // manageDataOperations();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +85,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-//        if (!isLoading && isUpdating)
-        updateEvents();
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -104,30 +111,57 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        // Initialize FloatingActionButton and set its click listener
-        FloatingActionButton fabRelease = findViewById(R.id.fab_release);
-        fabRelease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Intent to open EventReleaseActivity
-                db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
-                    @Override
-                    public void onSuccess(ArrayList<User> data) {
-                        User curUser = data.get(0);
-                        Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
-                        intent.putExtra("userName", curUser.getUserName());
-                        intent.putExtra("email", curUser.getEmail());
-                        startActivity(intent);
-                    }
+//        // Initialize the ActivityResultLauncher
+//        mStartForResult = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if (result.getResultCode() == RESULT_OK) {
+//                            Intent data = result.getData();
+//                            // Handle the data returned by the child activity.
+//                            Toast.makeText(MainActivity.this, "Result OK!", Toast.LENGTH_SHORT).show();
+//                            if (data != null) {
+//                                updateEvents();
+//                            }
+//                        }
+//                    }
+//                });
+//
+//        // Initialize FloatingActionButton and set its click listener
+//        FloatingActionButton fabRelease = findViewById(R.id.fab_release);
+//        fabRelease.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Intent to open EventReleaseActivity
+//                db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+//                    @Override
+//                    public void onSuccess(ArrayList<User> data) {
+//                        User curUser = data.get(0);
+//                        Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
+//                        intent.putExtra("userName", curUser.getUserName());
+//                        intent.putExtra("email", curUser.getEmail());
+//                        mStartForResult.launch(intent);
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String errorMessage) {
+//
+//                    }
+//                });
+//            }
+//        });
 
-                    @Override
-                    public void onFailure(String errorMessage) {
-
-                    }
-                });
-            }
-        });
-
+//        SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+//        viewModel.getEventUploaded().observe(this, eventUploaded -> {
+//            Log.d("MainActivity", "Event upload observed: " + eventUploaded);
+//            if (eventUploaded) {
+//                Toast.makeText(MainActivity.this, "should update now", Toast.LENGTH_SHORT).show();
+//                updateEvents();
+//                viewModel.resetEventUploaded(); // Reset after handling
+//            }
+//        });
 
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
@@ -136,7 +170,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadMoreEvents() {
-        if (isUpdating) return;
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
             @Override
@@ -149,10 +182,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
-                    if (!isUpdating) {
+                    if (isLoading) {
                         events.addAll(data);
                         recEventAdapter.notifyDataSetChanged();
                         isLoading = false;
+                        // Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
                 });
@@ -171,7 +205,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateEvents() {
-        isUpdating = true;
         db.updateEvent(new EventDataListener() {
             @Override
             public void isAllData(boolean isALl) {
@@ -181,9 +214,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
+                   // Additional check for safety
                     events.addAll(0, data);
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    isUpdating = false;
+                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+
                 });
             }
 
@@ -191,7 +226,6 @@ public class MainActivity extends BaseActivity {
             public void onFailure(String errorMessage) {
                 runOnUiThread(() -> {
                     Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    isUpdating = false;
                 });
             }
         });

@@ -37,7 +37,6 @@ public class IEventAVLTree extends AVLTree<IEventData>{
 
             ids.add(event.getTitle());
             IEventData data = null;
-
             switch (type) {
                 case Price:
                     data = new IEventData(event.getPrice(), ids);

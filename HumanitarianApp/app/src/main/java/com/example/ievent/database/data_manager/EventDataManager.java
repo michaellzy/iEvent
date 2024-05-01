@@ -2,12 +2,15 @@ package com.example.ievent.database.data_manager;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.ievent.database.data_structure.IEventAVLTree;
 import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,12 +38,17 @@ public class EventDataManager {
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
-        eventRef = FirebaseFirestore.getInstance().collection("events");
+        eventRef = FirebaseFirestore.getInstance().collection("testevents-wtk");
 
         eventAVLTree = new IEventAVLTree(new IEventData(0, new LinkedList<>()));
 
         Log.i("AVLTree", "EventDataManager: Initialized");
         getAllEventsByType("wellness", new EventDataListener() {
+            @Override
+            public void isAllData(boolean isALl) {
+                //;
+            }
+
             @Override
             public void onSuccess(ArrayList<Event> events) {
 //                eventAVLTree = IEventAVLTree.insertEvents(events, IEventAVLTree.keyType.Price, eventAVLTree);
@@ -75,6 +83,9 @@ public class EventDataManager {
      * @param e the new event to add to
      */
     public synchronized void addNewEvent(Event e) {
+
+        String eventId = eventRef.getId();
+        e.setEventId(eventId);
         eventRef.add(e);
     }
 
@@ -142,6 +153,7 @@ public class EventDataManager {
 
         HandleQuery(query, listener);
     }
+
 
     public synchronized void updateEvents(EventDataListener listener) {
         eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {

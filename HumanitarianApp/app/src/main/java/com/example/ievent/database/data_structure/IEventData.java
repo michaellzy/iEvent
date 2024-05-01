@@ -14,7 +14,7 @@ public class IEventData implements Comparable<IEventData>{
     private LinkedList<String> ids;
 
 
-    public IEventData(int key, LinkedList<String> ids) {
+    public IEventData(double key, LinkedList<String> ids) {
         this.key = key;
         this.ids = ids;
     }
