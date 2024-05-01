@@ -85,8 +85,7 @@ public class EventDataManager {
      */
     public synchronized void getAllEventByFuzzyName(String name, EventDataListener listener) {
        Query q =  eventRef.whereGreaterThanOrEqualTo("title", name)
-               .whereLessThanOrEqualTo("title", "\\uf8ff" + name + "\\uf8ff");
-
+               .whereLessThanOrEqualTo("title",  name + "\\uf8ff").limit(30);
        HandleQuery(q, listener);
     }
 
