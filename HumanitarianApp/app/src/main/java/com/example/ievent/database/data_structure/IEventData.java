@@ -44,4 +44,8 @@ public class IEventData implements Comparable<IEventData>{
     public void addId(String id) {
         ids.add(id);
     }
+
+    public void removeId(String id) {
+        ids.remove(id);
+    }
 }
