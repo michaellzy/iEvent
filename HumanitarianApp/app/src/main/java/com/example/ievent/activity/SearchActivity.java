@@ -43,6 +43,7 @@ public class SearchActivity extends BaseActivity {
     private SearchView searchView;
     private RecommendedActivitiesAdapter recommendedActivitiesAdapter;
     private List<Event> eventList = new ArrayList<>();
+    private List<Event> temporaryResults = new ArrayList<>();
 
 
     @Override
@@ -150,7 +151,6 @@ public class SearchActivity extends BaseActivity {
     }
     private void performSearch(String query) {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
-
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
 
@@ -165,36 +165,26 @@ public class SearchActivity extends BaseActivity {
             if (searchKeyword.isEmpty()) {
                 Toast.makeText(this, "invalid search", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (expression instanceof LessExp) {
-                LessExp less = (LessExp) expression;
-                double price = Double.parseDouble(((ValueExp) less.getRight()).getValue().toString());
-                db.getLessThan(price, eventDataListener());
-            } else if (expression instanceof MoreExp) {
-                MoreExp more = (MoreExp) expression;
-                double price = Double.parseDouble(((ValueExp) more.getRight()).getValue().toString());
-                db.getGreaterThan(price, eventDataListener());
             }
 
-            db.getAllEventsByFuzzyName(searchKeyword, new EventDataListener() {
-                @Override
-                public void onSuccess(ArrayList<Event> events) {
-                    Log.d("SearchActivityPS", "Search onSuccess: Number of events found: " + events.size());
-                    eventList.clear();
-                    eventList.addAll(events);
-                    recommendedActivitiesAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onFailure(String error) {
-                    Log.e("SearchActivityPS", "Search onFailure: " + error);
-                    Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
-                }
-            });
+            EventDataListener listener = eventDataListener();
+            if (expression instanceof LessExp) {
+                double price = Double.parseDouble(((ValueExp) ((LessExp) expression).getRight()).getValue().toString());
+                Log.d("SearchActivityPS", "User is searching for events with price less than: " + price);
+                db.getLessThan(price, listener);
+            } else if (expression instanceof MoreExp) {
+                double price = Double.parseDouble(((ValueExp) ((MoreExp) expression).getRight()).getValue().toString());
+                Log.d("SearchActivityPS", "User is searching for events with price more than: " + price);
+                db.getGreaterThan(price, listener);
+            } else {
+                db.getAllEventsByFuzzyName(searchKeyword, listener);
+            }
         } catch (Parser.IllegalProductionException e) {
             Log.e("SearchActivityPS", "Parsing error: " + e.getMessage());
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
     private EventDataListener eventDataListener() {
         return new EventDataListener() {
             @Override
@@ -203,6 +193,11 @@ public class SearchActivity extends BaseActivity {
                 eventList.clear();
                 eventList.addAll(events);
                 recommendedActivitiesAdapter.notifyDataSetChanged();
+
+                if (!eventList.isEmpty()) {
+                    Event firstEvent = eventList.get(0);
+                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
+                }
             }
 
             @Override
@@ -212,6 +207,7 @@ public class SearchActivity extends BaseActivity {
             }
         };
     }
+
     private String extractSearchKeyword(Exp expression) {
         if (expression instanceof VariableExp) {
             return ((VariableExp) expression).toString();

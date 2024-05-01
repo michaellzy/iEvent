@@ -13,7 +13,7 @@ public class Event implements java.io.Serializable{
 
     @PropertyName("date-time")
     private String dateTime;
-    private int price;
+    private double price;
     private String img;
     private ArrayList<User> participants;
 
@@ -69,11 +69,11 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

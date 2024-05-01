@@ -95,7 +95,7 @@ public class EventDataManager {
      * @param listener the listener to handle the result
      */
     public synchronized void getGreaterThan(double price, EventDataListener listener) {
-        Query q = eventRef.whereGreaterThanOrEqualTo("price",price).limit(30);
+        Query q = eventRef.whereGreaterThanOrEqualTo("price",(double)(price)).limit(30);
         HandleQuery(q, listener);
     }
 

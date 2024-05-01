@@ -99,8 +99,10 @@ private Exp parseComparison(String identifier) {
 
     if (op.getType() == Token.Type.MORE) {
         return new MoreExp(new VariableExp(identifier), right);
-    } else {
+    } else if (op.getType() == Token.Type.LESS) {
         return new LessExp(new VariableExp(identifier), right);
+    } else {
+        throw new IllegalProductionException("Expected More or Less expression");
     }
 }
 
