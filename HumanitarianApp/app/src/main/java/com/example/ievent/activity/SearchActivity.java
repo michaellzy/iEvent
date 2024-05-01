@@ -148,7 +148,7 @@ public class SearchActivity extends BaseActivity {
         });
     }
     private void performSearch(String query) {
-        Log.d("SearchActivity", "performSearch: Start, Query: " + query);
+        Log.d("SearchActivity111", "performSearch: Start, Query: " + query);
 
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
@@ -157,16 +157,20 @@ public class SearchActivity extends BaseActivity {
             // 解析查询表达式
             Exp expression = parser.parse();
             if (expression == null) {
-                Log.d("SearchActivity", "No valid query expression found.");
+                Log.d("SearchActivity111", "No valid query expression found.");
                 Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
                 return;
             }
+            String searchKeyword = extractSearchKeyword(expression);
+            if (searchKeyword.isEmpty()) {
+                Toast.makeText(this, "invalid search", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-
-            db.getAllEventsByFuzzyName(query, new EventDataListener() {
+            db.getAllEventsByFuzzyName(searchKeyword, new EventDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Event> events) {
-                    Log.d("SearchActivity", "Search onSuccess: Number of events found: " + events.size());
+                    Log.d("SearchActivity111", "Search onSuccess: Number of events found: " + events.size());
                     eventList.clear();
                     eventList.addAll(events);
                     recommendedActivitiesAdapter.notifyDataSetChanged();
@@ -174,38 +178,33 @@ public class SearchActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(String error) {
-                    Log.e("SearchActivity", "Search onFailure: " + error);
+                    Log.e("SearchActivity111", "Search onFailure: " + error);
                     Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Parser.IllegalProductionException e) {
-            Log.e("SearchActivity", "Parsing error: " + e.getMessage());
+            Log.e("SearchActivity111", "Parsing error: " + e.getMessage());
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
     private String extractSearchKeyword(Exp expression) {
-        // 这里根据表达式的具体类型提取搜索关键词
-        // 如果表达式是 VariableExp，直接返回这个变量的名字
         if (expression instanceof VariableExp) {
             return ((VariableExp) expression).toString();
         } else if (expression instanceof AndExp) {
-            // 对于 AndExp，尝试从两边的表达式中提取关键词
             String leftKeyword = extractSearchKeyword(((AndExp) expression).getLeft());
             String rightKeyword = extractSearchKeyword(((AndExp) expression).getRight());
-            return leftKeyword + " " + rightKeyword; // 这里简单地合并两个关键词
+            return leftKeyword + " " + rightKeyword;
         } else if (expression instanceof OrExp) {
-            // 对于 OrExp，也是尝试从两边的表达式中提取关键词
             String leftKeyword = extractSearchKeyword(((OrExp) expression).getLeft());
             String rightKeyword = extractSearchKeyword(((OrExp) expression).getRight());
-            return leftKeyword + " " + rightKeyword; // 合并关键词
+            return leftKeyword + " " + rightKeyword;
         }
-        // 对于比较表达式，也返回变量名
         else if (expression instanceof LessExp) {
             return ((VariableExp) ((LessExp) expression).getLeft()).getVariableName();
         } else if (expression instanceof MoreExp) {
             return ((VariableExp) ((MoreExp) expression).getLeft()).getVariableName();
         }
-        return ""; // 如果不匹配任何已知类型，返回空字符串
+        return "";
     }
 
 

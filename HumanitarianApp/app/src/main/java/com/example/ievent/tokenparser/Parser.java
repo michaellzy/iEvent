@@ -61,7 +61,10 @@ public class Parser {
         if (currentToken.getType() == Token.Type.STR) {
             String identifier = currentToken.getToken();
             tokenizer.next();  // 移动到下一个Token
-            if (!tokenizer.hasNext()) throw new IllegalProductionException("Expected operator after identifier");
+            if (!tokenizer.hasNext()) {
+                // 如果没有更多的Token，返回一个VariableExp，表示只根据这个变量进行搜索
+                return new VariableExp(identifier);
+            }
             currentToken = tokenizer.current();  // 更新当前Token
             System.out.println("Current token after identifier: " + currentToken.getToken());
             // 根据操作符选择逻辑分支
@@ -79,23 +82,6 @@ public class Parser {
             throw new IllegalProductionException("Expected identifier");
         }
     }
-//    private Exp parseComparison(String identifier) {
-//        Token op = currentToken;
-//        tokenizer.next();  // 移动到下一个Token，应该是数字或另一个标识符
-//        if (!tokenizer.hasNext() || currentToken.getType() != Token.Type.INT) {
-//            throw new IllegalProductionException("Expected integer after comparison operator but "+ currentToken.getToken()+" gotten");
-//        }
-//        int value = Integer.parseInt(currentToken.getToken());
-//        Exp right = new ValueExp(value);
-//        tokenizer.next();  // 移动到下一个Token
-//        currentToken = tokenizer.current();  // 更新当前Token
-//        // 根据操作符类型创建相应的表达式
-//        if (op.getType() == Token.Type.MORE) {
-//            return new MoreExp(new VariableExp(identifier), right);
-//        } else {
-//            return new LessExp(new VariableExp(identifier), right);
-//        }
-//    }
 private Exp parseComparison(String identifier) {
     Token op = currentToken;
     tokenizer.next();  // 移动到下一个Token，应该是数字
