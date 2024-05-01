@@ -108,6 +108,14 @@ public class EventDataManager {
         Query q = eventRef.whereLessThanOrEqualTo("price",(double)(price)).limit(30);
         HandleQuery(q, listener);
     }
+    public synchronized void getDateAfter(int timestamp, EventDataListener listener) {
+        Query q = eventRef.whereGreaterThanOrEqualTo("timestamp", timestamp).limit(30);
+        HandleQuery(q, listener);
+    }
+    public synchronized void getDateBefore(int timestamp, EventDataListener listener) {
+        Query q = eventRef.whereLessThanOrEqualTo("timestamp", timestamp).limit(30);
+        HandleQuery(q, listener);
+    }
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //
 
     /**

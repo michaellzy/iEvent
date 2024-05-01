@@ -88,6 +88,14 @@ public class IEventDatabase{
     public void getLessThan(double price, EventDataListener listener){
         EventDataManager.getInstance().getLessThan(price,listener);
     }
+    public void getDateAfter(int timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getDateAfter(timestamp,listener);
+
+    }
+    public void getDateBefore(int timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getDateBefore(timestamp,listener);
+
+    }
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
