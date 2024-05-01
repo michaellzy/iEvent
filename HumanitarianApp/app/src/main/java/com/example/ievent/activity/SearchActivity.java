@@ -149,16 +149,15 @@ public class SearchActivity extends BaseActivity {
         });
     }
     private void performSearch(String query) {
-        Log.d("SearchActivity111", "performSearch: Start, Query: " + query);
+        Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
 
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
 
         try {
-            // 解析查询表达式
             Exp expression = parser.parse();
             if (expression == null) {
-                Log.d("SearchActivity111", "No valid query expression found.");
+                Log.d("SearchActivityPS", "No valid query expression found.");
                 Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -179,7 +178,7 @@ public class SearchActivity extends BaseActivity {
             db.getAllEventsByFuzzyName(searchKeyword, new EventDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Event> events) {
-                    Log.d("SearchActivity111", "Search onSuccess: Number of events found: " + events.size());
+                    Log.d("SearchActivityPS", "Search onSuccess: Number of events found: " + events.size());
                     eventList.clear();
                     eventList.addAll(events);
                     recommendedActivitiesAdapter.notifyDataSetChanged();
@@ -187,12 +186,12 @@ public class SearchActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(String error) {
-                    Log.e("SearchActivity111", "Search onFailure: " + error);
+                    Log.e("SearchActivityPS", "Search onFailure: " + error);
                     Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Parser.IllegalProductionException e) {
-            Log.e("SearchActivity111", "Parsing error: " + e.getMessage());
+            Log.e("SearchActivityPS", "Parsing error: " + e.getMessage());
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -200,7 +199,7 @@ public class SearchActivity extends BaseActivity {
         return new EventDataListener() {
             @Override
             public void onSuccess(ArrayList<Event> events) {
-                Log.d("SearchActivity", "Search onSuccess: Number of events found: " + events.size());
+                Log.d("SearchActivityEL", "Search onSuccess: Number of events found: " + events.size());
                 eventList.clear();
                 eventList.addAll(events);
                 recommendedActivitiesAdapter.notifyDataSetChanged();
@@ -208,7 +207,7 @@ public class SearchActivity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-                Log.e("SearchActivity", "Search onFailure: " + error);
+                Log.e("SearchActivityEL", "Search onFailure: " + error);
                 Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
             }
         };

@@ -86,7 +86,7 @@ public class IEventDatabase{
         EventDataManager.getInstance().getGreaterThan(price,listener);
     }
     public void getLessThan(double price, EventDataListener listener){
-        EventDataManager.getInstance().getGreaterThan(price,listener);
+        EventDataManager.getInstance().getLessThan(price,listener);
     }
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
