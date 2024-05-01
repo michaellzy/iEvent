@@ -1,9 +1,6 @@
 package com.example.ievent.activity;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,11 +41,41 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Event> events;
     private ActivityResultLauncher<Intent> mStartForResult;
 
+    EventUpdateListener eventUpdateListener;
+    @Override
+    protected void onStart() {
+        super.onStart();
+            eventUpdateListener = new EventUpdateListener() {
+            @Override
+            public void onEventsUpdated(List<Event> data) {
+                runOnUiThread(() -> {
+                    events.addAll(0, data);
+                    recEventAdapter.notifyItemRangeInserted(0, data.size());
+                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                });
+            }
+        };
+        EventDataManager.getInstance().addEventListener(eventUpdateListener);
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         // manageDataOperations();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventDataManager.getInstance().removeEventListener(eventUpdateListener);
     }
 
     @Override
@@ -110,22 +137,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        // Initialize the ActivityResultLauncher
-//        mStartForResult = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == RESULT_OK) {
-//                            Intent data = result.getData();
-//                            // Handle the data returned by the child activity.
-//                            Toast.makeText(MainActivity.this, "Result OK!", Toast.LENGTH_SHORT).show();
-//                            if (data != null) {
-//                                updateEvents();
-//                            }
-//                        }
-//                    }
-//                });
 
         // Initialize FloatingActionButton and set its click listener
         FloatingActionButton fabRelease = findViewById(R.id.fab_release);
@@ -152,25 +163,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        EventDataManager.getInstance().addEventListener(new EventUpdateListener() {
-            @Override
-            public void onEventsUpdated(List<Event> data) {
-                runOnUiThread(() -> {
-                    // Additional check for safety
-                    events.addAll(0, data);
-                    recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
-
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-                });
-            }
-        });
 
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
@@ -210,33 +202,6 @@ public class MainActivity extends BaseActivity {
                 });
             }
 
-        });
-    }
-
-    private void updateEvents() {
-        db.updateEvent(new EventDataListener() {
-            @Override
-            public void isAllData(boolean isALl) {
-                //;
-            }
-
-            @Override
-            public void onSuccess(ArrayList<Event> data) {
-                runOnUiThread(() -> {
-                   // Additional check for safety
-                    events.addAll(0, data);
-                    recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
-
-                });
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                });
-            }
         });
     }
 }
