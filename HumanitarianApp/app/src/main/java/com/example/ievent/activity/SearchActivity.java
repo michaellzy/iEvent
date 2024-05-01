@@ -26,6 +26,7 @@ import com.example.ievent.tokenparser.MoreExp;
 import com.example.ievent.tokenparser.OrExp;
 import com.example.ievent.tokenparser.Parser;
 import com.example.ievent.tokenparser.Tokenizer;
+import com.example.ievent.tokenparser.ValueExp;
 import com.example.ievent.tokenparser.VariableExp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -165,6 +166,14 @@ public class SearchActivity extends BaseActivity {
             if (searchKeyword.isEmpty()) {
                 Toast.makeText(this, "invalid search", Toast.LENGTH_SHORT).show();
                 return;
+            } else if (expression instanceof LessExp) {
+                LessExp less = (LessExp) expression;
+                double price = Double.parseDouble(((ValueExp) less.getRight()).getValue().toString());
+                db.getLessThan(price, eventDataListener());
+            } else if (expression instanceof MoreExp) {
+                MoreExp more = (MoreExp) expression;
+                double price = Double.parseDouble(((ValueExp) more.getRight()).getValue().toString());
+                db.getGreaterThan(price, eventDataListener());
             }
 
             db.getAllEventsByFuzzyName(searchKeyword, new EventDataListener() {
@@ -186,6 +195,23 @@ public class SearchActivity extends BaseActivity {
             Log.e("SearchActivity111", "Parsing error: " + e.getMessage());
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+    private EventDataListener eventDataListener() {
+        return new EventDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Event> events) {
+                Log.d("SearchActivity", "Search onSuccess: Number of events found: " + events.size());
+                eventList.clear();
+                eventList.addAll(events);
+                recommendedActivitiesAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("SearchActivity", "Search onFailure: " + error);
+                Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        };
     }
     private String extractSearchKeyword(Exp expression) {
         if (expression instanceof VariableExp) {

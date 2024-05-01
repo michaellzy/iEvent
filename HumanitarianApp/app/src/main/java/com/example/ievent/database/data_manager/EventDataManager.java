@@ -89,6 +89,25 @@ public class EventDataManager {
        HandleQuery(q, listener);
     }
 
+    /**
+     * get all events from the database on price which is >= input price
+     * @param price the input price of the event
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getGreaterThan(double price, EventDataListener listener) {
+        Query q = eventRef.whereGreaterThanOrEqualTo("price",price).limit(30);
+        HandleQuery(q, listener);
+    }
+
+    /**
+     * get all events from the database on price which is <= input price
+     * @param price the input price of the event
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getLessThan(double price, EventDataListener listener) {
+        Query q = eventRef.whereLessThanOrEqualTo("price",(double)(price)).limit(30);
+        HandleQuery(q, listener);
+    }
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //
 
     /**

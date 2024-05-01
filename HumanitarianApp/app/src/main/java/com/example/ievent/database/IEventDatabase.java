@@ -82,7 +82,12 @@ public class IEventDatabase{
     public void getEvents(int pageSize, EventDataListener listener) {
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
-
+    public void getGreaterThan(double price, EventDataListener listener){
+        EventDataManager.getInstance().getGreaterThan(price,listener);
+    }
+    public void getLessThan(double price, EventDataListener listener){
+        EventDataManager.getInstance().getGreaterThan(price,listener);
+    }
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
