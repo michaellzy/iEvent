@@ -36,7 +36,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
     }
 
     @Override
@@ -106,7 +105,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), this);
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });

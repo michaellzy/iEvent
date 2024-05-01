@@ -1,5 +1,6 @@
 package com.example.ievent.database;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.widget.ImageView;
 
@@ -99,7 +100,7 @@ public class IEventDatabase{
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
     }
 
-    public void downloadAvatar(ImageView imageView, String uid){
-        MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
+    public void downloadAvatar(ImageView imageView, String uid, Activity activity){
+        MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.ievent.database.data_manager;
 
 
+import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.ImageView;
 
 
@@ -70,13 +72,13 @@ public class MediaManager {
      * @param imageView the image view to load the image
      * @param uid the user id
      */
-    public void loadAvatarIntoView(ImageView imageView, String uid) {
+    public void loadAvatarIntoView(ImageView imageView, String uid, Activity activity) {
         Glide.with(imageView.getContext())
                 .load(R.drawable.default_avatar)
                 .into(imageView);
 
-        FirebaseFirestore.getInstance().collection("users").document(uid).addSnapshotListener((value, error) -> {
-            if (error != null) {
+        FirebaseFirestore.getInstance().collection("Users").document(uid).addSnapshotListener((value, error) -> {
+            if (error != null || activity.isDestroyed()) {
                 return;
             }
 
@@ -96,6 +98,7 @@ public class MediaManager {
      * @param defaultImage the default image to load if the image is not found such like R.drawable.default_avatar for avatar
      */
     private void loadImageIntoView(ImageView imageView, String uri, int defaultImage) {
+
         Glide.with(imageView.getContext())
                 .load(uri)
                 .placeholder(defaultImage)
