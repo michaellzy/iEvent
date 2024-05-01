@@ -19,9 +19,19 @@ import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
+import com.example.ievent.tokenparser.AndExp;
+import com.example.ievent.tokenparser.Exp;
+import com.example.ievent.tokenparser.LessExp;
+import com.example.ievent.tokenparser.MoreExp;
+import com.example.ievent.tokenparser.OrExp;
+import com.example.ievent.tokenparser.Parser;
+import com.example.ievent.tokenparser.Tokenizer;
+import com.example.ievent.tokenparser.VariableExp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.core.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,21 +149,63 @@ public class SearchActivity extends BaseActivity {
     }
     private void performSearch(String query) {
         Log.d("SearchActivity", "performSearch: Start, Query: " + query);
-        db.getAllEventsByFuzzyName(query, new EventDataListener() {
-            @Override
-            public void onSuccess(ArrayList<Event> events) {
-                Log.d("SearchActivity", "Search onSuccess: Number of events found: " + events.size());
-                eventList.clear();
-                eventList.addAll(events);
-                recommendedActivitiesAdapter.notifyDataSetChanged();
+
+        Tokenizer tokenizer = new Tokenizer(query);
+        Parser parser = new Parser(tokenizer);
+
+        try {
+            // 解析查询表达式
+            Exp expression = parser.parse();
+            if (expression == null) {
+                Log.d("SearchActivity", "No valid query expression found.");
+                Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            @Override
-            public void onFailure(String error) {
-                Log.e("SearchActivity", "Search onFailure: " + error);
-                Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
-            }
-        });
+
+            db.getAllEventsByFuzzyName(query, new EventDataListener() {
+                @Override
+                public void onSuccess(ArrayList<Event> events) {
+                    Log.d("SearchActivity", "Search onSuccess: Number of events found: " + events.size());
+                    eventList.clear();
+                    eventList.addAll(events);
+                    recommendedActivitiesAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Log.e("SearchActivity", "Search onFailure: " + error);
+                    Toast.makeText(SearchActivity.this, "Search Error: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Parser.IllegalProductionException e) {
+            Log.e("SearchActivity", "Parsing error: " + e.getMessage());
+            Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+    private String extractSearchKeyword(Exp expression) {
+        // 这里根据表达式的具体类型提取搜索关键词
+        // 如果表达式是 VariableExp，直接返回这个变量的名字
+        if (expression instanceof VariableExp) {
+            return ((VariableExp) expression).toString();
+        } else if (expression instanceof AndExp) {
+            // 对于 AndExp，尝试从两边的表达式中提取关键词
+            String leftKeyword = extractSearchKeyword(((AndExp) expression).getLeft());
+            String rightKeyword = extractSearchKeyword(((AndExp) expression).getRight());
+            return leftKeyword + " " + rightKeyword; // 这里简单地合并两个关键词
+        } else if (expression instanceof OrExp) {
+            // 对于 OrExp，也是尝试从两边的表达式中提取关键词
+            String leftKeyword = extractSearchKeyword(((OrExp) expression).getLeft());
+            String rightKeyword = extractSearchKeyword(((OrExp) expression).getRight());
+            return leftKeyword + " " + rightKeyword; // 合并关键词
+        }
+        // 对于比较表达式，也返回变量名
+        else if (expression instanceof LessExp) {
+            return ((VariableExp) ((LessExp) expression).getLeft()).getVariableName();
+        } else if (expression instanceof MoreExp) {
+            return ((VariableExp) ((MoreExp) expression).getLeft()).getVariableName();
+        }
+        return ""; // 如果不匹配任何已知类型，返回空字符串
     }
 
 
