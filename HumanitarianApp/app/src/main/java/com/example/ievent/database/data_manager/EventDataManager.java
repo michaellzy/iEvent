@@ -43,6 +43,7 @@ public class EventDataManager {
 
     private EventDataManager(){
         eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
+        // eventRef = FirebaseFirestore.getInstance().collection("events");
         eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -134,6 +135,17 @@ public class EventDataManager {
 //        });
     }
 
+    public synchronized static EventDataManager getInstance(){
+        if (instance == null) {
+            synchronized (EventDataManager.class) {
+                if (instance == null) {
+                    instance = new EventDataManager();
+                }
+            }
+        }
+        return instance;
+    }
+
     public void addEventListener(EventUpdateListener listener) {
         listeners.add(listener);
     }
@@ -154,16 +166,6 @@ public class EventDataManager {
         }
     }
 
-    public synchronized static EventDataManager getInstance(){
-        if (instance == null) {
-            synchronized (EventDataManager.class) {
-                if (instance == null) {
-                    instance = new EventDataManager();
-                }
-            }
-        }
-        return instance;
-    }
 
     /***
      * store new event to the database
@@ -171,9 +173,9 @@ public class EventDataManager {
      */
     public synchronized void addNewEvent(Event e) {
 
-        String eventId = eventRef.getId();
+        String eventId = eventRef.document().getId();
         e.setEventId(eventId);
-        eventRef.add(e);
+        eventRef.document(eventId).set(e);
     }
 
     // ----------------------------------- SEARCH SECTION START------------------------------------ //

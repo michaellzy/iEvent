@@ -109,11 +109,12 @@ public abstract class Tree<T extends Comparable<T>> {
      */
     public String display(int tabs) {
         // StringBuilder is faster than using string concatenation (which in java makes a new object per concatenation).
-        assert value != null;
-        StringBuilder sb = new StringBuilder(value.toString());
-        sb.append("\n").append("\t".repeat(tabs)).append("├─").append(leftNode.display(tabs + 1));
-        sb.append("\n").append("\t".repeat(tabs)).append("├─").append(rightNode.display(tabs + 1));
-        return sb.toString();
+//        assert value != null;
+//        StringBuilder sb = new StringBuilder(value.toString());
+//        sb.append("\n").append("\t".repeat(tabs)).append("├─").append(leftNode.display(tabs + 1));
+//        sb.append("\n").append("\t".repeat(tabs)).append("├─").append(rightNode.display(tabs + 1));
+//        return sb.toString();
+        return null;
     }
 
     /**
@@ -208,18 +209,19 @@ public abstract class Tree<T extends Comparable<T>> {
     }
 
     private static <T extends Comparable<T>> Tree<T> deserializeHelper(String[] arr) {
-        if (arr[t].equals("#")) {
-            t++;
-            return null;
-        }
-
-        // Create node with this item
-        // and recur for children
-        T value = (T) arr[t];
-        t++;
-        Tree<T> root = new TreeNode<>(value);
-        root.leftNode = deserializeHelper(arr);
-        root.rightNode = deserializeHelper(arr);
-        return root;
+//        if (arr[t].equals("#")) {
+//            t++;
+//            return null;
+//        }
+//
+//        // Create node with this item
+//        // and recur for children
+//        T value = (T) arr[t];
+//        t++;
+//        Tree<T> root = new TreeNode<>(value);
+//        root.leftNode = deserializeHelper(arr);
+//        root.rightNode = deserializeHelper(arr);
+//        return root;
+        return null;
     }
 }

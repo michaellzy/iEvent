@@ -41,30 +41,7 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Event> events;
     private ActivityResultLauncher<Intent> mStartForResult;
 
-    EventUpdateListener eventUpdateListener;
-    @Override
-    protected void onStart() {
-        super.onStart();
-            eventUpdateListener = new EventUpdateListener() {
-            @Override
-            public void onEventsUpdated(List<Event> data) {
-                runOnUiThread(() -> {
-                    events.addAll(0, data);
-                    recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-                });
-            }
-        };
-        EventDataManager.getInstance().addEventListener(eventUpdateListener);
-    }
-
+    private EventUpdateListener updateListener;
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -73,9 +50,9 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        EventDataManager.getInstance().removeEventListener(eventUpdateListener);
+    protected void onDestroy() {
+        super.onDestroy();
+        EventDataManager.getInstance().removeEventListener(updateListener);
     }
 
     @Override
@@ -163,6 +140,27 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        EventDataManager.getInstance().addEventListener(updateListener = new EventUpdateListener() {
+            @Override
+            public void onEventsUpdated(List<Event> data) {
+                runOnUiThread(() -> {
+                    // Additional check for safety
+                    events.addAll(0, data);
+                    recEventAdapter.notifyItemRangeInserted(0, data.size());
+                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+
+
 
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
@@ -187,7 +185,7 @@ public class MainActivity extends BaseActivity {
                     // events.addAll(data);
                     recEventAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    // Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                 });

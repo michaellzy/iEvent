@@ -110,4 +110,9 @@ public class IEventDatabase{
     public void uploadEventImage(Uri file, DataListener<String> listener) {
         MediaManager.getInstance().uploadEventImg(file, listener);
     }
+
+    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
+        UserDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+    }
+
 }

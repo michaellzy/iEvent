@@ -1,5 +1,7 @@
 package com.example.ievent.entity;
 
+import com.example.ievent.database.data_manager.UserDataManager;
+
 import java.util.ArrayList;
 
 public class Organizer extends User implements java.io.Serializable{
@@ -14,7 +16,8 @@ public class Organizer extends User implements java.io.Serializable{
     }
     public void organizeEvent(Event event) {
         // Adds an event to the list of events the participant has joined
-        organizedEventList.add(event);
+        // organizedEventList.add(event);
+        UserDataManager.getInstance().addOrganizedEvent(super.getUid(), event);
     }
 
     public ArrayList<Event> getOrganizedEventList() {

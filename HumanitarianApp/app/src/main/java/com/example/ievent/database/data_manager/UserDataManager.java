@@ -1,14 +1,24 @@
 package com.example.ievent.database.data_manager;
 
+import android.util.Log;
+
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -96,5 +106,34 @@ public class UserDataManager {
             }
         });
 
+    }
+
+    public synchronized void addOrganizedEvent(String uid, Event event) {
+        DocumentReference docRef = orgRef.document(uid);
+        docRef.update("organizedEventList", FieldValue.arrayUnion(event)).
+                addOnSuccessListener(aVoid -> Log.d("UserDataManager", "Event added successfully!")).
+                addOnFailureListener(e -> Log.e("UserDataManager", "Error adding event", e));
+    }
+
+    public synchronized void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
+        DocumentReference docRef = orgRef.document(uid);
+        docRef.get().addOnCompleteListener(task -> {
+            DocumentSnapshot document = task.getResult();
+            if (document.exists()) {
+                ArrayList<Event> orgEvents = new ArrayList<>();
+                ArrayList<Map<String, Object>> eventsMap = (ArrayList<Map<String,java.lang.Object>>) document.get("organizedEventList");
+
+                // Process the fetched events
+                for (Map<String, Object> event : eventsMap) {
+                    for (Map.Entry<String, Object> entry : event.entrySet()) {
+                        Object value = entry.getValue();  // This is the value associated with the key
+                        orgEvents.add((Event) value);
+                    }
+                }
+                listener.onSuccess(orgEvents);
+            } else {
+                listener.onFailure("No such document found in organizer");
+            }
+        });
     }
 }
