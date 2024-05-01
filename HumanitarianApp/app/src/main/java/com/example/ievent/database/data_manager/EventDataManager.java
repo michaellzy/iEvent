@@ -39,7 +39,7 @@ public class EventDataManager {
     private DocumentSnapshot lastVisible;
 
     private EventDataManager(){
-        eventRef = FirebaseFirestore.getInstance().collection("testevents-wtk");
+        eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
 
 
 //        getAllEventsByType("wellness", new EventDataListener() {

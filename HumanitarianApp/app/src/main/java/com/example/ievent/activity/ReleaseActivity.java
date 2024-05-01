@@ -4,32 +4,22 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
-import com.example.ievent.R;
-import com.example.ievent.adapter.SharedViewModel;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
-import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
-import com.google.android.material.textfield.TextInputEditText;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
@@ -92,13 +82,6 @@ public class ReleaseActivity extends BaseActivity {
             finish();
         });
 
-
-//        SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-//        uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> {
-//            uploadEvent();
-//            viewModel.notifyEventUploaded();  // Notify that the event was uploaded
-//            finish();
-//        });
     }
 
     private void saveEventData() {
