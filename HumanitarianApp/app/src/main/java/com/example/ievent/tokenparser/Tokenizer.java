@@ -20,34 +20,37 @@ public class Tokenizer {
         char firstChar = buffer.charAt(0);
         int idx = 0;
 
-        if (firstChar == '+' || firstChar == '/' || firstChar == '<' || firstChar == '>' || firstChar == '(' || firstChar == ')') {
+        if (firstChar == '+' || firstChar == '/' || firstChar == '<' || firstChar == '>' || firstChar == '(' || firstChar == ')'||firstChar == '=') {
             currentToken = new Token(String.valueOf(firstChar), mapCharToType(firstChar));
             idx = 1; // these are single character tokens
             Log.d("Tokenizer", "Processed operator token: " + currentToken.getToken());
         } else if (Character.isDigit(firstChar) || (firstChar == '.' && buffer.length() > 1 && Character.isDigit(buffer.charAt(1)))) {
-            StringBuilder number = new StringBuilder();
-            boolean hasDecimalPoint = firstChar == '.';
-
-            if (firstChar == '.') {
-                number.append(firstChar);
-                number.append(buffer.charAt(1));
-                idx = 2; // start from the digit after the decimal point
-                Log.d("Tokenizer", "Starting number with decimal: " + number.toString());
-            }
-
-            // Collect remaining parts of the number
-            while (idx < buffer.length() && (Character.isDigit(buffer.charAt(idx)) || (!hasDecimalPoint && buffer.charAt(idx) == '.'))) {
-                if (buffer.charAt(idx) == '.') {
-                    hasDecimalPoint = true; // mark that we have found a decimal point
-                    Log.d("Tokenizer", "Found decimal point in number");
+            if (buffer.contains("-") && !buffer.contains(".")) {
+                // Assume the format is mm-dd
+                String date = buffer.split(" ")[0]; // Split by space to isolate date
+                currentToken = new Token(date, Token.Type.DATE);
+                idx = date.length();
+            } else {
+                // Handle numbers and decimals
+                StringBuilder number = new StringBuilder();
+                boolean hasDecimalPoint = firstChar == '.';
+                if (firstChar == '.') {
+                    number.append(firstChar);
+                    number.append(buffer.charAt(1));
+                    idx = 2; // start from digit after decimal point
                 }
-                number.append(buffer.charAt(idx++));
+                while (idx < buffer.length() && (Character.isDigit(buffer.charAt(idx)) || (!hasDecimalPoint && buffer.charAt(idx) == '.'))) {
+                    if (buffer.charAt(idx) == '.') {
+                        hasDecimalPoint = true;
+                    }
+                    number.append(buffer.charAt(idx++));
+                }
+                currentToken = new Token(number.toString(), Token.Type.DOUBLE);
+                Log.d("Tokenizer", "Processed number token: " + number.toString() + " as DOUBLE");
             }
-            currentToken = new Token(number.toString(), Token.Type.DOUBLE);
-            Log.d("Tokenizer", "Processed number token: " + number.toString() + " as DOUBLE");
         } else if (Character.isLetter(firstChar)) {
             StringBuilder identifier = new StringBuilder(String.valueOf(firstChar));
-            idx = 0;
+            idx = 1;
             while (idx < buffer.length() && Character.isLetter(buffer.charAt(idx))) {
                 identifier.append(buffer.charAt(idx++));
             }
@@ -71,6 +74,7 @@ public class Tokenizer {
             case '>': return Token.Type.MORE;
             case '(': return Token.Type.LBRA;
             case ')': return Token.Type.RBRA;
+            case '=': return Token.Type.EQUAL;
             default:  return null; // should never happen
         }
     }

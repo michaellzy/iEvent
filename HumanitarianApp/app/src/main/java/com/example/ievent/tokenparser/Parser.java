@@ -1,5 +1,11 @@
 package com.example.ievent.tokenparser;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Parser {
     public static class IllegalProductionException extends IllegalArgumentException {
         public IllegalProductionException(String errorMessage) {
@@ -65,6 +71,8 @@ public class Parser {
             currentToken = tokenizer.current();
             System.out.println("Current token after identifier: " + currentToken.getToken());
             switch (currentToken.getType()) {
+                case EQUAL:
+                    return parseEquation(identifier);
                 case LESS:
                 case MORE:
                     return parseComparison(identifier);
@@ -78,33 +86,64 @@ public class Parser {
             throw new IllegalProductionException("Expected identifier");
         }
     }
-private Exp parseComparison(String identifier) {
-    Token op = currentToken;
-    tokenizer.next();
-    currentToken = tokenizer.current();
+    private Exp parseEquation(String identifier) {
+        tokenizer.next();  // Move to the token right after the '=' symbol
+        currentToken = tokenizer.current();  // Update the current token to what follows '='
 
-    System.out.println("Expecting integer, current token: " + currentToken.getToken() + ", Type: " + currentToken.getType());
-
-    if (currentToken.getType() != Token.Type.DOUBLE) {
-        throw new IllegalProductionException("Expected integer after comparison operator but have " + currentToken.getToken());
+        Exp rightExp;
+        switch (currentToken.getType()) {
+            case DOUBLE:
+                double value = Double.parseDouble(currentToken.getToken());
+                rightExp = new ValueExp(value);
+                break;
+            case STR:
+                String secondIdentifier = currentToken.getToken();
+                rightExp = new VariableExp(secondIdentifier);
+                break;
+            case DATE:
+                // Assuming the date format is mm-dd and needs conversion to a timestamp for comparison
+                String dateString = currentToken.getToken();
+                long timestamp = convertDateToTimestamp(dateString);
+                rightExp = new ValueExp(timestamp);
+                break;
+            default:
+                throw new IllegalProductionException("Expected a numeric value, identifier, or date after '=', but found: " + currentToken.getToken());
+        }
+        tokenizer.next();  // Prepare for the next token if there is one
+        if (tokenizer.hasNext()) {
+            currentToken = tokenizer.current();
+        }
+        return new EqualExp(new VariableExp(identifier), rightExp);
     }
 
-    double value = Double.parseDouble(currentToken.getToken());
-    Exp right = new ValueExp(value);
 
-    tokenizer.next();
-    if (tokenizer.hasNext()) {
+    private Exp parseComparison(String identifier) {
+        Token op = currentToken;
+        tokenizer.next();
         currentToken = tokenizer.current();
-    }
 
-    if (op.getType() == Token.Type.MORE) {
-        return new MoreExp(new VariableExp(identifier), right);
-    } else if (op.getType() == Token.Type.LESS) {
-        return new LessExp(new VariableExp(identifier), right);
-    } else {
-        throw new IllegalProductionException("Expected More or Less expression");
+        System.out.println("Expecting integer, current token: " + currentToken.getToken() + ", Type: " + currentToken.getType());
+
+        if (currentToken.getType() != Token.Type.DOUBLE) {
+            throw new IllegalProductionException("Expected integer after comparison operator but have " + currentToken.getToken());
+        }
+
+        double value = Double.parseDouble(currentToken.getToken());
+        Exp right = new ValueExp(value);
+
+        tokenizer.next();
+        if (tokenizer.hasNext()) {
+            currentToken = tokenizer.current();
+        }
+
+        if (op.getType() == Token.Type.MORE) {
+            return new MoreExp(new VariableExp(identifier), right);
+        } else if (op.getType() == Token.Type.LESS) {
+            return new LessExp(new VariableExp(identifier), right);
+        } else {
+            throw new IllegalProductionException("Expected More or Less expression");
+        }
     }
-}
 
     private Exp parseLogicalOperation(String identifier) {
         VariableExp left = new VariableExp(identifier);
@@ -120,5 +159,16 @@ private Exp parseComparison(String identifier) {
 
         Exp right = parseFactor();
         return new AndExp(left, right);
+    }
+    private long convertDateToTimestamp(String dateString) {
+        // Use SimpleDateFormat or similar to convert mm-dd to a timestamp
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dateFormat.parse(dateString + "-2024");  // Append year for conversion
+            return (long) (date.getTime() / 1000);
+        } catch (ParseException e) {
+            Log.e("Parser", "Failed to parse date: " + dateString, e);
+            return -1;  // Return a default or error value
+        }
     }
 }

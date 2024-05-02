@@ -3,7 +3,7 @@ package com.example.ievent.tokenparser;
 import java.util.Objects;
 
 public class Token {
-    public enum Type{DOUBLE,STR,AND,OR,LESS,MORE,LBRA,RBRA}
+    public enum Type{DOUBLE,STR,AND,OR,LESS,MORE,LBRA,RBRA,EQUAL,DATE}
     public static class IllegalTokenException extends IllegalArgumentException {
         public IllegalTokenException(String errorMessage) {
             super(errorMessage);

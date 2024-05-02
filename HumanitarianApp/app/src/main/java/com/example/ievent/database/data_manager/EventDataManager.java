@@ -73,7 +73,7 @@ public class EventDataManager {
      * @param type the type of the event
      */
     public synchronized void getAllEventsByType(String type, EventDataListener listener) {
-        Query q = eventRef.whereEqualTo("type", type);
+        Query q = eventRef.whereEqualTo("type", type).limit(30);
 
         HandleQuery(q, listener);
     }
@@ -114,6 +114,14 @@ public class EventDataManager {
     }
     public synchronized void getDateBefore(int timestamp, EventDataListener listener) {
         Query q = eventRef.whereLessThanOrEqualTo("timestamp", timestamp).limit(30);
+        HandleQuery(q, listener);
+    }
+    public synchronized void getAllEventsByPrice(double price, EventDataListener listener){
+        Query q = eventRef.whereEqualTo("price", price).limit(30);
+        HandleQuery(q, listener);
+    }
+    public synchronized void getAllEventsByDate(long timestamp, EventDataListener listener){
+        Query q = eventRef.whereEqualTo("dateTime", timestamp).limit(30);
         HandleQuery(q, listener);
     }
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //

@@ -20,6 +20,7 @@ import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.tokenparser.AndExp;
+import com.example.ievent.tokenparser.EqualExp;
 import com.example.ievent.tokenparser.Exp;
 import com.example.ievent.tokenparser.LessExp;
 import com.example.ievent.tokenparser.MoreExp;
@@ -34,8 +35,12 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.core.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class SearchActivity extends BaseActivity {
 
@@ -43,7 +48,7 @@ public class SearchActivity extends BaseActivity {
     private SearchView searchView;
     private RecommendedActivitiesAdapter recommendedActivitiesAdapter;
     private List<Event> eventList = new ArrayList<>();
-    private List<Event> temporaryResults = new ArrayList<>();
+//    private List<Event> temporaryResults = new ArrayList<>();
 
 
     @Override
@@ -176,7 +181,14 @@ public class SearchActivity extends BaseActivity {
                 double price = Double.parseDouble(((ValueExp) ((MoreExp) expression).getRight()).getValue().toString());
                 Log.d("SearchActivityPS", "User is searching for events with price more than: " + price);
                 db.getGreaterThan(price, listener);
-            } else {
+            } else if (expression instanceof EqualExp) {
+                // Handling equal expressions
+                String fieldName = ((VariableExp) ((EqualExp) expression).getLeft()).getVariableName();
+                String value = ((ValueExp) ((EqualExp) expression).getRight()).getValue().toString();
+                Log.d("SearchActivityPS","User is searching for equation of: " + fieldName + " = " + value);
+                handleEqualitySearch(fieldName, value, listener);
+            }
+            else {
                 db.getAllEventsByFuzzyName(searchKeyword, listener);
             }
         } catch (Parser.IllegalProductionException e) {
@@ -184,6 +196,45 @@ public class SearchActivity extends BaseActivity {
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+    private void handleEqualitySearch(String fieldName, String value, EventDataListener listener) {
+        Log.d("SearchActivity", "Field name before handleEqualitySearch: " + fieldName);
+        switch (fieldName) {
+            case "type":
+                db.getAllEventsByType(value, listener);
+                break;
+            case "price":
+                try {
+                    double price = Double.parseDouble(value);
+                    db.getAllEventsByPrice(price, listener);
+                } catch (NumberFormatException e) {
+                    Log.e("SearchActivity", "Error parsing price: " + value, e);
+                    Toast.makeText(this, "Invalid price format", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "date":
+                try {
+                    String fullDate = "2024-" + value; // Assume all dates are in the year 2024
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    sdf.setTimeZone(TimeZone.getTimeZone("UTC")); // Ensure timezone consistency
+                    Date date = sdf.parse(fullDate);
+                    Log.d("SearchActivityPS", "User is searching for events on full date: " + fullDate);
+                    long timestamp = date.getTime() / 1000; // Convert milliseconds to seconds
+                    Log.d("SearchActivityPS", "User is searching for events on date: " + fullDate + " with timestamp: " + timestamp);
+                    db.getAllEventsByDate(timestamp, listener);
+                } catch (ParseException e) {
+                    Log.e("SearchActivity", "Error parsing date: " + value, e);
+                    Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                Log.e("SearchActivity", "Unsupported field for equality search: " + fieldName);
+                Toast.makeText(this, "Unsupported search field", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+
 
     private EventDataListener eventDataListener() {
         return new EventDataListener() {
@@ -219,14 +270,18 @@ public class SearchActivity extends BaseActivity {
             String leftKeyword = extractSearchKeyword(((OrExp) expression).getLeft());
             String rightKeyword = extractSearchKeyword(((OrExp) expression).getRight());
             return leftKeyword + " " + rightKeyword;
-        }
-        else if (expression instanceof LessExp) {
+        } else if (expression instanceof LessExp) {
             return ((VariableExp) ((LessExp) expression).getLeft()).getVariableName();
         } else if (expression instanceof MoreExp) {
             return ((VariableExp) ((MoreExp) expression).getLeft()).getVariableName();
+        } else if (expression instanceof EqualExp) {
+            EqualExp eqExp = (EqualExp) expression;
+            if (eqExp.getRight() instanceof ValueExp) {
+                return ((ValueExp) eqExp.getRight()).getValue().toString();
+            } else if (eqExp.getRight() instanceof VariableExp) {
+                return ((VariableExp) eqExp.getRight()).getVariableName();
+            }
         }
         return "";
     }
-
-
 }

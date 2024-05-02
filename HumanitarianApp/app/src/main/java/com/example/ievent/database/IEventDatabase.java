@@ -96,6 +96,13 @@ public class IEventDatabase{
         EventDataManager.getInstance().getDateBefore(timestamp,listener);
 
     }
+    public void getAllEventsByPrice(double price, EventDataListener listener){
+        EventDataManager.getInstance().getAllEventsByPrice(price,listener);
+
+    }
+    public void getAllEventsByDate(long timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getAllEventsByDate(timestamp,listener);
+    }
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
