@@ -257,27 +257,38 @@ public class EventDataManager {
        HandleQuery(q, listener);
     }
 
-
     public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener) {
         ArrayList<Event> events = new ArrayList<>();
+        ArrayList<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
         for (String id : ids) {
             DocumentReference docRef = eventRef.document(id);
-            docRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Event event = document.toObject(Event.class);
-                        events.add(event);
-                    } else {
-                        listener.onFailure("No such document");
-                    }
-                } else {
-                    listener.onFailure("Error getting documents: " + Objects.requireNonNull(task.getException()).getMessage());
-                }
-            });
+            tasks.add(docRef.get()); // Add each document fetch task to the list
         }
-        listener.onSuccess(events);
+
+        Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean allFound = true;
+                for (Task<DocumentSnapshot> documentTask : tasks) {
+                    DocumentSnapshot document = documentTask.getResult();
+                    if (document.exists()) {
+                        events.add(document.toObject(Event.class));
+                    } else {
+                        allFound = false;
+                        Log.e("EventDataManager", "Document not found: " + document.getId());
+                    }
+                }
+                if (allFound) {
+                    listener.onSuccess(events);
+                } else {
+                    listener.onFailure("One or more documents could not be found");
+                }
+            } else {
+                listener.onFailure("Error getting documents: " + task.getException().getMessage());
+            }
+        });
     }
+
 
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //
 

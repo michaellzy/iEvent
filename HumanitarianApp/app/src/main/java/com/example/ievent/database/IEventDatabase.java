@@ -111,8 +111,8 @@ public class IEventDatabase{
         MediaManager.getInstance().uploadEventImg(file, listener);
     }
 
-    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
-    }
+//    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
+//        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+//    }
 
 }

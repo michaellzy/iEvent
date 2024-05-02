@@ -37,7 +37,6 @@ public class UserDataManager {
 
 
     private UserDataManager() {
-
         userRef = FirebaseFirestore.getInstance().collection("Users");
         // orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
@@ -83,4 +82,16 @@ public class UserDataManager {
            }
         });
     }
+
+    public synchronized void addEventToUser(String uid, String eventId, DataListener<Void> listener) {
+        DocumentReference userDoc = userRef.document(uid);
+        userDoc.update("participatedEventList", FieldValue.arrayUnion(eventId))
+                .addOnSuccessListener(aVoid -> {
+                    ArrayList<Void> result = new ArrayList<>();  // Create an empty ArrayList of type Void
+                    listener.onSuccess(result);  // Pass the empty list as success does not need to return any data
+                })
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
+
+
 }

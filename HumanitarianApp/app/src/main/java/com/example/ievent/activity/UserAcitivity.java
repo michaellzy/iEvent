@@ -19,10 +19,18 @@ import com.example.ievent.adapter.userfragmentfollowers;
 import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
+import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityUserBinding;
+import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Participant;
+import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
@@ -78,6 +86,10 @@ public class UserAcitivity extends BaseActivity {
 
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
     }
+
+
+
+
 
 
     private void setVariable(){

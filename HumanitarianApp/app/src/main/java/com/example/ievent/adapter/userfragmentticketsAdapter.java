@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.entity.Event;
 
@@ -35,10 +36,17 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
 //        ActivityModel activity = activitiesList.get(position);
         // 在这里设置你的ImageView和TextViews
         Event event = eventList.get(position);
+
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
         holder.price.setText("$" + event.getPrice());
-        holder.organizer.setText("iEvent");
+        holder.organizer.setText("Organized by iEvent");  // Assuming you have an organizer field or similar
+
+        // Load event image using Glide
+        Glide.with(holder.imageView.getContext())
+                .load(event.getImg())  // Ensure 'getImg()' returns a valid URL or path to the image
+                .placeholder(R.drawable.default_avatar)  // Default image if none found
+                .into(holder.imageView);
     }
 
     @Override
@@ -48,8 +56,9 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
     }
 
     public void setEvents(ArrayList<Event> events) {
-        eventList.addAll(events);
-        // notifyDataSetChanged();
+        eventList.clear();          // Clear the existing data
+        eventList.addAll(events);   // Add all new events
+        notifyDataSetChanged();     // Notify the adapter to refresh the views
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -7,19 +7,19 @@ import java.util.ArrayList;
 public class Participant extends User {
 
 
-    private ArrayList<Event> participatedEventList = new ArrayList<>();
+    private ArrayList<String> participatedEventList = new ArrayList<>();
 
     public Participant(String uid, String email, String userName) {
         super(uid, email, userName);
     }
 
 
-    public void participateEvent(Event event) {
+    public void participateEvent(String eventId) {
         // Adds an event to the list of events the participant has joined
-        participatedEventList.add(event);
+        participatedEventList.add(eventId);
     }
 
-    public ArrayList<Event> getParticipatedEventList() {
+    public ArrayList<String> getParticipatedEventList() {
         // Overridden to return the list of events this participant has joined
         return participatedEventList;
     }
