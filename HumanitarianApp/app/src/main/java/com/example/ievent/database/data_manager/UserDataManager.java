@@ -3,10 +3,12 @@ package com.example.ievent.database.data_manager;
 import android.util.Log;
 
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
+import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -117,5 +119,21 @@ public class UserDataManager {
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
 
-
+    public synchronized void getParticipantEvents(String uid, EventDataListener listener) {
+        DocumentReference userDoc = userRef.document(uid);
+        userDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Participant participant = document.toObject(Participant.class);
+                    ArrayList<String> eventIds = participant.getParticipatedEventList();
+                    EventDataManager.getInstance().fetchDocuments(eventIds, listener);
+                } else {
+                    listener.onFailure("User not found");
+                }
+            } else {
+                listener.onFailure("Failed to fetch user: " + task.getException().getMessage());
+            }
+        });
+    }
 }

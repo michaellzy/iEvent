@@ -35,6 +35,8 @@ import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
@@ -67,13 +69,32 @@ public class UserAcitivity extends BaseActivity {
 
         // Initial setup
 //        setupRecyclerView("Post");
+        String uid = mAuth.getUid();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                // Change RecyclerView content based on selected tab
                 String type = Objects.requireNonNull(tab.getText()).toString();
-//                setupRecyclerView(type);
+                if ("Tickets".equals(type)&& recyclerView.getAdapter() == null) {
+                    UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
+                        @Override
+                        public void isAllData(boolean isALl) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(ArrayList<Event> events) {
+                            setupRecyclerViewByEvents("Tickets", events);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+//                    setupRecyclerView(type);
+                }
             }
 
             @Override
@@ -88,13 +109,7 @@ public class UserAcitivity extends BaseActivity {
         });
 
         setVariable();
-
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
-
-
-        String uid = mAuth.getUid();
-
-
 
         db.fetchOrganizedData(uid, new OrganizedEventListener() {
             @Override
@@ -127,10 +142,6 @@ public class UserAcitivity extends BaseActivity {
             }
         });
     }
-
-
-
-
 
 
     private void setVariable(){

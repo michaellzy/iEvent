@@ -21,7 +21,7 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
     private List<Event> eventList;
 
     public userfragmentticketsAdapter(List<Event> eventList) {
-        this.eventList = new ArrayList<>();
+        this.eventList = eventList;
     }
 
     @Override
@@ -36,11 +36,11 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
 //        ActivityModel activity = activitiesList.get(position);
         // 在这里设置你的ImageView和TextViews
         Event event = eventList.get(position);
-
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
-        holder.price.setText("$" + event.getPrice());
-        holder.organizer.setText("Organized by iEvent");  // Assuming you have an organizer field or similar
+        holder.location.setText(event.getLocation());
+//        holder.price.setText("$" + event.getPrice());
+//        holder.organizer.setText("Organized by iEvent");  // Assuming you have an organizer field or similar
 
         // Load event image using Glide
         Glide.with(holder.imageView.getContext())
@@ -56,20 +56,20 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
     }
 
     public void setEvents(ArrayList<Event> events) {
-        eventList.clear();          // Clear the existing data
         eventList.addAll(events);   // Add all new events
-        notifyDataSetChanged();     // Notify the adapter to refresh the views
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView name, time, price, organizer;
+        TextView name, time, price,location, organizer;
 
         public ViewHolder(View view) {
             super(view);
-            imageView = view.findViewById(R.id.imageView_recommended_activities);
-            name = view.findViewById(R.id.textView_recommended_activities_name);
-            time = view.findViewById(R.id.textView_recommended_activities_time);
+            imageView = view.findViewById(R.id.imageView_event);
+            name = view.findViewById(R.id.textView_event_name);
+            time = view.findViewById(R.id.textView_event_time);
+            location = view.findViewById(R.id.textView_event_location);
             price = view.findViewById(R.id.textView_recommended_activities_price);
             organizer = view.findViewById(R.id.textView_recommended_activities_organizer);
         }
