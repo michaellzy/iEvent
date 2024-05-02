@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;
-import com.example.ievent.database.data_manager.OrgnizerDataManager;
+import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
@@ -50,11 +50,11 @@ public class IEventDatabase{
     }
 
     public void addNewOrganizer(String uid, Organizer organizer) {
-        OrgnizerDataManager.getInstance().addOrganizer(uid, organizer);
+        OrganizerDataManager.getInstance().addOrganizer(uid, organizer);
     }
 
     public void getOrganizer(String uid, OrgDataListener listener) {
-        OrgnizerDataManager.getInstance().getOrganizer(uid, listener);
+        OrganizerDataManager.getInstance().getOrganizer(uid, listener);
     }
 
     /***
@@ -109,7 +109,7 @@ public class IEventDatabase{
     }
 
     public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-        OrgnizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
     }
 
 }

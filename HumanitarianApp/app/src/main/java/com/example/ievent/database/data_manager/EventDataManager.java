@@ -9,6 +9,8 @@ import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.entity.Event;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -202,6 +204,35 @@ public class EventDataManager {
             } else {
                 listener.onFailure("Error getting documents: " + Objects.requireNonNull(task.getException()).getMessage());
             }
+        });
+    }
+    public synchronized void fetchDocuments(ArrayList<String> Eventid, EventDataListener listener){
+        ArrayList<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        for (String docId : Eventid) {
+            DocumentReference docRef = eventRef.document(docId);
+            // Asynchronously retrieve each document and add the task to the list
+            tasks.add(docRef.get());
+        }
+
+        // Wait for all tasks to complete
+        Tasks.whenAllSuccess(tasks).addOnSuccessListener(documents -> {
+            ArrayList<Event> events = new ArrayList<>();
+            for (Object document : documents) {
+                DocumentSnapshot doc = (DocumentSnapshot) document;
+                if (doc.exists()) {
+                    Event event = doc.toObject(Event.class);
+                    events.add(event);
+                    listener.onSuccess(events);
+                    Log.d("EventDataManager", "Document data: " + doc.getId() + " => " + doc.getData());
+                } else {
+                    listener.onFailure("Document not found: " + doc.getId());
+                    Log.d("EventDataManager", "Document not found: " + doc.getId());
+                }
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFailure("Error fetching documents" + e);
+            Log.e("EventDataManager", "Error fetching documents", e);
         });
     }
 

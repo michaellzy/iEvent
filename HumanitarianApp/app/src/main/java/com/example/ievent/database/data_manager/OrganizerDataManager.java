@@ -4,20 +4,16 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
-import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class OrgnizerDataManager {
-    private static OrgnizerDataManager instance;
+public class OrganizerDataManager {
+    private static OrganizerDataManager instance;
 
     private CollectionReference orgRef;
 
@@ -34,15 +30,15 @@ public class OrgnizerDataManager {
 
     private Map<String, List<String>> lastKnownEventLists = new HashMap<>();
 
-    private OrgnizerDataManager() {
+    private OrganizerDataManager() {
         orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
 
-    public static synchronized OrgnizerDataManager getInstance() {
+    public static synchronized OrganizerDataManager getInstance() {
         if (instance == null) {
-            synchronized (OrgnizerDataManager.class) {
+            synchronized (OrganizerDataManager.class) {
                 if (instance == null) {
-                    instance = new OrgnizerDataManager();
+                    instance = new OrganizerDataManager();
                 }
             }
         }
@@ -84,7 +80,7 @@ public class OrgnizerDataManager {
         return orgRef.document(uid);
     }
 
-    public synchronized void fetchOrgnizedData(String uid, OrganizedEventListener listener) {
+    public synchronized void fetchOragnizedData(String uid, OrganizedEventListener listener) {
         DocumentReference docRef = orgRef.document(uid);
 
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
