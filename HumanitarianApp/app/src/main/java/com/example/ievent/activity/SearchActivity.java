@@ -158,7 +158,6 @@ public class SearchActivity extends BaseActivity {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
-
         try {
             Exp expression = parser.parse();
             if (expression == null) {
@@ -166,35 +165,66 @@ public class SearchActivity extends BaseActivity {
                 Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String searchKeyword = extractSearchKeyword(expression);
-            if (searchKeyword.isEmpty()) {
-                Toast.makeText(this, "invalid search", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             EventDataListener listener = eventDataListener();
-            if (expression instanceof LessExp) {
-                double price = Double.parseDouble(((ValueExp) ((LessExp) expression).getRight()).getValue().toString());
-                Log.d("SearchActivityPS", "User is searching for events with price less than: " + price);
-                db.getLessThan(price, listener);
-            } else if (expression instanceof MoreExp) {
-                double price = Double.parseDouble(((ValueExp) ((MoreExp) expression).getRight()).getValue().toString());
-                Log.d("SearchActivityPS", "User is searching for events with price more than: " + price);
-                db.getGreaterThan(price, listener);
+            if (expression instanceof LessExp || expression instanceof MoreExp) {
+                // Handle less and more expressions
+                handleComparison(expression, listener);
             } else if (expression instanceof EqualExp) {
                 // Handling equal expressions
-                String fieldName = ((VariableExp) ((EqualExp) expression).getLeft()).getVariableName();
-                String value = ((ValueExp) ((EqualExp) expression).getRight()).getValue().toString();
-                Log.d("SearchActivityPS","User is searching for equation of: " + fieldName + " = " + value);
-                handleEqualitySearch(fieldName, value, listener);
-            }
-            else {
-                db.getAllEventsByFuzzyName(searchKeyword, listener);
+                handleEquality(expression, listener);
+            } else {
+                String searchKeyword = extractSearchKeyword(expression);
+                if (searchKeyword.isEmpty()) {
+                    Toast.makeText(this, "invalid search", Toast.LENGTH_SHORT).show();
+                } else {
+                    db.getAllEventsByFuzzyName(searchKeyword, listener);
+                }
             }
         } catch (Parser.IllegalProductionException e) {
             Log.e("SearchActivityPS", "Parsing error: " + e.getMessage());
             Toast.makeText(this, "parsing error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void handleComparison(Exp expression, EventDataListener listener) {
+        double price;
+        String logMessage;
+
+        // Check if the expression is LessExp or MoreExp and extract the price accordingly
+        if (expression instanceof LessExp) {
+            price = Double.parseDouble(((ValueExp) ((LessExp) expression).getRight()).getValue().toString());
+            logMessage = "less than: ";
+            db.getLessThan(price, listener);
+        } else if (expression instanceof MoreExp) {
+            price = Double.parseDouble(((ValueExp) ((MoreExp) expression).getRight()).getValue().toString());
+            logMessage = "more than: ";
+            db.getGreaterThan(price, listener);
+        } else {
+            // If the expression is neither, log an error and return early
+            Log.e("SearchActivityPS", "Unsupported comparison type");
+            return;
+        }
+
+        // Log the price comparison operation
+        Log.d("SearchActivityPS", "User is searching for events with price " + logMessage + price);
+    }
+
+
+    private void handleEquality(Exp expression, EventDataListener listener) {
+        EqualExp eqExp = (EqualExp) expression;
+        String fieldName = ((VariableExp) eqExp.getLeft()).getVariableName();
+        Exp rightExp = eqExp.getRight();
+        String value;
+        if (rightExp instanceof ValueExp) {
+            value = ((ValueExp) rightExp).getValue().toString();
+        } else if (rightExp instanceof VariableExp) {
+            value = ((VariableExp) rightExp).getVariableName();
+        } else {
+            throw new IllegalStateException("Unsupported expression type for right-hand side of EqualExp");
+        }
+        Log.d("SearchActivityPS", "User is searching for equation of: " + fieldName + " = " + value);
+        handleEqualitySearch(fieldName, value, listener);
     }
 
     private void handleEqualitySearch(String fieldName, String value, EventDataListener listener) {
@@ -216,7 +246,7 @@ public class SearchActivity extends BaseActivity {
                 try {
                     String fullDate = "2024-" + value; // Assume all dates are in the year 2024
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    sdf.setTimeZone(TimeZone.getTimeZone("UTC")); // Ensure timezone consistency
+                    sdf.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
                     Date date = sdf.parse(fullDate);
                     Log.d("SearchActivityPS", "User is searching for events on full date: " + fullDate);
                     long timestamp = date.getTime() / 1000; // Convert milliseconds to seconds
@@ -258,7 +288,6 @@ public class SearchActivity extends BaseActivity {
             }
         };
     }
-
     private String extractSearchKeyword(Exp expression) {
         if (expression instanceof VariableExp) {
             return ((VariableExp) expression).toString();
@@ -277,11 +306,40 @@ public class SearchActivity extends BaseActivity {
         } else if (expression instanceof EqualExp) {
             EqualExp eqExp = (EqualExp) expression;
             if (eqExp.getRight() instanceof ValueExp) {
-                return ((ValueExp) eqExp.getRight()).getValue().toString();
+                String value = ((ValueExp) eqExp.getRight()).getValue().toString();
+                if (isDateString(value)) {
+                    return convertDateToDisplayFormat(value); // Convert the date string to a more readable format or standardized format.
+                }
+                return value;
             } else if (eqExp.getRight() instanceof VariableExp) {
                 return ((VariableExp) eqExp.getRight()).getVariableName();
             }
         }
         return "";
     }
+
+    /**
+     * Determines if the provided string is a date string.
+     * You need to define what constitutes a date string for your application.
+     */
+    private boolean isDateString(String value) {
+        return value.matches("\\d{2}-\\d{2}"); // Example pattern: MM-DD
+    }
+
+    /**
+     * Converts a date string from MM-DD to a more readable or standardized format.
+     * Adjust the implementation based on your needs.
+     */
+    private String convertDateToDisplayFormat(String dateString) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+            Date date = sdf.parse(dateString);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd");
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            Log.e("SearchActivity", "Error parsing date string: " + dateString, e);
+            return dateString; // Return original if parsing fails.
+        }
+    }
+
 }

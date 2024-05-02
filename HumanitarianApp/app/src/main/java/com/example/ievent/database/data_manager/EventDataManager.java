@@ -121,7 +121,7 @@ public class EventDataManager {
         HandleQuery(q, listener);
     }
     public synchronized void getAllEventsByDate(long timestamp, EventDataListener listener){
-        Query q = eventRef.whereEqualTo("dateTime", timestamp).limit(30);
+        Query q = eventRef.whereEqualTo("timestamp", timestamp).limit(30);
         HandleQuery(q, listener);
     }
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //

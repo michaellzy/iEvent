@@ -97,14 +97,10 @@ public class Parser {
                 rightExp = new ValueExp(value);
                 break;
             case STR:
-                String secondIdentifier = currentToken.getToken();
-                rightExp = new VariableExp(secondIdentifier);
-                break;
             case DATE:
                 // Assuming the date format is mm-dd and needs conversion to a timestamp for comparison
-                String dateString = currentToken.getToken();
-                long timestamp = convertDateToTimestamp(dateString);
-                rightExp = new ValueExp(timestamp);
+                String secondIdentifier = currentToken.getToken();
+                rightExp = new VariableExp(secondIdentifier);
                 break;
             default:
                 throw new IllegalProductionException("Expected a numeric value, identifier, or date after '=', but found: " + currentToken.getToken());
@@ -160,15 +156,15 @@ public class Parser {
         Exp right = parseFactor();
         return new AndExp(left, right);
     }
-    private long convertDateToTimestamp(String dateString) {
-        // Use SimpleDateFormat or similar to convert mm-dd to a timestamp
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = dateFormat.parse(dateString + "-2024");  // Append year for conversion
-            return (long) (date.getTime() / 1000);
-        } catch (ParseException e) {
-            Log.e("Parser", "Failed to parse date: " + dateString, e);
-            return -1;  // Return a default or error value
-        }
-    }
+//    private long convertDateToTimestamp(String dateString) {
+//        // Use SimpleDateFormat or similar to convert mm-dd to a timestamp
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            Date date = dateFormat.parse(dateString + "-2024");  // Append year for conversion
+//            return (long) (date.getTime() / 1000);
+//        } catch (ParseException e) {
+//            Log.e("Parser", "Failed to parse date: " + dateString, e);
+//            return -1;  // Return a default or error value
+//        }
+//    }
 }
