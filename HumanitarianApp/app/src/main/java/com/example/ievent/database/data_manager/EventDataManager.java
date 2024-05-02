@@ -242,24 +242,4 @@ public class EventDataManager {
 
         HandleQuery(query, listener);
     }
-
-
-    public synchronized void updateEvents(EventDataListener listener) {
-        eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    listener.onFailure("Listen failed " + error);
-                }
-
-                ArrayList<Event> newEvents = new ArrayList<>();
-                for (DocumentChange dc: value.getDocumentChanges()) {
-                    if (dc.getType() == DocumentChange.Type.ADDED) {
-                        newEvents.add(dc.getDocument().toObject(Event.class));
-                    }
-                }
-                listener.onSuccess(newEvents);
-            }
-        });
-    }
 }

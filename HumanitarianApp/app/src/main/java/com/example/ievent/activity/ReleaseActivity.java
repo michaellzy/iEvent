@@ -109,7 +109,8 @@ public class ReleaseActivity extends BaseActivity {
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                     Organizer curOrg = data.get(0);
-                    curOrg.organizeEvent(event);
+                    if (event.getEventId() != null)
+                        curOrg.organizeEvent(event.getEventId());
                 }
 
                 @Override

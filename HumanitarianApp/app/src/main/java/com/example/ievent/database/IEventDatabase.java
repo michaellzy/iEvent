@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;
+import com.example.ievent.database.data_manager.OrgnizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
@@ -49,11 +50,11 @@ public class IEventDatabase{
     }
 
     public void addNewOrganizer(String uid, Organizer organizer) {
-        UserDataManager.getInstance().addOrganizer(uid, organizer);
+        OrgnizerDataManager.getInstance().addOrganizer(uid, organizer);
     }
 
     public void getOrganizer(String uid, OrgDataListener listener) {
-        UserDataManager.getInstance().getOrganizer(uid, listener);
+        OrgnizerDataManager.getInstance().getOrganizer(uid, listener);
     }
 
     /***
@@ -94,10 +95,6 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
-    public void updateEvent(EventDataListener listener) {
-        EventDataManager.getInstance().updateEvents(listener);
-    }
-
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
@@ -112,7 +109,7 @@ public class IEventDatabase{
     }
 
     public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-        UserDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+        OrgnizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
     }
 
 }

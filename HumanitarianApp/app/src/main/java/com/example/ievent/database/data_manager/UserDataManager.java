@@ -33,13 +33,13 @@ public class UserDataManager {
     private static UserDataManager instance;
 
     private CollectionReference userRef;
-    private CollectionReference orgRef;
+    // private CollectionReference orgRef;
 
 
     private UserDataManager() {
 
         userRef = FirebaseFirestore.getInstance().collection("Users");
-        orgRef = FirebaseFirestore.getInstance().collection("Organizers");
+        // orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
 
     public static synchronized UserDataManager getInstance() {
@@ -61,9 +61,6 @@ public class UserDataManager {
     public synchronized void addNewUser(String uid, User user) {
         userRef.document(uid).set(user);
     }
-    public synchronized void addOrganizer(String uid, Organizer org) {
-        orgRef.document(uid).set(org);
-    }
 
 
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
@@ -84,56 +81,6 @@ public class UserDataManager {
            } else {
                listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
            }
-        });
-    }
-
-    public synchronized void getOrganizer(String uid, OrgDataListener listener) {
-        DocumentReference docRef = orgRef.document(uid);
-        docRef.get().addOnCompleteListener(task -> {
-            DocumentSnapshot document = task.getResult();
-            if (task.isSuccessful()) {
-                if (document.exists()) {
-                    // User user = document.toObject(User.class);
-                    Organizer org = document.toObject(Organizer.class);
-                    ArrayList<Organizer> organizers = new ArrayList<>();
-                    organizers.add(org);
-                    listener.onSuccess(organizers);
-                } else {
-                    listener.onFailure("No such organizer exist, should register one");
-                }
-            } else {
-                listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
-            }
-        });
-
-    }
-
-    public synchronized void addOrganizedEvent(String uid, Event event) {
-        DocumentReference docRef = orgRef.document(uid);
-        docRef.update("organizedEventList", FieldValue.arrayUnion(event)).
-                addOnSuccessListener(aVoid -> Log.d("UserDataManager", "Event added successfully!")).
-                addOnFailureListener(e -> Log.e("UserDataManager", "Error adding event", e));
-    }
-
-    public synchronized void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-        DocumentReference docRef = orgRef.document(uid);
-        docRef.get().addOnCompleteListener(task -> {
-            DocumentSnapshot document = task.getResult();
-            if (document.exists()) {
-                ArrayList<Event> orgEvents = new ArrayList<>();
-                ArrayList<Map<String, Object>> eventsMap = (ArrayList<Map<String,java.lang.Object>>) document.get("organizedEventList");
-
-                // Process the fetched events
-                for (Map<String, Object> event : eventsMap) {
-                    for (Map.Entry<String, Object> entry : event.entrySet()) {
-                        Object value = entry.getValue();  // This is the value associated with the key
-                        orgEvents.add((Event) value);
-                    }
-                }
-                listener.onSuccess(orgEvents);
-            } else {
-                listener.onFailure("No such document found in organizer");
-            }
         });
     }
 }
