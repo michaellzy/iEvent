@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), this);
         // manageDataOperations();
     }
 

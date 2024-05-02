@@ -123,7 +123,7 @@ public class UserAcitivity extends BaseActivity {
 
     private void setVariable(){
         // Set the profile image
-        db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid(), this);
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
