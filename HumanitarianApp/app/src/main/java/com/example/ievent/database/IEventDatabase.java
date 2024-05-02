@@ -1,5 +1,6 @@
 package com.example.ievent.database;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.widget.ImageView;
 
@@ -71,6 +72,17 @@ public class IEventDatabase{
         UserDataManager.getInstance().getLoggedInUser(uid, listener);
     }
 
+    /**
+     * update the user avatar
+     * @param uid the user id
+     * @param avatar the new avatar
+     * @param listener the listener to handle the data
+     */
+    public void updateUserAvatar(String uid, String avatar, UserDataListener listener) {
+        UserDataManager.getInstance().updateUserAvatar(uid, avatar, listener);
+    }
+
+
     // ----------------------------------- EVENTS ----------------------------------- //
 
     public void addNewEvent(Event e) {
@@ -105,8 +117,8 @@ public class IEventDatabase{
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
     }
 
-    public void downloadAvatar(ImageView imageView, String uid){
-        MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
+    public void downloadAvatar(ImageView imageView, String uid, Activity activity){
+        MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 
     public void uploadEventImage(Uri file, DataListener<String> listener) {

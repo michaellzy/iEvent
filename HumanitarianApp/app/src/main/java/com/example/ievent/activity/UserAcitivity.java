@@ -44,6 +44,7 @@ public class UserAcitivity extends BaseActivity {
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +181,6 @@ public class UserAcitivity extends BaseActivity {
                                 Glide.with(UserAcitivity.this)
                                         .load(resultUri)
                                         .into(binding.profileImage);
-                                Toast.makeText(UserAcitivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
