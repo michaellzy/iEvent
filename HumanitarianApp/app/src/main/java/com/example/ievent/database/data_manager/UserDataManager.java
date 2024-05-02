@@ -37,6 +37,7 @@ public class UserDataManager {
 
 
     private UserDataManager() {
+
         userRef = FirebaseFirestore.getInstance().collection("Users");
         // orgRef = FirebaseFirestore.getInstance().collection("Organizers");
     }
@@ -62,6 +63,13 @@ public class UserDataManager {
     }
 
 
+
+
+    /**
+     *  get the current user
+     * @param uid the user id
+     * @param listener the listener to handle the data
+     */
     public synchronized void getLoggedInUser(String uid, UserDataListener listener) {
         DocumentReference docRef = userRef.document(uid);
         docRef.get().addOnCompleteListener(task -> {
@@ -81,7 +89,23 @@ public class UserDataManager {
                listener.onFailure("get failed with " + Objects.requireNonNull(task.getException()).getMessage());
            }
         });
+
     }
+
+    // ——————————————————————————————————————----- update user information —————————————————————————————————————— //
+    /**
+     * update the user avatar
+     * @param uid the user id
+     * @param avatar the new avatar
+     */
+    public synchronized void updateUserAvatar(String uid, String avatar, UserDataListener listener) {
+        userRef.document(uid).update("avatar", avatar)
+                .addOnSuccessListener(aVoid ->{
+                    listener.onSuccess(new ArrayList<>());
+                })
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
+
 
     public synchronized void addEventToUser(String uid, String eventId, DataListener<Void> listener) {
         DocumentReference userDoc = userRef.document(uid);

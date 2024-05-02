@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), this);
         // manageDataOperations();
     }
 
@@ -88,8 +88,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -162,7 +160,7 @@ public class MainActivity extends BaseActivity {
 
 
 
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), this);
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });

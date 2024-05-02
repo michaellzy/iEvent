@@ -83,24 +83,27 @@ public class OrganizerDataManager {
     public synchronized void fetchOragnizedData(String uid, OrganizedEventListener listener) {
         DocumentReference docRef = orgRef.document(uid);
 
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.e("UserDataManager", "Listen failed.", e);
-                    return;
-                }
 
-                if (snapshot != null && snapshot.exists()) {
-                    ArrayList<String> orgnizedEventIds = new ArrayList<>();
-                    List<String> organizedEvents = (List<String>) snapshot.get("organizedEventList");
-                    if (organizedEvents != null) {
-                        orgnizedEventIds.addAll(organizedEvents);
-                    }
-                } else {
-                    Log.d("UserDataManager", "Current data: null");
+        docRef.addSnapshotListener((snapshot, e) -> {
+
+
+            if (e != null) {
+                Log.e("UserDataManager", "Listen failed.", e);
+                listener.onError(e.toString());
+                return;
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                ArrayList<String> orgnizedEventIds = new ArrayList<>();
+                List<String> organizedEvents = (List<String>) snapshot.get("organizedEventList");
+                Log.i("FETCH ORGANIZED DATA", "fetchOragnizedData: " + organizedEvents.size());
+                if (organizedEvents != null) {
+                    orgnizedEventIds.addAll(organizedEvents);
                 }
+                listener.onEventsUpdated(orgnizedEventIds);
+            } else {
+                listener.onError("null");
+                Log.d("UserDataManager", "Current data: null");
             }
         });
     }
