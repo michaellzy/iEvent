@@ -257,6 +257,28 @@ public class EventDataManager {
        HandleQuery(q, listener);
     }
 
+
+    public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener) {
+        ArrayList<Event> events = new ArrayList<>();
+        for (String id : ids) {
+            DocumentReference docRef = eventRef.document(id);
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Event event = document.toObject(Event.class);
+                        events.add(event);
+                    } else {
+                        listener.onFailure("No such document");
+                    }
+                } else {
+                    listener.onFailure("Error getting documents: " + Objects.requireNonNull(task.getException()).getMessage());
+                }
+            });
+        }
+        listener.onSuccess(events);
+    }
+
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //
 
     /**

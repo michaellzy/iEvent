@@ -10,10 +10,13 @@ import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrgDataListener;
+import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
+
+import java.util.EventListener;
 
 
 /**
