@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Organizer extends User implements java.io.Serializable{
 
-    private ArrayList<Event> organizedEventList = new ArrayList<>();
+    private ArrayList<String> organizedEventList = new ArrayList<>();
 
     public Organizer() {
         super();
@@ -20,7 +20,7 @@ public class Organizer extends User implements java.io.Serializable{
         OrganizerDataManager.getInstance().addOrganizedEvent(super.getUid(), eventId);
     }
 
-    public ArrayList<Event> getOrganizedEventList() {
+    public ArrayList<String> getOrganizedEventList() {
         // Overridden to return the list of events this participant has joined
         return organizedEventList;
     }

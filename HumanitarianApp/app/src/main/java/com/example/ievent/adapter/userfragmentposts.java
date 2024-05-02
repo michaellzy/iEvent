@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.entity.Event;
 
@@ -41,6 +42,10 @@ public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.Vi
         holder.time.setText(event.getDateTime());
         holder.price.setText("$" + event.getPrice());
         // holder.organizer.setText(event.getOrganizer());
+
+        Glide.with(holder.itemView.getContext()).
+                load(event.getImg()).
+                into(holder.imageView);
     }
 
     @Override
