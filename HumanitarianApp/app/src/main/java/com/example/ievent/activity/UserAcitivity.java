@@ -20,12 +20,17 @@ import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.databinding.ActivityUserBinding;
+import com.example.ievent.entity.Event;
+import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -38,7 +43,6 @@ public class UserAcitivity extends BaseActivity {
     private ActivityUserBinding binding;
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +57,14 @@ public class UserAcitivity extends BaseActivity {
         tabLayout = binding.tabLayout;
 
         // Initial setup
-        setupRecyclerView("Post");
+//        setupRecyclerView("Post");
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Change RecyclerView content based on selected tab
                 String type = Objects.requireNonNull(tab.getText()).toString();
-                setupRecyclerView(type);
+//                setupRecyclerView(type);
             }
 
             @Override
@@ -77,6 +81,42 @@ public class UserAcitivity extends BaseActivity {
         setVariable();
 
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
+
+
+        String uid = mAuth.getUid();
+
+
+
+        db.fetchOrganizedData(uid, new OrganizedEventListener() {
+            @Override
+            public void onEventsUpdated(List<String> eventIds) {
+                Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+
+                ArrayList<String> temp = new ArrayList<>(eventIds);
+                Log.i(
+                        "TEMP", "onEventsUpdated: " + temp.size());
+                db.fetchDocuments(temp, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isALl) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        setupRecyclerViewByEvents("Post", data);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -92,14 +132,21 @@ public class UserAcitivity extends BaseActivity {
 
     }
 
-    private void setupRecyclerView(String type) {
+
+    private void setupRecyclerViewByEvents(String type, ArrayList<Event> events){
         switch (type) {
             case "Post":
-                recyclerView.setAdapter(new userfragmentposts(new ArrayList<>()));
+                recyclerView.setAdapter(new userfragmentposts(events));
                 break;
             case "Tickets":
-                recyclerView.setAdapter(new userfragmentticketsAdapter(new ArrayList<>()));
+                recyclerView.setAdapter(new userfragmentticketsAdapter(events));
                 break;
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setupRecyclerViewByUsers(String type, ArrayList<User> users){
+        switch (type) {
             case "Sub":
                 recyclerView.setAdapter(new userfragmentsubscriptionAdapter());
                 break;
@@ -109,6 +156,7 @@ public class UserAcitivity extends BaseActivity {
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
 
     private ActivityResultLauncher getCropImageActivityResultLauncher() {

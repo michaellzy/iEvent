@@ -206,10 +206,12 @@ public class EventDataManager {
             }
         });
     }
-    public synchronized void fetchDocuments(ArrayList<String> Eventid, EventDataListener listener){
+    public synchronized void fetchDocuments(ArrayList<String> EventIds, EventDataListener listener){
         ArrayList<Task<DocumentSnapshot>> tasks = new ArrayList<>();
 
-        for (String docId : Eventid) {
+        Log.i("FETCHDOCUMENTS", "fetchDocuments: ");
+
+        for (String docId : EventIds) {
             DocumentReference docRef = eventRef.document(docId);
             // Asynchronously retrieve each document and add the task to the list
             tasks.add(docRef.get());

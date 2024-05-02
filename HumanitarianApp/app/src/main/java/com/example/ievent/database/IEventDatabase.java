@@ -16,6 +16,8 @@ import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 
+import java.util.ArrayList;
+
 import java.util.EventListener;
 
 
@@ -111,8 +113,19 @@ public class IEventDatabase{
         MediaManager.getInstance().uploadEventImg(file, listener);
     }
 
-    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+//    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
+//        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
+//    }
+
+    public void fetchOrganizedData(String uid, OrganizedEventListener listener){
+        OrganizerDataManager.getInstance().fetchOragnizedData(uid, listener);
     }
 
+    public void fetchDocuments(ArrayList<String> EventIds , EventDataListener listener){
+        EventDataManager.getInstance().fetchDocuments(EventIds,listener);
+    }
+
+    public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener){
+        EventDataManager.getInstance().getAllEventsByIds(ids, listener);
+    }
 }
