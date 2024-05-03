@@ -56,6 +56,7 @@ public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmen
     }
 
     public void setEvents(ArrayList<Event> events) {
+
         eventList.addAll(events);   // Add all new events
 
     }

@@ -8,6 +8,10 @@ public class Participant extends User {
 
 
     private ArrayList<String> participatedEventList = new ArrayList<>();
+    public Participant() {
+        super();
+    }
+
 
     public Participant(String uid, String email, String userName) {
         super(uid, email, userName);

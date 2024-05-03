@@ -53,8 +53,7 @@ public class UserAcitivity extends BaseActivity {
     private ActivityUserBinding binding;
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
-
-
+    String uid = mAuth.getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,31 +68,65 @@ public class UserAcitivity extends BaseActivity {
 
         // Initial setup
 //        setupRecyclerView("Post");
-        String uid = mAuth.getUid();
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String type = Objects.requireNonNull(tab.getText()).toString();
-                if ("Tickets".equals(type)&& recyclerView.getAdapter() == null) {
-                    UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
-                        @Override
-                        public void isAllData(boolean isALl) {
+                Log.d("TabSelection", "Selected tab: " + type); // Log to confirm which tab is selected
+                switch (type) {
+                    case "Tickets":
+                        Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
+                        UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
+                            @Override
+                            public void isAllData(boolean isAll) {
+                            }
 
-                        }
+                            @Override
+                            public void onSuccess(ArrayList<Event> events) {
+                                setupRecyclerViewByEvents("Tickets", events);
+                            }
 
-                        @Override
-                        public void onSuccess(ArrayList<Event> events) {
-                            setupRecyclerViewByEvents("Tickets", events);
-                        }
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        break;
 
-                        @Override
-                        public void onFailure(String errorMessage) {
-                            Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-//                    setupRecyclerView(type);
+                    case "Post":
+                        Log.d("TabSelection", "Post tab is selected"); // Log for debugging
+                        db.fetchOrganizedData(uid, new OrganizedEventListener() {
+                            @Override
+                            public void onEventsUpdated(List<String> eventIds) {
+                                Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+
+                                ArrayList<String> temp = new ArrayList<>(eventIds);
+                                Log.i(
+                                        "TEMP", "onEventsUpdated: " + temp.size());
+                                db.fetchDocuments(temp, new EventDataListener() {
+                                    @Override
+                                    public void isAllData(boolean isALl) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(ArrayList<Event> data) {
+                                        setupRecyclerViewByEvents("Post", data);
+                                    }
+
+                                    @Override
+                                    public void onFailure(String errorMessage) {
+                                        Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onError(String error) {
+                                Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 }
             }
 
@@ -104,13 +137,13 @@ public class UserAcitivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                // Handle tab reselected if needed
+                onTabSelected(tab);  // This will reload the data when the tab is reselected
+
             }
         });
 
         setVariable();
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
-
         db.fetchOrganizedData(uid, new OrganizedEventListener() {
             @Override
             public void onEventsUpdated(List<String> eventIds) {
@@ -144,6 +177,7 @@ public class UserAcitivity extends BaseActivity {
     }
 
 
+
     private void setVariable(){
         // Set the profile image
         db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid());
@@ -152,10 +186,7 @@ public class UserAcitivity extends BaseActivity {
             // Open image picker
             ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
         });
-
-
     }
-
 
     private void setupRecyclerViewByEvents(String type, ArrayList<Event> events){
         switch (type) {
