@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
                 int totalItem = layoutManager.getItemCount();
                 int lastVisible = layoutManager.findLastCompletelyVisibleItemPosition();
                 if (totalItem <= (lastVisible + 3)) {
-                    if (!isLoading && updateListener == null) {
+                    if (!isLoading) {
                         loadMoreEvents();
                         isLoading = true;
                     }
