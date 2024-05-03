@@ -62,12 +62,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventDataManager.getInstance().removeEventListener(updateListener);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -84,7 +78,8 @@ public class MainActivity extends BaseActivity {
         recyclerViewRec.setAdapter(recEventAdapter);
 
         // show events stored in FireStore
-        loadMoreEvents();
+        if (updateListener == null)
+            loadMoreEvents();
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -93,7 +88,7 @@ public class MainActivity extends BaseActivity {
                 int totalItem = layoutManager.getItemCount();
                 int lastVisible = layoutManager.findLastCompletelyVisibleItemPosition();
                 if (totalItem <= (lastVisible + 3)) {
-                    if (!isLoading) {
+                    if (!isLoading && updateListener == null) {
                         loadMoreEvents();
                         isLoading = true;
                     }
