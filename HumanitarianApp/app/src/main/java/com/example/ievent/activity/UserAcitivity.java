@@ -20,14 +20,17 @@ import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
 import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.databinding.ActivityUserBinding;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.example.ievent.entity.Event;
@@ -97,8 +100,13 @@ public class UserAcitivity extends BaseActivity {
                         break;
 
                     case "Post":
-                        Log.d("TabSelection", "Post tab is selected"); // Log for debugging
+                        Log.d("TabSelection", "Post tab is selected");
                         setPosts();
+
+                    case "Followers":
+                        Log.d("TabSelection", "Followers tab is selected");
+                        setupFollowersView();
+
                 }
             }
 
@@ -119,6 +127,44 @@ public class UserAcitivity extends BaseActivity {
         setPosts();
 
     }
+    private void setupFollowersView() {
+        String uid = FirebaseAuth.getInstance().getUid();  // Get current user's UID
+        if (uid == null) {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+// 获取用户的 organizer 实例
+        OrganizerDataManager.getInstance().getOrganizer(uid, new OrgDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Organizer> organizers) {
+                if (!organizers.isEmpty()) {
+                    Organizer organizer = organizers.get(0);
+                    ArrayList<String> followerIds = organizer.getFollowersList();
+
+
+                    UserDataManager.getInstance().getAllUsersByIds(followerIds, new UserDataListener() {
+                        @Override
+                        public void onSuccess(ArrayList<User> users) {
+                            setupRecyclerViewByUsers("Followers", users);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(UserAcitivity.this, "Failed to load followers: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(UserAcitivity.this, "No organizer found for the user.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(UserAcitivity.this, "Failed to get organizer: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void setPosts(){
         String uid = mAuth.getUid();
@@ -184,7 +230,7 @@ public class UserAcitivity extends BaseActivity {
                 recyclerView.setAdapter(new userfragmentsubscriptionAdapter());
                 break;
             case "Followers":
-                recyclerView.setAdapter(new userfragmentfollowers());
+                recyclerView.setAdapter(new userfragmentfollowers(users));
                 break;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

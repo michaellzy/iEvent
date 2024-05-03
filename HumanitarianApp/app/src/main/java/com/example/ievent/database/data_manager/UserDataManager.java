@@ -10,6 +10,8 @@ import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -136,4 +138,38 @@ public class UserDataManager {
             }
         });
     }
+    /**
+     * Retrieves multiple users based on a list of user IDs.
+     * @param ids List of user IDs.
+     * @param listener Listener to handle the result or failure.
+     */
+    public synchronized void getAllUsersByIds(List<String> ids, UserDataListener listener) {
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+        for (String id : ids) {
+            tasks.add(userRef.document(id).get());
+        }
+
+        Tasks.whenAllSuccess(tasks).addOnSuccessListener(documents -> {
+            ArrayList<User> users = new ArrayList<>();
+            for (Object document : documents) {
+                DocumentSnapshot doc = (DocumentSnapshot) document;
+                if (doc.exists()) {
+                    users.add(doc.toObject(User.class));
+                } else {
+                    Log.e(TAG, "Document not found: " + doc.getId());
+                }
+            }
+            if (!users.isEmpty()) {
+                listener.onSuccess(users);
+            } else {
+                listener.onFailure("No users found.");
+            }
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "Error fetching user documents: ", e);
+            listener.onFailure("Error fetching users: " + e.getMessage());
+        });
+    }
+
+
+
 }
