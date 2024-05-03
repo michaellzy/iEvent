@@ -53,7 +53,7 @@ public class UserAcitivity extends BaseActivity {
     private ActivityUserBinding binding;
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
-    String uid = mAuth.getUid();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,7 @@ public class UserAcitivity extends BaseActivity {
 
         // Initial setup
 //        setupRecyclerView("Post");
+        String uid = mAuth.getUid();
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
