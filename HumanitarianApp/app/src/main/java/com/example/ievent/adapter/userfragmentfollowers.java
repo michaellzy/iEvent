@@ -51,10 +51,15 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
     }
 
     public void setUsers(ArrayList<User> users) {
+        clearUsers();
         UserList.addAll(users);
         // notifyDataSetChanged();
     }
-    // Method to update followers list
+
+    public void clearUsers() {
+        UserList.clear();
+//        notifyDataSetChanged();  // Notify the adapter that the data has been cleared
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;

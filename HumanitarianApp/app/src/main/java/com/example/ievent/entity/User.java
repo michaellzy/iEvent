@@ -8,7 +8,7 @@ public class User {
     private String email;
 
     private String uid;
-
+    private ArrayList<String> subscribedList =new ArrayList<>();
 
 
 
@@ -53,6 +53,18 @@ public class User {
 
     public String getUid() {
         return uid;
+    }
+
+    public ArrayList<String> getSubscribedList() {
+        return subscribedList;
+    }
+
+    public void addSubscription(String userId) {
+        subscribedList.add(userId);
+    }
+
+    public void removeSubscription(String userId) {
+        subscribedList.remove(userId);
     }
 
 
