@@ -2,6 +2,8 @@ package com.example.ievent.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
@@ -23,12 +25,21 @@ import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private RecyclerView recyclerViewRec;
 
@@ -121,6 +132,40 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        // 初始化NavigationView和HeaderView
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_drawer_include);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView profileImageView = headerView.findViewById(R.id.profile_image);
+        TextView usernameTextView = headerView.findViewById(R.id.textView_header_name);
+        TextView emailTextView = headerView.findViewById(R.id.textView_header_email);
+
+        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User user = data.get(0);
+                usernameTextView.setText(user.getUserName());
+                emailTextView.setText(user.getEmail());
+                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
+                profileImageView.setOnClickListener(v -> {
+                    startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+                });
+                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        binding.profileImage.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+        });
+
+        setupNavigationView(navigationView);
+
 
         // Initialize FloatingActionButton and set its click listener
         FloatingActionButton fabRelease = findViewById(R.id.fab_release);
@@ -172,6 +217,45 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
     }
+    // 设置 NavigationView 的选项监听器
+    private void setupNavigationView(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectDrawerItem(item);
+                return true;
+            }
+        });
+    }
+    public void selectDrawerItem(MenuItem menuItem) {
+        Intent intent;
+
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.nav_home) {
+            // Handle navigation to home
+        } else if (itemId == R.id.nav_settings) {
+            // Handle navigation to settings
+        } else if (itemId == R.id.nav_logout) {
+            // Handle logout
+            intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // Close current activity
+        } else {
+            // Handle other menu items if needed
+        }
+
+        // Highlight the selected item in the navigation drawer
+        menuItem.setChecked(true);
+
+        // Set action bar title if you have a toolbar set up
+        setTitle(menuItem.getTitle());
+
+        // Close the navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+
 
     private void loadMoreEvents() {
         progressBar.setVisibility(View.VISIBLE);
