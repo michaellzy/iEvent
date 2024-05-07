@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity {
                     finish();
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
                     startActivity(new Intent(getApplicationContext(), NotificationActivity.class));

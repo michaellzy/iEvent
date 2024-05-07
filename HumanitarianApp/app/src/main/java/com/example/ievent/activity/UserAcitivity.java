@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -72,6 +74,27 @@ public class UserAcitivity extends BaseActivity {
         // Initial setup
 //        setupRecyclerView("Post");
         String uid = mAuth.getUid();
+        ImageView profileImageView = binding.profileImage;
+        TextView usernameTextView = binding.tvName;
+        TextView emailTextView = binding.tvEmail;
+        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User user = data.get(0);
+                usernameTextView.setText(user.getUserName());
+                emailTextView.setText(user.getEmail());
+                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
+                profileImageView.setOnClickListener(v -> {
+                    startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
