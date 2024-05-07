@@ -1,13 +1,16 @@
 package com.example.ievent.database.data_manager;
 
 
+import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.ImageView;
 
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.database.listener.DataListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -93,6 +96,26 @@ public class MediaManager {
                     .into(imageView);
         }).addOnFailureListener(e -> {
             imageView.setImageResource(defaultImage);
+        });
+    }
+
+
+    public void uploadEventImg(Uri file, DataListener<String> listener){
+        StorageReference eventRef = storageRef.child("eventImages").child(file.getLastPathSegment());
+
+        // check bitmap is valid
+        UploadTask uploadTask = eventRef.putFile(file);
+
+        // start the upload task
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            listener.onFailure(exception.getMessage());
+        }).addOnSuccessListener(taskSnapshot -> {
+            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                ArrayList<String> uriList = new ArrayList<>();
+                uriList.add(uri.toString());
+                listener.onSuccess(uriList);
+            });
         });
     }
 

@@ -19,13 +19,28 @@ import com.example.ievent.adapter.userfragmentfollowers;
 import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
+import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.databinding.ActivityUserBinding;
+import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Participant;
+import com.example.ievent.entity.User;
+import com.example.ievent.entity.Event;
+import com.example.ievent.entity.User;
 import com.example.ievent.global.ImageCropper;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -38,7 +53,6 @@ public class UserAcitivity extends BaseActivity {
     private ActivityUserBinding binding;
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +67,39 @@ public class UserAcitivity extends BaseActivity {
         tabLayout = binding.tabLayout;
 
         // Initial setup
-        setupRecyclerView("Post");
+//        setupRecyclerView("Post");
+        String uid = mAuth.getUid();
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                // Change RecyclerView content based on selected tab
                 String type = Objects.requireNonNull(tab.getText()).toString();
-                setupRecyclerView(type);
+                Log.d("TabSelection", "Selected tab: " + type); // Log to confirm which tab is selected
+                switch (type) {
+                    case "Tickets":
+                        Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
+                        UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
+                            @Override
+                            public void isAllData(boolean isAll) {
+                            }
+
+                            @Override
+                            public void onSuccess(ArrayList<Event> events) {
+                                setupRecyclerViewByEvents("Tickets", events);
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        break;
+
+                    case "Post":
+                        Log.d("TabSelection", "Post tab is selected"); // Log for debugging
+                        setPosts();
+                }
             }
 
             @Override
@@ -70,14 +109,51 @@ public class UserAcitivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                // Handle tab reselected if needed
+                onTabSelected(tab);  // This will reload the data when the tab is reselected
+
             }
         });
 
         setVariable();
-
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
+        setPosts();
+
     }
+
+    private void setPosts(){
+        String uid = mAuth.getUid();
+        db.fetchOrganizedData(uid, new OrganizedEventListener() {
+            @Override
+            public void onEventsUpdated(List<String> eventIds) {
+                Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+
+                ArrayList<String> temp = new ArrayList<>(eventIds);
+                Log.i(
+                        "TEMP", "onEventsUpdated: " + temp.size());
+                db.fetchDocuments(temp, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isALl) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        setupRecyclerViewByEvents("Post", data);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 
     private void setVariable(){
@@ -88,18 +164,22 @@ public class UserAcitivity extends BaseActivity {
             // Open image picker
             ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
         });
-
-
     }
 
-    private void setupRecyclerView(String type) {
+    private void setupRecyclerViewByEvents(String type, ArrayList<Event> events){
         switch (type) {
             case "Post":
-                recyclerView.setAdapter(new userfragmentposts(new ArrayList<>()));
+                recyclerView.setAdapter(new userfragmentposts(events));
                 break;
             case "Tickets":
-                recyclerView.setAdapter(new userfragmentticketsAdapter(new ArrayList<>()));
+                recyclerView.setAdapter(new userfragmentticketsAdapter(events));
                 break;
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setupRecyclerViewByUsers(String type, ArrayList<User> users){
+        switch (type) {
             case "Sub":
                 recyclerView.setAdapter(new userfragmentsubscriptionAdapter());
                 break;
@@ -109,6 +189,7 @@ public class UserAcitivity extends BaseActivity {
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
 
     private ActivityResultLauncher getCropImageActivityResultLauncher() {
@@ -132,7 +213,6 @@ public class UserAcitivity extends BaseActivity {
                                 Glide.with(UserAcitivity.this)
                                         .load(resultUri)
                                         .into(binding.profileImage);
-                                Toast.makeText(UserAcitivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

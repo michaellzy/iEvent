@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.entity.Event;
 
@@ -18,6 +19,8 @@ import java.util.List;
 // 对于推荐活动的RecyclerView
 public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.ViewHolder> {
     private List<Event> eventList;
+
+
 
     public userfragmentposts(List<Event> eventList) {
         this.eventList = eventList;
@@ -38,7 +41,11 @@ public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.Vi
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
         holder.price.setText("$" + event.getPrice());
-        holder.organizer.setText("iEvent");
+        // holder.organizer.setText(event.getOrganizer());
+
+        Glide.with(holder.itemView.getContext()).
+                load(event.getImg()).
+                into(holder.imageView);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.example.ievent.entity;
 
-public class User {
-    private String userName = "XXX";
 
+
+public class User {
+    private String userName;
     private String email;
 
     private String uid;
@@ -21,6 +22,11 @@ public class User {
     private String avatar;
 
     public User() {}
+
+    public User(String uid) {
+        this.uid = uid;
+    }
+
     public User(String uid, String email, String userName){
         this.uid = uid;
         this.email = email;

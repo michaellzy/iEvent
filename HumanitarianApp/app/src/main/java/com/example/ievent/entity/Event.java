@@ -1,5 +1,7 @@
 package com.example.ievent.entity;
 
+import com.example.ievent.database.data_manager.UserDataManager;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 
@@ -7,6 +9,8 @@ public class Event implements java.io.Serializable{
     private String type;
     private String title;
     private String description;
+
+    private String eventId;
 
     private String organizer;
     private String location;
@@ -18,6 +22,17 @@ public class Event implements java.io.Serializable{
     private ArrayList<User> participants;
 
     public Event() {}
+
+    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img) {
+        this.type = type;
+        this.title = title;
+        this.description = description;
+        this.organizer = organizer;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.price = price;
+        this.img = img;
+    }
 
     public String getType() {
         return type;
@@ -94,6 +109,13 @@ public class Event implements java.io.Serializable{
         this.participants = participants;
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
 
     @Override
     public String toString() {
@@ -127,8 +149,8 @@ public class Event implements java.io.Serializable{
             e.setDescription("This organizer is too lazy to write a description.");
         }
 
-        if(e.getOrganizer() == null || e.getOrganizer().isEmpty()) {
-            e.setOrganizer("Unknown");
+        if(e.getOrganizer() == null ) {
+            e.setOrganizer(null);
         }
 
         if(e.getImg() == null || e.getImg().isEmpty()) {
