@@ -38,7 +38,9 @@ public class MainActivity extends BaseActivity {
 
     private boolean isLoading = false;
 
-    private ArrayList<Event> events;
+    private ArrayList<Event> events = new ArrayList<>();
+
+    private ArrayList<Event> loadedEvents = new ArrayList<>();
 
     private EventUpdateListener updateListener;
 
@@ -47,6 +49,7 @@ public class MainActivity extends BaseActivity {
         super.onStart();
         EventDataManager.getInstance().addEventListener(updateListener);
     }
+
 
     @Override
     protected void onStop() {
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity {
         // manageDataOperations();
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +75,17 @@ public class MainActivity extends BaseActivity {
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
 
-        events = new ArrayList<>();
+        // events = new ArrayList<>();
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
         recEventAdapter = new RecommendedActivitiesAdapter(events);
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
 
         // show events stored in FireStore
-        if (updateListener == null)
+        if (updateListener == null) {
             loadMoreEvents();
+            loadedEvents.addAll(events);
+        }
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -91,6 +97,7 @@ public class MainActivity extends BaseActivity {
                     if (!isLoading) {
                         loadMoreEvents();
                         isLoading = true;
+                        loadedEvents.addAll(events);
                     }
                 }
             }
@@ -154,7 +161,7 @@ public class MainActivity extends BaseActivity {
                     // Additional check for safety
                     events.addAll(0, data);
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -176,21 +183,15 @@ public class MainActivity extends BaseActivity {
     private void loadMoreEvents() {
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
-            @Override
-            public void isAllData(boolean isALl) {
-                if (isALl) {
-                    isLoading = false;
-                }
-            }
 
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
-                    recEventAdapter.setEvents(data);
-                    // events.addAll(data);
+                    events.addAll(data);
+                    recEventAdapter.setEvents(events);
                     recEventAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
 
                 });
