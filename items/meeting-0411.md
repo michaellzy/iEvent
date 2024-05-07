@@ -104,6 +104,12 @@ Stand up Procedure:
 - Documentation and presentation 
 
 
+
+## UML Diagram
+
+![](media\Assets\eventapp_uml_v1.png)
+
+
 ## Action Items
 
 | Task                                     |       Assigned To       |  Due Date  |
