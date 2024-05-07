@@ -80,9 +80,6 @@ public class UserAcitivity extends BaseActivity {
                     case "Tickets":
                         Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
                         UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
-                            @Override
-                            public void isAllData(boolean isAll) {
-                            }
 
                             @Override
                             public void onSuccess(ArrayList<Event> events) {
@@ -107,10 +104,6 @@ public class UserAcitivity extends BaseActivity {
                                 Log.i(
                                         "TEMP", "onEventsUpdated: " + temp.size());
                                 db.fetchDocuments(temp, new EventDataListener() {
-                                    @Override
-                                    public void isAllData(boolean isALl) {
-
-                                    }
 
                                     @Override
                                     public void onSuccess(ArrayList<Event> data) {
@@ -154,11 +147,6 @@ public class UserAcitivity extends BaseActivity {
                 Log.i(
                         "TEMP", "onEventsUpdated: " + temp.size());
                 db.fetchDocuments(temp, new EventDataListener() {
-                    @Override
-                    public void isAllData(boolean isALl) {
-
-                    }
-
                     @Override
                     public void onSuccess(ArrayList<Event> data) {
                         setupRecyclerViewByEvents("Post", data);

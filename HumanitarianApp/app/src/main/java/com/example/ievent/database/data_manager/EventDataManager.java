@@ -44,7 +44,7 @@ public class EventDataManager {
     private ArrayList<EventUpdateListener> listeners = new ArrayList<>();
 
     private EventDataManager(){
-        eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
+        eventRef = FirebaseFirestore.getInstance().collection("events");
         // eventRef = FirebaseFirestore.getInstance().collection("events");
         eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -179,7 +179,7 @@ public class EventDataManager {
         e.setEventId(eventId);
         eventRef.document(eventId).set(e);
     }
-
+    
     // ----------------------------------- SEARCH SECTION START------------------------------------ //
     public synchronized void HandleQuery(Query query, EventDataListener listener) {
         query.get().addOnCompleteListener(task -> {
@@ -193,9 +193,6 @@ public class EventDataManager {
                     }
                     if (!snapshots.getDocuments().isEmpty()) {
                         lastVisible = snapshots.getDocuments().get(snapshots.size() - 1);
-                    } else {
-                        // No documents were returned, so we've loaded all available data
-                        listener.isAllData(true);
                     }
                     listener.onSuccess(events);
                 } else {
@@ -302,10 +299,12 @@ public class EventDataManager {
     public synchronized void loadEvents(int pageSize, EventDataListener listener) {
         Query query = eventRef.limit(pageSize);
 
+
         if (lastVisible != null) {
             query = query.startAfter(lastVisible);
         }
 
         HandleQuery(query, listener);
+
     }
 }

@@ -84,10 +84,6 @@ public class SearchActivity extends BaseActivity {
 
         // gets data here
         db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
-            @Override
-            public void isAllData(boolean isALl) {
-
-            }
 
             @Override
             public void onSuccess(ArrayList<Event> events) {
