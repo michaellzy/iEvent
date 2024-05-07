@@ -49,7 +49,7 @@ public class SearchActivity extends BaseActivity {
 //                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
                     return true;
