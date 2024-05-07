@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Organizer extends User implements java.io.Serializable{
 
     private ArrayList<String> organizedEventList = new ArrayList<>();
+    private ArrayList<String> followersList = new ArrayList<>();
 
     public Organizer() {
         super();
@@ -23,6 +24,17 @@ public class Organizer extends User implements java.io.Serializable{
     public ArrayList<String> getOrganizedEventList() {
         // Overridden to return the list of events this participant has joined
         return organizedEventList;
+    }
+
+    public ArrayList<String> getFollowersList() {
+        // Returns the list of followers for this organizer
+        return followersList;
+    }
+
+
+    public boolean isFollower(String userId) {
+        // Checks if a specific user is following this organizer
+        return followersList.contains(userId);
     }
 }
 

@@ -20,14 +20,17 @@ import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
 import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.databinding.ActivityUserBinding;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.example.ievent.entity.Event;
@@ -75,7 +78,6 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String type = Objects.requireNonNull(tab.getText()).toString();
-                Log.d("TabSelection", "Selected tab: " + type); // Log to confirm which tab is selected
                 switch (type) {
                     case "Tickets":
                         Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
@@ -87,14 +89,26 @@ public class UserAcitivity extends BaseActivity {
 
                             @Override
                             public void onFailure(String errorMessage) {
+                                setupRecyclerViewByEvents("Tickets", new ArrayList<>());
                                 Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
                             }
                         });
                         break;
 
                     case "Post":
-                        Log.d("TabSelection", "Post tab is selected"); // Log for debugging
+                        Log.d("TabSelection", "Post tab is selected");
                         setPosts();
+                        break;
+
+                    case "Followers":
+                        Log.d("TabSelection", "Followers tab is selected");
+                        setupFollowersView();
+                        break;
+
+                    case "Sub":
+                        Log.d("TabSelection", "sub tab is selected");
+                        setupSubscriptionsView();
+                        break;
                 }
             }
 
@@ -106,7 +120,6 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 onTabSelected(tab);  // This will reload the data when the tab is reselected
-
             }
         });
 
@@ -115,6 +128,42 @@ public class UserAcitivity extends BaseActivity {
         setPosts();
 
     }
+    private void setupFollowersView() {
+        String uid = FirebaseAuth.getInstance().getUid();  // Get current user's UID
+        if (uid == null) {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // 获取用户的 organizer 实例
+        OrganizerDataManager.getInstance().getOrganizer(uid, new OrgDataListener() {
+            @Override
+            public void onSuccess(ArrayList<Organizer> organizers) {
+                if (!organizers.isEmpty()) {
+                    Organizer organizer = organizers.get(0);
+                    ArrayList<String> followerIds = organizer.getFollowersList();
+                    UserDataManager.getInstance().getAllUsersByIds(followerIds, new UserDataListener() {
+                        @Override
+                        public void onSuccess(ArrayList<User> users) {
+                            setupRecyclerViewByUsers("Followers", users);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(UserAcitivity.this, "Failed to load followers: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(UserAcitivity.this, "No organizer found for the user.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(UserAcitivity.this, "Failed to get organizer: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void setPosts(){
         String uid = mAuth.getUid();
@@ -131,7 +180,6 @@ public class UserAcitivity extends BaseActivity {
                     public void onSuccess(ArrayList<Event> data) {
                         setupRecyclerViewByEvents("Post", data);
                     }
-
                     @Override
                     public void onFailure(String errorMessage) {
                         Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
@@ -141,6 +189,34 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void setupSubscriptionsView() {
+        String uid = mAuth.getUid();
+        UserDataManager.getInstance().getLoggedInUser(uid, new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> users) {
+                User currentUser = users.get(0);
+                ArrayList<String> subscriptionIds = currentUser.getSubscribedList();
+
+                UserDataManager.getInstance().getAllUsersByIds(subscriptionIds, new UserDataListener() {
+                    @Override
+                    public void onSuccess(ArrayList<User> subscribedUsers) {
+                        setupRecyclerViewByUsers("Sub", subscribedUsers);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        setupRecyclerViewByUsers("Sub", new ArrayList<>());
+                        Toast.makeText(UserAcitivity.this, "Failed to load subscriptions: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(UserAcitivity.this, "Failed to retrieve user data.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -172,10 +248,10 @@ public class UserAcitivity extends BaseActivity {
     private void setupRecyclerViewByUsers(String type, ArrayList<User> users){
         switch (type) {
             case "Sub":
-                recyclerView.setAdapter(new userfragmentsubscriptionAdapter());
+                recyclerView.setAdapter(new userfragmentsubscriptionAdapter(users));
                 break;
             case "Followers":
-                recyclerView.setAdapter(new userfragmentfollowers());
+                recyclerView.setAdapter(new userfragmentfollowers(users));
                 break;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
