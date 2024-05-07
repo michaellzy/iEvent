@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity {
                     finish();
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
 //                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
@@ -133,31 +133,7 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
-
-        // 初始化NavigationView和HeaderView
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_drawer_include);
-        View headerView = navigationView.getHeaderView(0);
-        ImageView profileImageView = headerView.findViewById(R.id.profile_image);
-        TextView usernameTextView = headerView.findViewById(R.id.textView_header_name);
-        TextView emailTextView = headerView.findViewById(R.id.textView_header_email);
-
-
-        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
-            @Override
-            public void onSuccess(ArrayList<User> data) {
-                User user = data.get(0);
-                usernameTextView.setText(user.getUserName());
-                emailTextView.setText(user.getEmail());
-                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
-                profileImageView.setOnClickListener(v -> {
-                    startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
-                });
-                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(),Toast.LENGTH_SHORT).show();
-            }
-
-
-        // Initialize FloatingActionButton and set its click listener
+                    // Initialize FloatingActionButton and set its click listener
         FloatingActionButton fabRelease = findViewById(R.id.fab_release);
         fabRelease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,8 +183,40 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_drawer_include);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView profileImageView = headerView.findViewById(R.id.profile_image);
+        TextView usernameTextView = headerView.findViewById(R.id.textView_header_name);
+        TextView emailTextView = headerView.findViewById(R.id.textView_header_email);
+
+        db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User user = data.get(0);
+                usernameTextView.setText(user.getUserName());
+                emailTextView.setText(user.getEmail());
+                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
+                profileImageView.setOnClickListener(v -> {
+                    startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+                });
+                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        binding.profileImage.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
+        });
+
         setupNavigationView(navigationView);
     }
+
 
     // 设置 NavigationView 的选项监听器
     private void setupNavigationView(NavigationView navigationView) {
