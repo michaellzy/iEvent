@@ -80,7 +80,6 @@ public class UserAcitivity extends BaseActivity {
                     case "Tickets":
                         Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
                         UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
-
                             @Override
                             public void onSuccess(ArrayList<Event> events) {
                                 setupRecyclerViewByEvents("Tickets", events);
@@ -95,32 +94,7 @@ public class UserAcitivity extends BaseActivity {
 
                     case "Post":
                         Log.d("TabSelection", "Post tab is selected"); // Log for debugging
-                        db.fetchOrganizedData(uid, new OrganizedEventListener() {
-                            @Override
-                            public void onEventsUpdated(List<String> eventIds) {
-                                Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
-
-                                ArrayList<String> temp = new ArrayList<>(eventIds);
-                                Log.i(
-                                        "TEMP", "onEventsUpdated: " + temp.size());
-                                db.fetchDocuments(temp, new EventDataListener() {
-
-                                    @Override
-                                    public void onSuccess(ArrayList<Event> data) {
-                                        setupRecyclerViewByEvents("Post", data);
-                                    }
-
-                                    @Override
-                                    public void onFailure(String errorMessage) {
-                                        Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                            @Override
-                            public void onError(String error) {
-                                Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        setPosts();
                 }
             }
 
@@ -138,6 +112,12 @@ public class UserAcitivity extends BaseActivity {
 
         setVariable();
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
+        setPosts();
+
+    }
+
+    private void setPosts(){
+        String uid = mAuth.getUid();
         db.fetchOrganizedData(uid, new OrganizedEventListener() {
             @Override
             public void onEventsUpdated(List<String> eventIds) {
