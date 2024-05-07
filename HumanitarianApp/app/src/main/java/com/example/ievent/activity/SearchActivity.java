@@ -274,6 +274,11 @@ public class SearchActivity extends BaseActivity {
     private EventDataListener eventDataListener() {
         return new EventDataListener() {
             @Override
+            public void isAllData(boolean isALl) {
+                //;
+            }
+
+            @Override
             public void onSuccess(ArrayList<Event> events) {
                 Log.d("SearchActivityEL", "Search onSuccess: Number of events found: " + events.size());
                 eventList.clear();
