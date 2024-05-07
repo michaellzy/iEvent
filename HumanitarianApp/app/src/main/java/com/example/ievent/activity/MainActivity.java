@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity {
                     // Additional check for safety
                     events.addAll(0, data);
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
-                    // Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -276,7 +276,6 @@ public class MainActivity extends BaseActivity {
                     recEventAdapter.setEvents(events);
                     recEventAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    recEventAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
                 });
             }
