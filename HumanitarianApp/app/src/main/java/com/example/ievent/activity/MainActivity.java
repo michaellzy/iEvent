@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
                     return true;
                 }
                 return false;

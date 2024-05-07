@@ -52,13 +52,12 @@ public class SearchActivity extends BaseActivity {
                     startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
+                    startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
                     return true;
                 }
                 return false;
             }
         });
-
-
         initSearchWidgets();
         setUpData();
     }

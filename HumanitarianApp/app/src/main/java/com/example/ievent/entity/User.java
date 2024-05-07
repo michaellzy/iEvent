@@ -3,7 +3,7 @@ package com.example.ievent.entity;
 
 import java.util.ArrayList;
 
-public class User {
+public class User implements Observer{
     private String userName;
     private String email;
 
@@ -68,4 +68,10 @@ public class User {
     }
 
 
+    @Override
+    public void update(Event event) {
+        // 在这里处理接收到的通知，比如显示通知消息
+        System.out.println(userName + " received notification for event: " + event);
+
+    }
 }

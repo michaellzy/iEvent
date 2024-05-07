@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"
-        android:paddingTop="56dp"
+        android:paddingTop="58dp"
         tools:listitem="@layout/user_fragment_tickets" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
