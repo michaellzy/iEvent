@@ -86,6 +86,11 @@ public class SearchActivity extends BaseActivity {
         db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
 
             @Override
+            public void isAllData(boolean isAll) {
+
+            }
+
+            @Override
             public void onSuccess(ArrayList<Event> events) {
                 // set up the data here
                 // input the event title into a local file

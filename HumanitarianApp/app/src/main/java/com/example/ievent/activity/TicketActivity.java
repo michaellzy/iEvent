@@ -62,6 +62,11 @@ public class TicketActivity extends BaseActivity {
 
                 getParticipantEvents(uid, new EventDataListener() {
                     @Override
+                    public void isAllData(boolean isAll) {
+
+                    }
+
+                    @Override
                     public void onSuccess (ArrayList < Event > events) {
                         recyclerView.setAdapter(new userfragmentticketsAdapter(events));
                     }
