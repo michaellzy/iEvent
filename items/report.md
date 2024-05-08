@@ -181,8 +181,12 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 Production Rules:
 
-    <Non-Terminal> ::= <some output>
-    <Non-Terminal> ::= <some output>
+    <comparison> ::= <variable> <comparator> <value>
+    <variable>   ::= 'price' | 'date' | <identifier>
+    <value>      ::= <number> | <date> | <identifier>
+    <comparator> ::= '>' | '<' | '='
+    <number>     ::= <digit> | <digit>+ '.' <digit>
+    <date>       ::= <digit>+ '-' <digit>
 
 
 ### <u>Tokenizers and Parsers</u>
