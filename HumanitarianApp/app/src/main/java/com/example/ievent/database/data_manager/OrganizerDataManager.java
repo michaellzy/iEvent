@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.entity.Organizer;
@@ -107,6 +108,21 @@ public class OrganizerDataManager {
             }
         });
     }
+
+    public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
+        DocumentReference organizerRef = orgRef.document(organizerId);
+        organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("OrganizerDataManager", "Follower added successfully!");
+                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("OrganizerDataManager", "Error adding follower", e);
+                    listener.onFailure(e.getMessage());
+                });
+    }
+
+
 
 
 }
