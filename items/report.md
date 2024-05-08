@@ -176,8 +176,7 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Parser
 
 ### <u>Grammar(s)</u>
-*[How do you design the grammar? What are the advantages of your designs?]*
-*If there are several grammars, list them all under this section and what they relate to.*
+*Since our project is based on firestore, by combining the search function firestore has with Tokenizer and Parser, the project is able to implement search with conditions. User can search for exact date, exact price or exact type of some events with symbol '='. Whats more, user can also search for range in date or price with symbols '>' and '<'
 
 Production Rules:
 
