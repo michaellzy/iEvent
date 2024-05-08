@@ -11,9 +11,37 @@
         android:id="@+id/bGetPeer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="340dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="136dp"
         android:text="discover peer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deviceNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="176dp"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bGetPeer" />
+
+    <TextView
+        android:id="@+id/state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:text="Close"
+        app:layout_constraintEnd_toEndOf="@+id/deviceNumber"
+        app:layout_constraintTop_toBottomOf="@+id/deviceNumber" />
+
+    <TextView
+        android:id="@+id/deviceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/state"
+        app:layout_constraintTop_toBottomOf="@+id/state" />
 </androidx.constraintlayout.widget.ConstraintLayout>

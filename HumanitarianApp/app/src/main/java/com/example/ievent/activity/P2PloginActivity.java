@@ -1,196 +1,95 @@
 package com.example.ievent.activity;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.ievent.R;
-import android.content.Context;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
-import org.json.JSONObject;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.Executors;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.ievent.R;
-import fi.iki.elonen.NanoHTTPD;
-import java.io.IOException;
+import com.example.ievent.databinding.ActivityP2PloginBinding;
+import com.example.ievent.entity.ChatMessage;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
 
 public class P2PloginActivity extends BaseActivity {
-    private EditText etIpAddress;
-    private EditText etPort;
-    private MyHttpServer server;
+
+    ActivityP2PloginBinding binding;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        binding = ActivityP2PloginBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_p2_plogin);
+        setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        etIpAddress = findViewById(R.id.et_ip_address);
-        etPort = findViewById(R.id.et_port);
 
-        findViewById(R.id.btn_login).setOnClickListener(v -> performLogin());
-        
-        findViewById(R.id.btn_show_ip_port).setOnClickListener(v -> showIpPortDialog());
-    }
+        binding.btnLogin.setOnClickListener(v -> {
+            // Write a message list to the database
+            ArrayList<ChatMessage> chatMessages = new ArrayList<>();
+            // 假设已经有一个 List<ChatMessage> chatMessages 用来存储消息
+            chatMessages.add(new ChatMessage("Hello", "3", 231));
+            chatMessages.add(new ChatMessage("Hi", "4", 232));
+            chatMessages.add(new ChatMessage("How's your day going?", "3", 233));
+            chatMessages.add(new ChatMessage("Pretty good, just got back from hiking.", "3", 234));
+            chatMessages.add(new ChatMessage("Wow, that sounds exciting!", "3", 235));
+            chatMessages.add(new ChatMessage("It was! Have you been outdoors much lately?", "3", 236));
+            chatMessages.add(new ChatMessage("Not really, been caught up with work. But I plan to go for a walk in the park this weekend.", "4", 237));
+            chatMessages.add(new ChatMessage("That's a good idea. It's supposed to be sunny this weekend.", "3", 238));
+            chatMessages.add(new ChatMessage("Yes, looking forward to it. How about you, any plans?", "4", 239));
+            chatMessages.add(new ChatMessage("Might catch a movie. Haven't been to the cinema in ages.", "3", 240));
+            chatMessages.add(new ChatMessage("Same here! Maybe I should join you.", "4", 241));
+            chatMessages.add(new ChatMessage("Sure, let's plan for Saturday evening.", "3", 242));
+            chatMessages.add(new ChatMessage("Perfect! See you then.", "4", 243));
+            chatMessages.add(new ChatMessage("Definitely! Any idea what's playing?", "4", 244));
+            chatMessages.add(new ChatMessage("I think the new Marvel movie is out. Heard it’s great!", "3", 245));
+            chatMessages.add(new ChatMessage("Oh, I love superhero movies! It’s a plan then.", "4", 246));
+            chatMessages.add(new ChatMessage("Great! I’ll check the showtimes and let you know.", "3", 247));
+            chatMessages.add(new ChatMessage("Thanks! I’ll be free after 6 PM.", "4", 248));
+            chatMessages.add(new ChatMessage("Noted. I’ll book the evening show.", "3", 249));
+            chatMessages.add(new ChatMessage("Awesome! Should we grab dinner first?", "4", 250));
+            chatMessages.add(new ChatMessage("Sounds good. There’s that new Italian place we could try out.", "3", 251));
+            chatMessages.add(new ChatMessage("Heard they have the best pasta.", "4", 252));
+            chatMessages.add(new ChatMessage("Yes, let’s meet there at 5?", "3", 253));
+            chatMessages.add(new ChatMessage("Perfect! It’s a date.", "4", 254));
+            chatMessages.add(new ChatMessage("Looking forward to it. See you Saturday!", "3", 255));
+            chatMessages.add(new ChatMessage("Have a good rest of the week!", "4", 256));
+            chatMessages.add(new ChatMessage("You too. Take care!", "3", 257));
+            chatMessages.add(new ChatMessage("By the way, did you finish the project you were working on?", "4", 258));
+            chatMessages.add(new ChatMessage("Just wrapped it up today. Feels good to be done.", "3", 259));
+            chatMessages.add(new ChatMessage("Congrats! That’s got to be a relief.", "4", 260));
+            chatMessages.add(new ChatMessage("It is. Now looking forward to the weekend even more.", "3", 261));
+            chatMessages.add(new ChatMessage("Same here. Alright, I’ll leave you to your evening. Catch up soon!", "4", 262));
+            chatMessages.add(new ChatMessage("Sure thing. Good night!", "3", 263));
 
-    private void showIpPortDialog() {
-        // 获取IP地址
-        String ipAddress = getIPAddress();
-        int port = 8800; // 假定端口号
 
-        // 创建弹窗
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.ip_port, null);
-        builder.setView(dialogView);
-
-        EditText etIpAddress = dialogView.findViewById(R.id.et_ip_address);
-        EditText etPort = dialogView.findViewById(R.id.et_port);
-
-        // 设置IP地址和端口号
-        etIpAddress.setText(ipAddress);
-        etPort.setText(String.valueOf(port));
-
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            // 处理用户按下 OK 后的操作
-            Toast.makeText(this, "IP: " + ipAddress + " Port: " + port, Toast.LENGTH_SHORT).show();
-            startServer(port);
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        builder.create().show();
-    }
-    private void startServer(int port) {
-        if (server == null) {
-            server = new MyHttpServer(port);
-            try {
-                server.start();
-                Toast.makeText(this, "Server started on port " + port, Toast.LENGTH_SHORT).show();
-
-                // 设置定时器，30秒后关闭服务器
-                new Handler().postDelayed(() -> {
-                    server.stop();
-                    server = null;
-                    Toast.makeText(this, "Server stopped after timeout", Toast.LENGTH_SHORT).show();
-                }, 30000);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error starting server: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (server != null) {
-            server.stop();
-        }
-    }
-    private String getIPAddress() {
-        try {
-            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface intf : interfaces) {
-                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-                for (InetAddress addr : addrs) {
-                    if (!addr.isLoopbackAddress()) {
-                        String sAddr = addr.getHostAddress();
-                        boolean isIPv4 = sAddr.indexOf(':') < 0;
-                        if (isIPv4) return sAddr;
+            for (ChatMessage chatMessage : chatMessages) {
+                database.getReference("chats").child("3-4").push().setValue(chatMessage).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        // If the message is sent successfully, display a success message.
+                        Toast.makeText(P2PloginActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
+                    }else{
+                        // If the message is not sent successfully, display an error message.
+                        Toast.makeText(P2PloginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
-            }
-        } catch (Exception ignored) {
-        }
-        return "Unknown IP";
-    }
-    private static class MyHttpServer extends NanoHTTPD {
-        public MyHttpServer(int port) {
-            super(port);
-        }
-        @Override
-        public Response serve(IHTTPSession session) {
-            String message = "Hello, client!";
-            return newFixedLengthResponse(message);
-        }
-    }
-
-
-    //login 操作
-    private void performLogin() {
-        String ipAddress = etIpAddress.getText().toString().trim();
-        String port = etPort.getText().toString().trim();
-
-        // 检查 IP 地址和端口是否为空
-        if (ipAddress.isEmpty() || port.isEmpty()) {
-            Toast.makeText(this, "IP Address and Port cannot be empty", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        new Thread(() -> {
-            String response = connectToServerUsingHttp(ipAddress, port);
-            runOnUiThread(() -> {
-                Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
-            });
-        }).start();
-    }
-
-    private String connectToServerUsingHttp(String ipAddress, String port) {
-        try {
-            // 假设服务器 URL
-            String serverAddress = "http://" + ipAddress + ":" + port + "/login";
-            URL url = new URL(serverAddress);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setDoOutput(true);
-
-            // JSON 数据
-            JSONObject json = new JSONObject();
-            json.put("username", "test_user");
-            json.put("password", "test_pass");
-            String jsonInputString = json.toString();
-
-            // 发送 JSON 数据
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
-                os.write(input, 0, input.length);
+                });
             }
 
-            // 接收响应
-            int responseCode = conn.getResponseCode();
-            Scanner scanner = new Scanner(conn.getInputStream(), "UTF-8").useDelimiter("\\A");
-            String response = scanner.hasNext() ? scanner.next() : "";
-            return responseCode == 200 ? "Login successful: " + response : "Login failed: " + responseCode;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Connection failed";
-        }
+        });
     }
+
+
 }

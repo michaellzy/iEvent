@@ -1,14 +1,17 @@
 package com.example.ievent.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -30,6 +33,24 @@ public class P2PchatActivity2 extends BaseActivity {
     ActivityP2Pchat2Binding binding;
 
     List<WifiP2pDevice> peers = new ArrayList<>();
+
+    List<String> deviceNameArray = new ArrayList<>();
+
+
+    @SuppressLint("SetTextI18n")
+    public WifiP2pManager.PeerListListener peerListListener = peers -> {
+        if (!peers.getDeviceList().equals(peers)) {
+            deviceNameArray.clear();
+            P2PchatActivity2.this.peers.clear();
+            P2PchatActivity2.this.peers.addAll(peers.getDeviceList());
+
+            for (WifiP2pDevice device : P2PchatActivity2.this.peers) {
+                deviceNameArray.add(device.deviceName);
+            }
+            binding.deviceNumber.setText("Number of devices: " + peers.getDeviceList().size());
+            binding.deviceName.setText(deviceNameArray.toString());
+        }
+    };
 
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
@@ -68,14 +89,15 @@ public class P2PchatActivity2 extends BaseActivity {
                 @Override
                 public void onSuccess() {
                     // Success
-                    Toast.makeText(P2PchatActivity2.this, "Discovery start successfully", Toast.LENGTH_SHORT).show();
+                    binding.state.setText("Discovery Started");
                 }
+
 
                 @Override
                 public void onFailure(int reason) {
                     // Failure
                     // "reason == 2" Indicates that the operation failed because the framework is busy and unable to service the request
-                    Toast.makeText(P2PchatActivity2.this, "Discovery Failed : " + reason, Toast.LENGTH_SHORT).show();
+                    binding.state.setText("Discovery Failed: " + reason);
                 }
             });
         });
