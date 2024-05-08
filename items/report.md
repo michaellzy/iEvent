@@ -173,22 +173,25 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 <hr>
 
+
 ### Parser
 
 ### <u>Grammar(s)</u>
-*[How do you design the grammar? What are the advantages of your designs?]*
-*If there are several grammars, list them all under this section and what they relate to.*
+Since our project is based on firestore, by combining the search function firestore has with Tokenizer and Parser, the project is able to implement search with conditions. User can search for exact date, exact price or exact type of some events with symbol '='. Whats more, user can also search for range in date or price with symbols '>' and '<'.
 
 Production Rules:
 
-    <Non-Terminal> ::= <some output>
-    <Non-Terminal> ::= <some output>
+    <comparison> ::= <variable> <comparator> <value>
+    <variable>   ::= 'price' | 'date' | <identifier>
+    <value>      ::= <number> | <date> | <identifier>
+    <comparator> ::= '>' | '<' | '='
+    <number>     ::= <digit> | <digit>+ '.' <digit>
+    <date>       ::= <digit>+ '-' <digit>
 
 
 ### <u>Tokenizers and Parsers</u>
 
-*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
-
+The project used Tokenizer and Parser in the search function, which implement conditional search with defined tokens. With the implementation of Tokenizer and Parser, user can search for specific events with conditions they want.
 <hr>
 
 ### Others
