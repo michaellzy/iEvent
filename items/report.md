@@ -176,7 +176,7 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 ### Parser
 
 ### <u>Grammar(s)</u>
-*Since our project is based on firestore, by combining the search function firestore has with Tokenizer and Parser, the project is able to implement search with conditions. User can search for exact date, exact price or exact type of some events with symbol '='. Whats more, user can also search for range in date or price with symbols '>' and '<'
+Since our project is based on firestore, by combining the search function firestore has with Tokenizer and Parser, the project is able to implement search with conditions. User can search for exact date, exact price or exact type of some events with symbol '='. Whats more, user can also search for range in date or price with symbols '>' and '<'.
 
 Production Rules:
 
@@ -190,7 +190,7 @@ Production Rules:
 
 ### <u>Tokenizers and Parsers</u>
 
-*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
+The project used Tokenizer and Parser in the search function, which implement conditional search with defined tokens. 
 
 <hr>
 
