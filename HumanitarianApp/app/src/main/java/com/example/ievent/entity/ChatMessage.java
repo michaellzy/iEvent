@@ -7,7 +7,6 @@ public class ChatMessage implements Serializable {
 
     private String userId;
 
-
     private long time;
 
 
