@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.widget.Toast;
@@ -40,17 +41,19 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
+
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                 // Wifi P2P is enabled
-                Toast.makeText(context, "Wifi P2P is enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Wi-Fi P2P is enabled", Toast.LENGTH_SHORT).show();
             } else {
                 // Wi-Fi P2P is not enabled
-                Toast.makeText(context, "Wifi P2P is not enabled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Wi-Fi P2P is not enabled", Toast.LENGTH_SHORT).show();
             }
+
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
-            // Call WifiP2pManager.requestPeers() to get a list of current peers
+            Toast.makeText(context, "Peers changed", Toast.LENGTH_SHORT).show();
             if (manager != null) {
                 if (ActivityCompat.checkSelfPermission(
                         context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(context, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED) {
@@ -67,26 +70,55 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 
 
                     // Connect to the first device found
-                        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                    manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+                            //success logic
+                            Toast.makeText(context, "Connection successful: " + device.deviceName, Toast.LENGTH_SHORT).show();
+                        }
 
-                            @Override
-                            public void onSuccess() {
-                                //success logic
-//                                Toast.makeText(context, "Connected to " + device.deviceName, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailure(int reason) {
-                                Toast.makeText(context, "Connection failed: " + reason, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        @Override
+                        public void onFailure(int reason) {
+                            Toast.makeText(context, "Connection failed: " + reason, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
 
             }
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-            // Respond to new connection or disconnections
             Toast.makeText(context, "Connection changed", Toast.LENGTH_SHORT).show();
-        } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+            // Respond to new connection or disconnections
+            if (manager == null) {
+                return;
+            }
+            WifiP2pInfo p2pInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO);
+            if (p2pInfo != null) {
+                if (p2pInfo.isGroupOwner) {
+                    // We are the group owner, request connection info to find our IP address
+                    manager.requestConnectionInfo(channel, info -> {
+                        if(info == null) {
+                            return;
+                        }
+                        String goIpAddress = info.groupOwnerAddress.getHostAddress();
+                        Toast.makeText(context, "Group owner IP address: " + goIpAddress, Toast.LENGTH_SHORT).show();
+
+                        // Start a new activity to communicate with the peer
+                    });
+                } else {
+                    // We are a group client, request group owner info to get its IP address
+                    manager.requestGroupInfo(channel, groupInfo -> {
+                        if(groupInfo == null) {
+                            return;
+                        }
+                        String goIpAddress = groupInfo.getOwner().deviceAddress;
+                        Toast.makeText(context, "Group owner IP address: " + goIpAddress, Toast.LENGTH_SHORT).show();
+
+                        // Start a new activity to communicate with the peer
+                    });
+                }
+
+            }
+        }else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
         }
     }

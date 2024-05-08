@@ -5,17 +5,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
-
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-
 import com.example.ievent.databinding.ActivityP2Pchat2Binding;
 import com.example.ievent.global.WiFiDirectBroadcastReceiver;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class P2PchatActivity2 extends BaseActivity {
@@ -28,6 +28,8 @@ public class P2PchatActivity2 extends BaseActivity {
     BroadcastReceiver receiver;
 
     ActivityP2Pchat2Binding binding;
+
+    List<WifiP2pDevice> peers = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
@@ -54,6 +56,7 @@ public class P2PchatActivity2 extends BaseActivity {
         binding.bGetPeer.setOnClickListener(v -> {
             Toast.makeText(P2PchatActivity2.this, "Get Peer...", Toast.LENGTH_SHORT).show();
 
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -65,17 +68,19 @@ public class P2PchatActivity2 extends BaseActivity {
                 @Override
                 public void onSuccess() {
                     // Success
-                    Toast.makeText(P2PchatActivity2.this, "Discovery Initiated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(P2PchatActivity2.this, "Discovery start successfully", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int reason) {
                     // Failure
+                    // "reason == 2" Indicates that the operation failed because the framework is busy and unable to service the request
                     Toast.makeText(P2PchatActivity2.this, "Discovery Failed : " + reason, Toast.LENGTH_SHORT).show();
                 }
             });
         });
     }
+
 
     /* register the broadcast receiver with the intent values to be matched */
     @Override
@@ -91,9 +96,9 @@ public class P2PchatActivity2 extends BaseActivity {
     }
 
 
-       public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                              int[] grantResults) {
-           super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-       }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
 }
