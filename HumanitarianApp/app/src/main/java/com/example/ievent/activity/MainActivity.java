@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
+import com.example.ievent.database.data_manager.EventCache;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
@@ -88,9 +89,17 @@ public class MainActivity extends BaseActivity {
         recyclerViewRec.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewRec.setAdapter(recEventAdapter);
 
-        // show events stored in FireStore
-        if (updateListener == null)
-            loadMoreEvents();
+        ArrayList<Event> cachedEvents = EventCache.getInstance().getEvents();
+        if (!cachedEvents.isEmpty()) {
+            recEventAdapter.setEvents(cachedEvents);
+            recEventAdapter.notifyDataSetChanged();
+        } else {
+            // show events stored in FireStore
+            if (updateListener == null)
+                loadMoreEvents();
+        }
+
+
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -275,13 +284,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
+                    EventCache.getInstance().setEvents(data);  // Cache the loaded events
                     recEventAdapter.setEvents(data);
-                    // events.addAll(data);
                     recEventAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    Toast.makeText(MainActivity.this, "load data", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-
                 });
             }
 
