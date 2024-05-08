@@ -148,31 +148,47 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 *I used the following data structures in my project:*
 
-1. *LinkedList*
-   * *Objective: used for storing xxxx for xxx feature.*
+1. AVL Tree
+   * *Objective: used for store the events based on price, and use for range query based on price. *
    * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
    * *Reasons:*
-      * *It is more efficient than Arraylist for insertion with a time complexity O(1)*
-      * *We don't need to access the item by index for xxx feature because...*
-      * For the (part), the data ... (characteristics) ...
-
-2. ...
+      * The search and insert operation is O(logn) because of the self balancing factor. AVL tree could update and balance  quickly while maintaining fast search times makes them suitable for database indexing, co-work with the firebase.
+2. HashMap
+   - Objective: used for store loaded events to avoid loading duplicated events.
 
 3. ...
 
 <hr>
 
 ### Design Patterns
-*[What design patterns did your team utilise? Where and why?]*
+1. * Singleton Pattern
 
-1. *xxx Pattern*
-   * *Objective: used for storing xxxx for xxx feature.*
-   * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+   * *Objective: used for Firebase's user and event databases in order to make sure everyone accesses the same database*
+   * *Code Locations: defined in /database
    * *Reasons:*
-      * ...
+      * The singleton pattern ensures that there is only one instance of the database connection manager throughout the application, to avoid multiple instances that could lead to excessive connections to the database.
+      * To use synchronization keyword to avoid multiple operations occur at the same time. i.e. load and update the data at the same time.
 
-<hr>
+2. Factory Pattern
 
+   - Objective: used for create different types of user, such as administrator, organizer and participants.
+
+   - Reasons:
+
+      -  class hides the instantiation logic from the client and solely focuses on returning the correct type of user object.
+
+      
+
+
+3. Obeserver Pattern 
+
+- Objective: used for notify the subscribed participants about new events uploaded.
+- Reasons:
+   - The organizer does not need to know how many participants should be notified. The participants automatically subscribed the organizer and get notified when new events are uploaded.
+   - Organizer does not need to make assumptions about who the participants are. 
+
+
+​				
 
 ### Parser
 
