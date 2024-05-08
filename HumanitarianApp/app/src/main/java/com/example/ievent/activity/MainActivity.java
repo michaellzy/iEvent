@@ -185,6 +185,11 @@ public class MainActivity extends BaseActivity {
         db.getEvents(25, new EventDataListener() {
 
             @Override
+            public void isAllData(boolean isALl) {
+
+            }
+
+            @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {
                     events.addAll(data);

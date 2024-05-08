@@ -1,8 +1,6 @@
 package com.example.ievent.activity;
 
-import android.content.ClipData;
 import android.content.Intent;
-import android.media.RouteListingPreference;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,8 +30,6 @@ import com.example.ievent.tokenparser.VariableExp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.core.Query;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,6 +133,11 @@ public class SearchActivity extends BaseActivity {
 
         // gets data here
         db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
+
+            @Override
+            public void isAllData(boolean isALl) {
+
+            }
 
             @Override
             public void onSuccess(ArrayList<Event> events) {
