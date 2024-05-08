@@ -6,17 +6,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.ievent.entity.Message;
 
 import com.example.ievent.R;
+import com.example.ievent.entity.ChatMessage;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
+
 public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageViewHolder> {
 
-    private List<Message> messages;
+    private List<ChatMessage> messages;
 
-    public P2PChatAdapter(List<Message> messages) {
+    private String uid = "3";
+
+
+    public P2PChatAdapter(List<ChatMessage> messages) {
         this.messages = messages;
     }
 
@@ -30,8 +35,8 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Message message = messages.get(position);
-        holder.messageTextView.setText(message.getText());
+        ChatMessage message = messages.get(position);
+        holder.messageTextView.setText(message.getMessage());
     }
 
     @Override
@@ -42,7 +47,12 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
     @Override
     public int getItemViewType(int position) {
         // 如果消息是由当前用户发送，则返回1，否则返回0
-        return messages.get(position).isSentByCurrentUser() ? 1 : 0;
+//        uid = FirebaseAuth.getInstance().getUid();
+        if(uid == null || uid.isEmpty()) return 3;
+        if(uid.equals(messages.get(position).getUserId())){
+            return 1;
+        }else
+            return 0;
     }
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
