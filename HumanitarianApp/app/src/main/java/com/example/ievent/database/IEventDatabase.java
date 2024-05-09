@@ -3,7 +3,6 @@ package com.example.ievent.database;
 import android.app.Activity;
 import android.net.Uri;
 import android.widget.ImageView;
-
 import com.example.ievent.database.data_manager.ChatDataManager;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;

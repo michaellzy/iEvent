@@ -6,11 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.ievent.R;
 import com.example.ievent.entity.ChatMessage;
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.List;
 
 
@@ -21,6 +18,7 @@ public class P2PChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private String senderId;
 
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
 

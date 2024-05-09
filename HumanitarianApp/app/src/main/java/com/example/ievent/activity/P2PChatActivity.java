@@ -26,7 +26,7 @@ public class P2PChatActivity extends BaseActivity {
     private long timeEnd = 0;
 
     // number of messages to get
-    private int n = 1;
+    private int n = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,9 @@ public class P2PChatActivity extends BaseActivity {
         }
 
 
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-////        layoutManager.setReverseLayout(true);
-////        layoutManager.setStackFromEnd(true);
-////        binding.chatRecyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        binding.chatRecyclerView.setLayoutManager(layoutManager);
 
 
         String finalSenderId = senderId;
@@ -77,9 +76,6 @@ public class P2PChatActivity extends BaseActivity {
                 Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
 
         // Set the adapter
