@@ -19,11 +19,13 @@ public class Event implements java.io.Serializable{
     private String dateTime;
     private double price;
     private String img;
+
+    private long timestamp;
     private ArrayList<User> participants;
 
     public Event() {}
 
-    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img) {
+    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img, long timestamp) {
         this.type = type;
         this.title = title;
         this.description = description;
@@ -32,6 +34,7 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
         this.price = price;
         this.img = img;
+        this.timestamp = timestamp;
     }
 
     public String getType() {
@@ -115,6 +118,10 @@ public class Event implements java.io.Serializable{
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     @Override

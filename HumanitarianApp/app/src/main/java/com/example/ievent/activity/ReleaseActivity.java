@@ -20,6 +20,7 @@ import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.global.ImageCropper;
+import com.example.ievent.global.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
@@ -94,13 +95,19 @@ public class ReleaseActivity extends BaseActivity {
             String eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
             double eventPrice = Double.parseDouble(uploadEventBinding.uploadEventPrice.getText().toString());
             String eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
-            String eventDateTime = uploadEventBinding.uploadEventDate.getText().toString() + ", " +
-                    uploadEventBinding.uploadStartTime.getText().toString() + " to " +
-                    uploadEventBinding.uploadEndTime.getText().toString();
-            String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
-            String organizer = mAuth.getCurrentUser().getUid();
 
-            Event event = new Event(eventType, eventTitle, eventDescription, organizer, eventLocation, eventDateTime, eventPrice, imageUri);
+            String formatEventDate = Utility.formatDate(uploadEventBinding.uploadEventDate.getText().toString());
+            String formatEventStartTime = Utility.formatTime(uploadEventBinding.uploadStartTime.getText().toString());
+            String formatEventEndTime = Utility.formatTime(uploadEventBinding.uploadEndTime.getText().toString());
+            String eventDateTime = formatEventDate + ", " + formatEventStartTime + " - " + formatEventEndTime;
+            String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+
+            long timestamp = Utility.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
+
+
+            // String organizer = mAuth.getCurrentUser().getUid();
+
+            Event event = new Event(eventType, eventTitle, eventDescription, userName, eventLocation, eventDateTime, eventPrice, imageUri, timestamp);
 
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
