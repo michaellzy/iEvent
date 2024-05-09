@@ -25,7 +25,9 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ReleaseActivity extends BaseActivity {
 
@@ -45,6 +47,8 @@ public class ReleaseActivity extends BaseActivity {
     final String[] eventTypeList = {"Boat Party", "Bollywood", "Climate Change", "Comedy", "Disability",
     "Indigenous", "Libraries Act", "Mental Health", "Motorbike Tour", "Music Festivals",
     "Museum of Australia", "School Holidays", "Warehouse Sale", "Wellness", "Other"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +111,7 @@ public class ReleaseActivity extends BaseActivity {
 
             // String organizer = mAuth.getCurrentUser().getUid();
 
-            Event event = new Event(eventType, eventTitle, eventDescription, userName, eventLocation, eventDateTime, eventPrice, imageUri, timestamp);
+            Event event = new Event(eventType.replace(" ", ""), eventTitle, eventDescription, userName, eventLocation, eventDateTime, eventPrice, imageUri, timestamp);
 
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
