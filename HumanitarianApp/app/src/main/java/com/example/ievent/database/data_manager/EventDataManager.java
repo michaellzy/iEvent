@@ -22,6 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -278,11 +279,11 @@ public class EventDataManager {
         Query q = eventRef.whereLessThanOrEqualTo("price",(double)(price)).limit(30);
         HandleQuery(q, listener);
     }
-    public synchronized void getDateAfter(int timestamp, EventDataListener listener) {
+    public synchronized void getDateAfter(long timestamp, EventDataListener listener) {
         Query q = eventRef.whereGreaterThanOrEqualTo("timestamp", timestamp).limit(30);
         HandleQuery(q, listener);
     }
-    public synchronized void getDateBefore(int timestamp, EventDataListener listener) {
+    public synchronized void getDateBefore(long timestamp, EventDataListener listener) {
         Query q = eventRef.whereLessThanOrEqualTo("timestamp", timestamp).limit(30);
         HandleQuery(q, listener);
     }
@@ -294,6 +295,32 @@ public class EventDataManager {
         Query q = eventRef.whereEqualTo("timestamp", timestamp).limit(30);
         HandleQuery(q, listener);
     }
+
+    public synchronized void getEventsByFilters(String type, String titlePrefix, Date startDate, Date endDate, double minPrice, double maxPrice, EventDataListener listener) {
+        // Base query including type filter
+        Query q = eventRef.whereEqualTo("type", type);
+
+        // Add fuzzy search-like functionality for title
+        if (titlePrefix != null && !titlePrefix.isEmpty()) {
+            q = q.whereGreaterThanOrEqualTo("title", titlePrefix)
+                    .whereLessThanOrEqualTo("title", titlePrefix + "\uf8ff");
+        }
+
+        // Add date range to query if both dates are provided
+        if (startDate != null && endDate != null) {
+            q = q.whereGreaterThanOrEqualTo("date", startDate)
+                    .whereLessThanOrEqualTo("date", endDate);
+        }
+
+        // Add price range to the query
+        q = q.whereGreaterThanOrEqualTo("price", minPrice)
+                .whereLessThanOrEqualTo("price", maxPrice)
+                .limit(30);
+
+        // Execute the query
+        HandleQuery(q, listener);
+    }
+
     public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener) {
         ArrayList<Event> events = new ArrayList<>();
         ArrayList<Task<DocumentSnapshot>> tasks = new ArrayList<>();

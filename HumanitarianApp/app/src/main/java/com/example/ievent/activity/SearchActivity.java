@@ -1,12 +1,19 @@
 package com.example.ievent.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,8 +41,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class SearchActivity extends BaseActivity {
@@ -52,7 +61,6 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Button filterbutton = findViewById(R.id.filter_button);
-
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
         recommendedActivitiesAdapter = new RecommendedActivitiesAdapter(eventList);
@@ -76,13 +84,11 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
-        filterbutton.setOnClickListener(v -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(SearchActivity.this);
-
-            View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_layout, null);
-            bottomSheetDialog.setContentView(bottomSheetView);
-
-            bottomSheetDialog.show();
+        filterbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomSheetDialog();
+            }
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_search);
@@ -112,21 +118,33 @@ public class SearchActivity extends BaseActivity {
 //        initSearchWidgets();
 //        setUpData();
     }
-
-    private void initSearchWidgets(){
-        SearchView searchView = (SearchView) findViewById(R.id.search_view);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void setDateField(EditText dateField) {
+        dateField.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                // Set date chosen through picker to EditText using formatted string
+                                Calendar selectedDate = Calendar.getInstance();
+                                selectedDate.set(year, monthOfYear, dayOfMonth);
+
+                                // Formatting date as "yy-MM-dd"
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd", Locale.getDefault());
+                                dateField.setText(dateFormat.format(selectedDate.getTime()));
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
             }
         });
+        dateField.setFocusable(false); // Make EditText not focusable to open DatePicker on click
     }
 
     private void setUpData(){
@@ -156,6 +174,37 @@ public class SearchActivity extends BaseActivity {
                 Log.i("EVENT1111", "onFailure: " + error);
             }
         });
+    }
+    private void showBottomSheetDialog() {
+        // Create and configure the bottom sheet dialog
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        // Setup the Spinner within the bottom sheet
+        Spinner spinnerFilterOptions = bottomSheetView.findViewById(R.id.spinnerFilterOptions);
+        String[] filterOptions = {
+                "Boat Party", "Bollywood", "ClimateChange",
+                "Comedy", "Disability", "Indigenous", "LibrariesAct",
+                "MentalHealth", "MotorbikeTours", "MusicFestivals",
+                "MuseumofAustralia", "SchoolHolidays", "WarehouseSale",
+                "Wellness", "Other"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFilterOptions.setAdapter(adapter);
+
+        EditText startDate = bottomSheetView.findViewById(R.id.startDate);
+        EditText endDate = bottomSheetView.findViewById(R.id.endDate);
+        setDateField(startDate);
+        setDateField(endDate);
+
+        EditText minPrice = bottomSheetView.findViewById(R.id.minPrice);
+        EditText maxPrice = bottomSheetView.findViewById(R.id.maxPrice);
+        minPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        bottomSheetDialog.show();
     }
     private void performSearch(String query) {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);

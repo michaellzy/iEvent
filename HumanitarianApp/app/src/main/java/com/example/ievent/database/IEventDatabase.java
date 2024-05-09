@@ -19,6 +19,7 @@ import com.example.ievent.entity.User;
 
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.EventListener;
 
 
@@ -159,5 +160,8 @@ public class IEventDatabase{
 
     public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener){
         EventDataManager.getInstance().getAllEventsByIds(ids, listener);
+    }
+    public synchronized void getEventsByFilters(String type, String titlePrefix, Date startDate, Date endDate, double minPrice, double maxPrice, EventDataListener listener){
+        EventDataManager.getInstance().getEventsByFilters(type,titlePrefix, startDate, endDate,minPrice,maxPrice,listener);
     }
 }

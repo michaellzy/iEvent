@@ -276,10 +276,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
 
-            @Override
-            public void isAllData(boolean isALl) {
-
-            }
 
             @Override
             public void onSuccess(ArrayList<Event> data) {
