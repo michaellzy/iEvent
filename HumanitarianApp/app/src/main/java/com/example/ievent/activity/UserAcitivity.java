@@ -84,9 +84,6 @@ public class UserAcitivity extends BaseActivity {
                 usernameTextView.setText(user.getUserName());
                 emailTextView.setText(user.getEmail());
                 db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid(),UserAcitivity.this);
-                profileImageView.setOnClickListener(v -> {
-                    startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
-                });
             }
 
             @Override
@@ -95,6 +92,11 @@ public class UserAcitivity extends BaseActivity {
             }
         });
 
+
+        profileImageView.setOnClickListener(v -> {
+            // Open image picker
+            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
+        });
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
