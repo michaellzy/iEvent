@@ -4,10 +4,7 @@ import android.util.Log;
 
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
-import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
-import com.example.ievent.entity.Event;
-import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.google.android.gms.tasks.Task;
@@ -18,11 +15,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 

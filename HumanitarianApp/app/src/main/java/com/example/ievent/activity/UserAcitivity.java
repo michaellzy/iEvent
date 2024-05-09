@@ -83,7 +83,7 @@ public class UserAcitivity extends BaseActivity {
                 User user = data.get(0);
                 usernameTextView.setText(user.getUserName());
                 emailTextView.setText(user.getEmail());
-                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
+                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid(),UserAcitivity.this);
                 profileImageView.setOnClickListener(v -> {
                     startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
                 });
@@ -258,7 +258,7 @@ public class UserAcitivity extends BaseActivity {
 
     private void setVariable(){
         // Set the profile image
-        db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getUid() == null ? "11111" : mAuth.getUid(), this);
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
