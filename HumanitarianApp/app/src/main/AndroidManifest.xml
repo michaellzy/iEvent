@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.P2PloginActivity" />
+        <activity android:name=".activity.P2PloginActivity" android:exported="true" />
         <activity
             android:name=".activity.MapActivity"
             android:exported="true" />

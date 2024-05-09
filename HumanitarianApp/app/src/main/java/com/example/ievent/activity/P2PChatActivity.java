@@ -3,14 +3,11 @@ package com.example.ievent.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.ievent.adapter.P2PChatAdapter;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.databinding.ActivityP2pChatBinding;
 import com.example.ievent.entity.ChatMessage;
-
 import java.util.ArrayList;
 
 
@@ -27,6 +24,9 @@ public class P2PChatActivity extends BaseActivity {
 
     // number of messages to get
     private int n = 20;
+
+    /** the adapter of the current recycleView */
+    P2PChatAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,33 @@ public class P2PChatActivity extends BaseActivity {
                 Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    // Set the adapter
+    private void loadMoreMessages() {
+        String senderId = mAuth.getUid();
+        if(senderId == null || senderId.isEmpty()) {
+            senderId = "3";
+        }
 
-        // Set the adapter
+        String finalSenderId = senderId;
+        db.getChatMessages(n, senderId, receiverId, timeEnd, new DataListener<ChatMessage>() {
+            @Override
+            public void onSuccess(ArrayList<ChatMessage> data) {
+                if(data.size() == 0) {
+                    Toast.makeText(P2PChatActivity.this, "No more messages", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                messages.addAll(0, data);
+                timeEnd = messages.get(0).getTime() - 1;
+                P2PChatAdapter adapter = new P2PChatAdapter(messages, finalSenderId);
+                binding.chatRecyclerView.setAdapter(adapter);
+            }
 
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
