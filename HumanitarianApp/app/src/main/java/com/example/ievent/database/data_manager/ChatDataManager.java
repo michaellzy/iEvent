@@ -1,5 +1,7 @@
 package com.example.ievent.database.data_manager;
 
+import android.util.Log;
+
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,8 @@ public class ChatDataManager {
     private ChatDataManager(){
         chatRef = FirebaseDatabase.getInstance().getReference("chats");
     }
+
+    private static final String TAG = "ChatDataManager";
 
 
     public synchronized static ChatDataManager getInstance(){
@@ -57,7 +61,7 @@ public class ChatDataManager {
      * @param n the number of messages to get
      * @param listener the listener to handle the result
      */
-    public synchronized void  getTheLastChatMessage(String senderId, String receiverId, int n, DataListener<ChatMessage> listener){
+    public void getTheLastChatMessage(String senderId, String receiverId, int n, DataListener<ChatMessage> listener){
         String chatKey = getChatKey(senderId, receiverId);
         chatRef.child(chatKey).limitToLast(n).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -65,6 +69,7 @@ public class ChatDataManager {
                 for (com.google.firebase.database.DataSnapshot snapshot : task.getResult().getChildren()) {
                     chatMessages.add(snapshot.getValue(ChatMessage.class));
                 }
+                Log.d(TAG, "Successfully fetched messages " + chatMessages.size());
                 listener.onSuccess(chatMessages);
             } else {
                 listener.onFailure(Objects.requireNonNull(task.getException()).getMessage());

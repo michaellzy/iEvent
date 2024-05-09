@@ -105,7 +105,7 @@ public class P2PloginActivity extends BaseActivity {
         chatMessages.add(new ChatMessage("Bye!", "3", 313));
 
         for (ChatMessage chatMessage : chatMessages) {
-            database.getReference("chats").child("3-4").push().setValue(chatMessage).addOnCompleteListener(task -> {
+            database.getReference("chats").child("5-6").push().setValue(chatMessage).addOnCompleteListener(task -> {
                 if(task.isSuccessful()) {
                     // If the message is sent successfully, display a success message.
                     Toast.makeText(P2PloginActivity.this, "Message sent", Toast.LENGTH_SHORT).show();
