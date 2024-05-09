@@ -102,6 +102,7 @@ public class IEventDatabase{
     }
 
     public void downloadAvatar(ImageView imageView, String uid, Activity activity){
+
         MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 

@@ -2,11 +2,6 @@ package com.example.ievent.activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import com.example.ievent.R;
 import com.example.ievent.entity.ChatMessage;
 import com.google.firebase.database.FirebaseDatabase;
 

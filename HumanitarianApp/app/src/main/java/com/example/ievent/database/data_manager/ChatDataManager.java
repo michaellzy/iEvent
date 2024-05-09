@@ -4,9 +4,9 @@ import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Objects;
+
 
 /**
  * use Realtime database to load, store and update chat information
@@ -83,6 +83,7 @@ public class ChatDataManager {
     public synchronized void getMessagesEndCertainTime(int number, String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
         String chatKey = getChatKey(senderId, receiverId);
 
+
         // TODO: Maybe can remove orderByChild("time") and use limitToLast(number) only
         chatRef.child(chatKey).orderByChild("time").endAt(time).limitToLast(number).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -95,7 +96,6 @@ public class ChatDataManager {
                 listener.onFailure(Objects.requireNonNull(task.getException()).getMessage());
             }
         });
-
     }
 
 
