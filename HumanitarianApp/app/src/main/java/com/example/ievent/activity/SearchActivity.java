@@ -3,7 +3,10 @@ package com.example.ievent.activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
+import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
 import com.example.ievent.tokenparser.EqualExp;
 import com.example.ievent.tokenparser.Exp;
@@ -47,14 +51,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements OnFilterAppliedListener{
 
     private RecyclerView recyclerView;
     private SearchView searchView;
     private RecommendedActivitiesAdapter recommendedActivitiesAdapter;
     private List<Event> eventList = new ArrayList<>();
-//    private List<Event> temporaryResults = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +115,6 @@ public class SearchActivity extends BaseActivity {
                 return false;
             }
         });
-
-
-//        initSearchWidgets();
-//        setUpData();
     }
     private void setDateField(EditText dateField) {
         dateField.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +135,9 @@ public class SearchActivity extends BaseActivity {
                                 selectedDate.set(year, monthOfYear, dayOfMonth);
 
                                 // Formatting date as "yy-MM-dd"
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd", Locale.getDefault());
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
+                                dateFormat.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
+
                                 dateField.setText(dateFormat.format(selectedDate.getTime()));
                             }
                         }, year, month, day);
@@ -147,44 +147,45 @@ public class SearchActivity extends BaseActivity {
         dateField.setFocusable(false); // Make EditText not focusable to open DatePicker on click
     }
 
-    private void setUpData(){
-        Toast.makeText(this, "Loading data", Toast.LENGTH_SHORT).show();
-
-        // gets data here
-        db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
-
-            @Override
-            public void isAllData(boolean isALl) {
-
-            }
-
-            @Override
-            public void onSuccess(ArrayList<Event> events) {
-                // set up the data here
-                // input the event title into a local file
-                for (Event event : events) {
-                    Log.i("EVENT1111", "onSuccess: " + event.getTitle());
-
-                }
-            }
-
-            @Override
-            public void onFailure(String error) {
-                // handle the error here
-                Log.i("EVENT1111", "onFailure: " + error);
-            }
-        });
-    }
     private void showBottomSheetDialog() {
-        // Create and configure the bottom sheet dialog
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setCancelable(false);  // This prevents the dialog from being dismissed by clicking outside
         View bottomSheetView = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
         bottomSheetDialog.setContentView(bottomSheetView);
 
-        // Setup the Spinner within the bottom sheet
+        setupBottomSheetControls(bottomSheetView);
+
+        Button btnConfirm = bottomSheetView.findViewById(R.id.btnConfirm);
+        btnConfirm.setEnabled(false);  // Disable the confirm button initially
+
+        btnConfirm.setOnClickListener(v -> {
+            Spinner spinnerFilterOptions = bottomSheetView.findViewById(R.id.spinnerFilterOptions);
+            EditText startDate = bottomSheetView.findViewById(R.id.startDate);
+            EditText endDate = bottomSheetView.findViewById(R.id.endDate);
+            EditText minPrice = bottomSheetView.findViewById(R.id.minPrice);
+            EditText maxPrice = bottomSheetView.findViewById(R.id.maxPrice);
+
+            String selectedType = spinnerFilterOptions.getSelectedItem().toString();
+            String start = startDate.getText().toString();
+            String end = endDate.getText().toString();
+            double min = !minPrice.getText().toString().isEmpty() ? Double.parseDouble(minPrice.getText().toString()) : 0;
+            double max = !maxPrice.getText().toString().isEmpty() ? Double.parseDouble(maxPrice.getText().toString()) : Double.MAX_VALUE;
+
+            onFilterApplied(selectedType, start, end, min, max);
+            bottomSheetDialog.dismiss();
+        });
+
+        Button btnCancel = bottomSheetView.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+        bottomSheetDialog.show();
+    }
+
+
+    private void setupBottomSheetControls(View bottomSheetView) {
         Spinner spinnerFilterOptions = bottomSheetView.findViewById(R.id.spinnerFilterOptions);
         String[] filterOptions = {
-                "Boat Party", "Bollywood", "ClimateChange",
+                "BoatParty", "Bollywood", "ClimateChange",
                 "Comedy", "Disability", "Indigenous", "LibrariesAct",
                 "MentalHealth", "MotorbikeTours", "MusicFestivals",
                 "MuseumofAustralia", "SchoolHolidays", "WarehouseSale",
@@ -194,18 +195,77 @@ public class SearchActivity extends BaseActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilterOptions.setAdapter(adapter);
 
-        EditText startDate = bottomSheetView.findViewById(R.id.startDate);
-        EditText endDate = bottomSheetView.findViewById(R.id.endDate);
-        setDateField(startDate);
-        setDateField(endDate);
+        setDateField((EditText) bottomSheetView.findViewById(R.id.startDate));
+        setDateField((EditText) bottomSheetView.findViewById(R.id.endDate));
 
         EditText minPrice = bottomSheetView.findViewById(R.id.minPrice);
         EditText maxPrice = bottomSheetView.findViewById(R.id.maxPrice);
         minPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        bottomSheetDialog.show();
+        // Initialize TextWatcher to validate fields
+        TextWatcher validateTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Check all fields to enable the confirm button
+                boolean allFieldsFilled = !TextUtils.isEmpty(minPrice.getText()) &&
+                        !TextUtils.isEmpty(maxPrice.getText()) &&
+                        !TextUtils.isEmpty(((EditText) bottomSheetView.findViewById(R.id.startDate)).getText()) &&
+                        !TextUtils.isEmpty(((EditText) bottomSheetView.findViewById(R.id.endDate)).getText());
+                Button btnConfirm = bottomSheetView.findViewById(R.id.btnConfirm);
+                btnConfirm.setEnabled(allFieldsFilled);
+            }
+        };
+
+        // Apply the TextWatcher to all editable fields
+        minPrice.addTextChangedListener(validateTextWatcher);
+        maxPrice.addTextChangedListener(validateTextWatcher);
+        ((EditText) bottomSheetView.findViewById(R.id.startDate)).addTextChangedListener(validateTextWatcher);
+        ((EditText) bottomSheetView.findViewById(R.id.endDate)).addTextChangedListener(validateTextWatcher);
     }
+    @Override
+    public void onFilterApplied(String type, String startDate, String endDate, double minPrice, double maxPrice) {
+        Log.d("SearchActivity", "Filters applied - Type: " + type + ", StartDate: " + startDate + ", EndDate: " + endDate + ", MinPrice: " + minPrice + ", MaxPrice: " + maxPrice);
+        ArrayList<Event> filteredList = filterEvents(type, startDate, endDate, minPrice, maxPrice);
+        eventList.clear();
+        eventList.addAll(filteredList);
+//        recommendedActivitiesAdapter.setEvents(filteredList);
+        recommendedActivitiesAdapter.notifyDataSetChanged();
+    }
+
+    private ArrayList<Event> filterEvents(String type, String startDate, String endDate, double minPrice, double maxPrice) {
+        long startTimestamp = Utility.convertToTimestamp(startDate);
+        long endTimestamp = Utility.convertToTimestamp(endDate);
+
+        Log.d("SearchActivity", "Start Date: " + startDate + ", Start Timestamp: " + startTimestamp);
+        Log.d("SearchActivity", "End Date: " + endDate + ", End Timestamp: " + endTimestamp);
+
+        ArrayList<Event> filteredList = new ArrayList<>();
+
+        for (Event event : eventList) {
+            long eventTimestamp = event.getTimestamp();
+            if (event.getType().equals(type) &&
+                    eventTimestamp >= startTimestamp && eventTimestamp <= endTimestamp &&
+                    event.getPrice() >= minPrice && event.getPrice() <= maxPrice) {
+                filteredList.add(event);
+            } else {
+                Log.d("SearchActivity", "Event excluded - Type: " + event.getType() + ", Timestamp: " + eventTimestamp + ", Price: " + event.getPrice());
+            }
+        }
+
+        Log.d("SearchActivity", "Filtered List Size: " + filteredList.size());
+
+        return filteredList;
+    }
+
     private void performSearch(String query) {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
         Tokenizer tokenizer = new Tokenizer(query);
@@ -398,5 +458,10 @@ public class SearchActivity extends BaseActivity {
             return dateString; // Return original if parsing fails.
         }
     }
-
+    private void updateRecyclerView(ArrayList<Event> events) {
+        Log.d("SearchActivity", "Updating RecyclerView with " + events.size() + " events");
+        RecommendedActivitiesAdapter adapter = (RecommendedActivitiesAdapter) recyclerView.getAdapter();
+        adapter.setEvents(events);
+        adapter.notifyDataSetChanged();
+    }
 }
