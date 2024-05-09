@@ -98,9 +98,9 @@ public class ReleaseActivity extends BaseActivity {
                     uploadEventBinding.uploadStartTime.getText().toString() + " to " +
                     uploadEventBinding.uploadEndTime.getText().toString();
             String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
-            String organizer = mAuth.getCurrentUser().getUid();
+            // String organizer = mAuth.getCurrentUser().getUid();
 
-            Event event = new Event(eventType, eventTitle, eventDescription, organizer, eventLocation, eventDateTime, eventPrice, imageUri);
+            Event event = new Event(eventType, eventTitle, eventDescription, userName, eventLocation, eventDateTime, eventPrice, imageUri);
 
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
