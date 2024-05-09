@@ -2,13 +2,16 @@ package com.example.ievent.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +24,10 @@ import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.data_manager.EventCache;
 import com.example.ievent.database.data_manager.EventDataManager;
+import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
+import com.example.ievent.database.listener.FollowerNumListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
@@ -31,6 +36,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -77,6 +87,7 @@ public class MainActivity extends BaseActivity {
         // manageDataOperations();
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +114,6 @@ public class MainActivity extends BaseActivity {
                 loadMoreEvents();
         }
 
-
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -119,7 +129,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -224,13 +233,41 @@ public class MainActivity extends BaseActivity {
             }
         };
 
-
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
         createNotificationChannel();
+        OrganizerDataManager.getInstance().setupFollowerListener(mAuth.getCurrentUser().getUid(), new FollowerNumListener() {
+            @Override
+            public void reached(boolean isReached) {
+                if (isReached) {
+                    Log.i("MainActivity", "show notification");
+                    showLocalNotification();
+                }
+            }
+        });
+
     }
+
+    private void showLocalNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("followers",
+                    "Followers Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Notification Channel for Followers Updates");
+            notificationManager.createNotificationChannel(channel);
+        }
+        Notification notification = new Notification.Builder(this, "followers")
+                .setContentTitle("Congratulations!")
+                .setContentText("You have reached 5 followers!")
+                .setSmallIcon(R.mipmap.ievent_logo)  // 确保这里的图标文件存在
+                .setAutoCancel(true)
+                .build();
+        notificationManager.notify(1, notification);
+    }
+
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -239,12 +276,10 @@ public class MainActivity extends BaseActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("followers", name, importance);
             channel.setDescription(description);
-
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 
 
     // 设置 NavigationView 的选项监听器
@@ -257,6 +292,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         Intent intent;
 
@@ -284,7 +320,6 @@ public class MainActivity extends BaseActivity {
         // Close the navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
     }
-
 
 
     private void loadMoreEvents() {

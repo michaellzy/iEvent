@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.example.ievent.R;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.FollowerNumListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.entity.Organizer;
@@ -55,6 +56,7 @@ public class OrganizerDataManager {
     public synchronized void addOrganizer(String uid, Organizer org) {
         orgRef.document(uid).set(org);
     }
+
 
     public synchronized void getOrganizer(String uid, OrgDataListener listener) {
         DocumentReference docRef = orgRef.document(uid);
@@ -127,26 +129,20 @@ public class OrganizerDataManager {
 //                    listener.onFailure(e.getMessage());
 //                });
 //    }
-    public void addFollower(Context context, String organizerId, String followerId, DataListener<Void> listener) {
+    public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
         organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
                 .addOnSuccessListener(aVoid -> {
-                    organizerRef.get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                List<String> followersList = (List<String>) document.get("followersList");
-                                if (followersList != null && followersList.size() == 3) {
-                                    showCongratulationsNotification(context, organizerId);
-                                }
-                            }
-                        }
-                    });
-                    listener.onSuccess(new ArrayList<Void>());
+                    Log.d("OrganizerDataManager", "Follower added successfully!");
+                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
                 })
-                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
-
+                .addOnFailureListener(e -> {
+                    Log.e("OrganizerDataManager", "Error adding follower", e);
+                    listener.onFailure(e.getMessage());
+                });
     }
+
+
     private void showCongratulationsNotification(Context context, String organizerId) {
         DocumentReference organizerRef = FirebaseFirestore.getInstance().collection("Organizers").document(organizerId);
         organizerRef.get().addOnSuccessListener(documentSnapshot -> {
@@ -173,6 +169,29 @@ public class OrganizerDataManager {
         }).addOnFailureListener(e -> Log.e("NotificationError", "Error fetching organizer", e));
     }
 
+    public void setupFollowerListener(String organizerId, FollowerNumListener listener) {
+        DocumentReference organizerRef = orgRef.document(organizerId);
+        organizerRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.e("MainActivity", "Listen failed.", e);
+                    return;
+                }
 
+                if (snapshot != null && snapshot.exists()) {
+                    List<String> followersList = (List<String>) snapshot.get("followersList");
+                    if (followersList != null && followersList.size() == 3) {
+                        // 达到5个粉丝，触发通知.
+                        listener.reached(true);
+                        Log.i("OrganizerDataManager", "reached num of followers");
+                    }
+                } else {
+                    Log.d("MainActivity", "Current data: null");
+                }
+            }
+        });
+    }
 
 }

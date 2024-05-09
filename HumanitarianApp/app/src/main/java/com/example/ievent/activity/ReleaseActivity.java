@@ -36,7 +36,6 @@ public class ReleaseActivity extends BaseActivity {
 
     private Uri uri;
 
-
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private ArrayAdapter<String> eventTypeAdapter;
@@ -203,7 +202,6 @@ public class ReleaseActivity extends BaseActivity {
                         this.uri = cropResult.getUri();
                         uploadEventBinding.uploadImage.setImageURI(this.uri);
                         uploadEventBinding.uploadImage.setVisibility(View.VISIBLE);
-
 
                         // Upload the image to Firebase Storage
                     }
