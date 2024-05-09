@@ -1,18 +1,21 @@
 package com.example.ievent.activity;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.data_manager.EventCache;
@@ -25,13 +28,7 @@ import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +66,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(),this);
     }
 
     @Override
@@ -118,26 +114,23 @@ public class MainActivity extends BaseActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.navigation_home) {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
 //                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    return true;
-                } else if (itemId == R.id.navigation_search) {
-                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.navigation_ticket) {
-                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
-                    return true;
-                } else if (itemId == R.id.navigation_notifications) {
-                    startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
-                    return true;
-                }
-                return false;
+                return true;
+            } else if (itemId == R.id.navigation_search) {
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_ticket) {
+                startActivity(new Intent(getApplicationContext(), TicketActivity.class));
+                return true;
+            } else if (itemId == R.id.navigation_notifications) {
+                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+                return true;
             }
+            return false;
         });
 
         // 初始化NavigationView和HeaderView

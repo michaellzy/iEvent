@@ -312,9 +312,19 @@ public class UserAcitivity extends BaseActivity {
                         db.uploadAvatar(uid, resultUri, new DataListener<String>() {
                             @Override
                             public void onSuccess(ArrayList<String> data) {
-                                Glide.with(UserAcitivity.this)
-                                        .load(resultUri)
-                                        .into(binding.profileImage);
+
+                                // Load the image into the image view
+                                db.updateUserAvatar(uid, data.get(0), new UserDataListener() {
+                                    @Override
+                                    public void onSuccess(ArrayList<User> data) {
+                                        Toast.makeText(UserAcitivity.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String errorMessage) {
+                                        Toast.makeText(UserAcitivity.this, "Failed to update user avatar: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
 
                             @Override

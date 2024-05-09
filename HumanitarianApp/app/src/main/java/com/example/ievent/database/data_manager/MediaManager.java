@@ -66,16 +66,44 @@ public class MediaManager {
         });
     }
 
-
     /**
      * load the avatar image into the image view
      * @param imageView the image view to load the image
      * @param uid the user id
      */
     public void loadAvatarIntoView(ImageView imageView, String uid, Activity activity) {
-        StorageReference avatarRef = storageRef.child("Avatar/" + uid + ".jpg");
-        loadImageIntoView(imageView, avatarRef, R.drawable.default_avatar);
+        Glide.with(imageView.getContext())
+                .load(R.drawable.default_avatar)
+                .into(imageView);
+
+        FirebaseFirestore.getInstance().collection("Users").document(uid).addSnapshotListener((value, error) -> {
+            if (error != null || activity.isDestroyed()) {
+                return;
+            }
+
+            if (value != null && value.exists()) {
+                String avatar = value.getString("avatar");
+                if (avatar != null) {
+                    loadImageIntoView(imageView, avatar, R.drawable.default_avatar);
+                }
+            }
+        });
     }
+
+    /**
+     * load the image into the image view
+     * @param imageView the image view to load the image
+     * @param uri the uri of the image
+     * @param defaultImage the default image to load if the image is not found such like R.drawable.default_avatar for avatar
+     */
+    private void loadImageIntoView(ImageView imageView, String uri, int defaultImage) {
+
+        Glide.with(imageView.getContext())
+                .load(uri)
+                .placeholder(defaultImage)
+                .into(imageView);
+    }
+
 
     /**
      * load the image into the image view
