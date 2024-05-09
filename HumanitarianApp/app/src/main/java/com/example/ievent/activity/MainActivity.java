@@ -69,8 +69,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
-        // manageDataOperations();
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(),this);
     }
 
     @Override
@@ -155,7 +154,7 @@ public class MainActivity extends BaseActivity {
                 User user = data.get(0);
                 usernameTextView.setText(user.getUserName());
                 emailTextView.setText(user.getEmail());
-                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid());
+                db.downloadAvatar(profileImageView, mAuth.getCurrentUser().getUid(), MainActivity.this);
                 profileImageView.setOnClickListener(v -> {
                     startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
                 });
@@ -168,7 +167,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), MainActivity.this);
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
@@ -221,7 +220,7 @@ public class MainActivity extends BaseActivity {
         };
 
 
-        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid());
+        db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), MainActivity.this);
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });

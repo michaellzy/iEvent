@@ -72,7 +72,7 @@ public class MediaManager {
      * @param imageView the image view to load the image
      * @param uid the user id
      */
-    public void loadAvatarIntoView(ImageView imageView, String uid) {
+    public void loadAvatarIntoView(ImageView imageView, String uid, Activity activity) {
         StorageReference avatarRef = storageRef.child("Avatar/" + uid + ".jpg");
         loadImageIntoView(imageView, avatarRef, R.drawable.default_avatar);
     }

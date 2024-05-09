@@ -3,7 +3,7 @@ package com.example.ievent.database;
 import android.app.Activity;
 import android.net.Uri;
 import android.widget.ImageView;
-
+import com.example.ievent.database.data_manager.ChatDataManager;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;
 import com.example.ievent.database.data_manager.OrganizerDataManager;
@@ -13,6 +13,7 @@ import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.ChatMessage;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
@@ -117,17 +118,16 @@ public class IEventDatabase{
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
     }
 
-    public void downloadAvatar(ImageView imageView, String uid){
-        MediaManager.getInstance().loadAvatarIntoView(imageView, uid);
+    public void downloadAvatar(ImageView imageView, String uid, Activity activity) {
+
+        MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 
     public void uploadEventImage(Uri file, DataListener<String> listener) {
         MediaManager.getInstance().uploadEventImg(file, listener);
     }
 
-//    public void fetchOrganizedEvent(String uid, DataListener<Event> listener) {
-//        OrganizerDataManager.getInstance().fetchOrganizedEvent(uid, listener);
-//    }
+
 
     public void fetchOrganizedData(String uid, OrganizedEventListener listener){
         OrganizerDataManager.getInstance().fetchOragnizedData(uid, listener);
@@ -139,5 +139,55 @@ public class IEventDatabase{
 
     public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener){
         EventDataManager.getInstance().getAllEventsByIds(ids, listener);
+    }
+
+
+    // ----------------------------------- Chat Operations ----------------------------------- //
+    /**
+     * store new message to the database
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param message the content of the message
+     */
+    public void SendMessage(String senderId, String receiverId, String message) {
+        ChatDataManager.getInstance().SendMessage(senderId, receiverId, message);
+    }
+
+
+    /**
+     * get the last message of the chat
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param n the number of messages to get
+     * @param listener the listener to handle the result
+     */
+    public void getTheLastChatMessage(String senderId, String receiverId, int n,  DataListener<ChatMessage> listener){
+        ChatDataManager.getInstance().getTheLastChatMessage(senderId, receiverId,n, listener);
+    }
+
+
+    /**
+     * get the last n messages of the chat until a certain time
+     * @param number the number of messages to get
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param time the time to end the search
+     * @param listener the listener to handle the result
+     */
+    public void getChatMessages(int number, String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
+        ChatDataManager.getInstance().getMessagesEndCertainTime(number, senderId, receiverId, time, listener);
+    }
+
+
+
+    /**
+     * use this method to get the new messages sent by the sender and receiver
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param time the time to start the search
+     * @param listener the listener to handle the result
+     */
+    public void getNewMessages(String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
+        ChatDataManager.getInstance().getNewMessages(senderId, receiverId, time, listener);
     }
 }
