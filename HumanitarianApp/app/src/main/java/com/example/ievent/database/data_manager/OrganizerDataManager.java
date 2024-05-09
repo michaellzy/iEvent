@@ -148,17 +148,31 @@ public class OrganizerDataManager {
 
     }
     private void showCongratulationsNotification(Context context, String organizerId) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        DocumentReference organizerRef = FirebaseFirestore.getInstance().collection("Organizers").document(organizerId);
+        organizerRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Organizer organizer = documentSnapshot.toObject(Organizer.class);
+                if (organizer != null) {
+                    String organizerName = organizer.getUserName();  // 假设Organizer类有一个getUserName()方法
 
-        Notification notification = new Notification.Builder(context, "followers")  // 使用通知渠道ID
-                .setContentTitle("Congratulations")
-                .setContentText("You have reached 5 followers!")
-                .setSmallIcon(R.mipmap.ievent_logo)
-                .setAutoCancel(true)
-                .build();
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    Notification notification = new Notification.Builder(context, "followers")
+                            .setContentTitle("Congratulations " + organizerName)
+                            .setContentText("You have reached 5 followers!")
+                            .setSmallIcon(R.mipmap.ievent_logo)
+                            .setAutoCancel(true)
+                            .build();
 
-        notificationManager.notify(1, notification);
+                    notificationManager.notify(1, notification);
+                } else {
+                    Log.e("NotificationError", "Organizer data not found");
+                }
+            } else {
+                Log.e("NotificationError", "Document does not exist");
+            }
+        }).addOnFailureListener(e -> Log.e("NotificationError", "Error fetching organizer", e));
     }
+
 
 
 }

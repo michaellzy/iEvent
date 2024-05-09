@@ -72,7 +72,7 @@ public class EventDetailActivity extends AppCompatActivity {
         Event event = (Event) getIntent().getSerializableExtra("event");
         String userId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
         if (event != null && userId != null) {
-            String organizerID = event.getOrganizer();
+            String organizerID = event.getOrgId();
             if (organizerID != null) {
                 if (userId.equals(organizerID)) {
                     Toast.makeText(EventDetailActivity.this, "Can't follow yourself!", Toast.LENGTH_SHORT).show();
