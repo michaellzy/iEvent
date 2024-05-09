@@ -109,9 +109,9 @@ public class ReleaseActivity extends BaseActivity {
             long timestamp = Utility.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
 
 
-            // String organizer = mAuth.getCurrentUser().getUid();
+            String orgId = mAuth.getCurrentUser().getUid();
 
-            Event event = new Event(eventType.replace(" ", ""), eventTitle, eventDescription, userName, eventLocation, eventDateTime, eventPrice, imageUri, timestamp);
+            Event event = new Event(eventType.replace(" ", ""), eventTitle, eventDescription, userName, orgId, eventLocation, eventDateTime, eventPrice, imageUri, timestamp);
 
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
