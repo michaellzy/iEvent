@@ -47,5 +47,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/message_item" />
+        tools:listitem="@layout/message_item_sent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
