@@ -123,10 +123,11 @@ public class IEventDatabase{
      * get the last message of the chat
      * @param senderId the id of the sender
      * @param receiverId the id of the receiver
+     * @param n the number of messages to get
      * @param listener the listener to handle the result
      */
-    public void getTheLastChatMessage(String senderId, String receiverId, DataListener<ChatMessage> listener){
-        ChatDataManager.getInstance().getTheLastChatMessage(senderId, receiverId, listener);
+    public void getTheLastChatMessage(String senderId, String receiverId, int n,  DataListener<ChatMessage> listener){
+        ChatDataManager.getInstance().getTheLastChatMessage(senderId, receiverId,n, listener);
     }
 
 

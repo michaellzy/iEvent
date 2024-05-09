@@ -54,11 +54,12 @@ public class ChatDataManager {
      * get the last message of the chat
      * @param senderId the id of the sender
      * @param receiverId the id of the receiver
+     * @param n the number of messages to get
      * @param listener the listener to handle the result
      */
-    public synchronized void  getTheLastChatMessage(String senderId, String receiverId, DataListener<ChatMessage> listener){
+    public synchronized void  getTheLastChatMessage(String senderId, String receiverId, int n, DataListener<ChatMessage> listener){
         String chatKey = getChatKey(senderId, receiverId);
-        chatRef.child(chatKey).limitToLast(1).get().addOnCompleteListener(task -> {
+        chatRef.child(chatKey).limitToLast(n).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<ChatMessage> chatMessages = new ArrayList<>();
                 for (com.google.firebase.database.DataSnapshot snapshot : task.getResult().getChildren()) {

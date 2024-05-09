@@ -18,11 +18,13 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
 
     private List<ChatMessage> messages;
 
-    private String uid = "3";
+    private String senderId;
 
 
-    public P2PChatAdapter(List<ChatMessage> messages) {
+
+    public P2PChatAdapter(List<ChatMessage> messages, String senderId) {
         this.messages = messages;
+        this.senderId = senderId;
     }
 
     @NonNull
@@ -46,10 +48,9 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
 
     @Override
     public int getItemViewType(int position) {
-        // 如果消息是由当前用户发送，则返回1，否则返回0
 //        uid = FirebaseAuth.getInstance().getUid();
-        if(uid == null || uid.isEmpty()) return 3;
-        if(uid.equals(messages.get(position).getUserId())){
+        if(senderId == null || senderId.isEmpty()) return 3;
+        if(senderId.equals(messages.get(position).getUserId())){
             return 1;
         }else
             return 0;
