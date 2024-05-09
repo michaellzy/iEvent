@@ -74,38 +74,19 @@ public class EventDetailActivity extends AppCompatActivity {
         if (event != null && userId != null) {
             String organizerID = event.getOrganizer();
             if (organizerID != null) {
-                // 添加条件检查，确保用户不能关注自己
                 if (userId.equals(organizerID)) {
                     Toast.makeText(EventDetailActivity.this, "Can't follow yourself!", Toast.LENGTH_SHORT).show();
                     return; // 结束方法，不执行后续操作
                 }
                 view.setEnabled(false); // Disable the button to prevent multiple clicks
-                OrganizerDataManager.getInstance().addFollower(organizerID, userId, new DataListener<Void>() {
+                OrganizerDataManager.getInstance().addFollower(this, organizerID, userId, new DataListener<Void>() {
                     @Override
                     public void onSuccess(ArrayList<Void> data) {
                         runOnUiThread(() -> {
                             ImageView followIcon = findViewById(R.id.imageView_add_follow);
                             followIcon.setImageResource(R.drawable.ic_follow_y); // Change the icon to indicate followed
                             view.setEnabled(true); // Re-enable the button
-                        });
-                        UserDataManager.getInstance().addSubscription(userId, organizerID, new DataListener<Void>() {
-                            @Override
-                            public void onSuccess(ArrayList<Void> subscriptionData) {
-                                runOnUiThread(() -> {
-                                    ImageView followIcon = findViewById(R.id.imageView_add_follow);
-                                    followIcon.setImageResource(R.drawable.ic_follow_y); // Change the icon to indicate followed
-                                    Toast.makeText(EventDetailActivity.this, "Followed and subscribed successfully!", Toast.LENGTH_SHORT).show();
-                                    view.setEnabled(true); // Re-enable the button
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(String errorMessage) {
-                                runOnUiThread(() -> {
-                                    Toast.makeText(EventDetailActivity.this, "Failed to subscribe: " + errorMessage, Toast.LENGTH_SHORT).show();
-                                    view.setEnabled(true); // Re-enable the button
-                                });
-                            }
+                            Toast.makeText(EventDetailActivity.this, "Followed successfully!", Toast.LENGTH_SHORT).show();
                         });
                     }
 
@@ -124,6 +105,7 @@ public class EventDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: Event details not available or user not logged in.", Toast.LENGTH_LONG).show();
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private void setVariables() {

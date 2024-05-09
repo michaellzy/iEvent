@@ -1,9 +1,15 @@
 package com.example.ievent.database.data_manager;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.ievent.R;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
@@ -109,20 +115,50 @@ public class OrganizerDataManager {
         });
     }
 
-    public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
+//    public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
+//        DocumentReference organizerRef = orgRef.document(organizerId);
+//        organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
+//                .addOnSuccessListener(aVoid -> {
+//                    Log.d("OrganizerDataManager", "Follower added successfully!");
+//                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
+//                })
+//                .addOnFailureListener(e -> {
+//                    Log.e("OrganizerDataManager", "Error adding follower", e);
+//                    listener.onFailure(e.getMessage());
+//                });
+//    }
+    public void addFollower(Context context, String organizerId, String followerId, DataListener<Void> listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
         organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
                 .addOnSuccessListener(aVoid -> {
-                    Log.d("OrganizerDataManager", "Follower added successfully!");
-                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
+                    organizerRef.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null && document.exists()) {
+                                List<String> followersList = (List<String>) document.get("followersList");
+                                if (followersList != null && followersList.size() == 3) {
+                                    showCongratulationsNotification(context, organizerId);
+                                }
+                            }
+                        }
+                    });
+                    listener.onSuccess(new ArrayList<Void>());
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("OrganizerDataManager", "Error adding follower", e);
-                    listener.onFailure(e.getMessage());
-                });
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+
     }
+    private void showCongratulationsNotification(Context context, String organizerId) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        Notification notification = new Notification.Builder(context, "followers")  // 使用通知渠道ID
+                .setContentTitle("Congratulations")
+                .setContentText("You have reached 5 followers!")
+                .setSmallIcon(R.mipmap.ievent_logo)
+                .setAutoCancel(true)
+                .build();
 
+        notificationManager.notify(1, notification);
+    }
 
 
 }
