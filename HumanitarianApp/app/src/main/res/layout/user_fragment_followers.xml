@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,38 +9,30 @@
         android:id="@+id/subscriber_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_followers" /> <!-- Replace with your actual drawable resource -->
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_sub" />
 
     <TextView
         android:id="@+id/subscriber_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/subscriber_image"
-        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toEndOf="@id/subscriber_image"
+        app:layout_constraintTop_toTopOf="@id/subscriber_image"
+        app:layout_constraintBottom_toBottomOf="@id/subscriber_image"
+        android:layout_marginStart="16dp"
         android:text="XXXXXX"
-        android:textSize="16sp"
-        android:layout_centerVertical="true" />
+        android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginLeft="170dp"
-        android:layout_toRightOf="@id/subscriber_name"
-        app:srcCompat="@drawable/ic_add" />
-
-    <ImageView
+        android:id="@+id/chat_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginLeft="230dp"
-        android:layout_toRightOf="@id/subscriber_name"
         app:srcCompat="@drawable/ic_chat"
-        android:layout_marginTop="5dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/subscriber_image"
+        app:layout_constraintBottom_toBottomOf="@id/subscriber_image"
+        android:layout_marginEnd="16dp" />
 
-
-
-
-    <!-- You can add more details for each subscriber below the TextView, if needed -->
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

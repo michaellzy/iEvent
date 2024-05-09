@@ -13,6 +13,8 @@ public class Event implements java.io.Serializable{
     private String eventId;
 
     private String organizer;
+
+    private String orgId;
     private String location;
 
     @PropertyName("date-time")
@@ -25,11 +27,12 @@ public class Event implements java.io.Serializable{
 
     public Event() {}
 
-    public Event(String type, String title, String description, String organizer, String location, String dateTime, double price, String img, long timestamp) {
+    public Event(String type, String title, String description, String organizer, String orgId, String location, String dateTime, double price, String img, long timestamp) {
         this.type = type;
         this.title = title;
         this.description = description;
         this.organizer = organizer;
+        this.orgId = orgId;
         this.location = location;
         this.dateTime = dateTime;
         this.price = price;
@@ -122,6 +125,10 @@ public class Event implements java.io.Serializable{
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public String getOrgId() {
+        return orgId;
     }
 
     @Override

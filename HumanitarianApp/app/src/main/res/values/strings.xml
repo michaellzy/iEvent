@@ -9,4 +9,7 @@
     <string name="recommended_activities">Recommended Activities</string>
     <string name="your_event">Your Events</string>
     <string name="release_event">+</string>
+    <string name="channel_name_followers">followers</string>
+    <string name="channel_description_followers">Notifications about having 5 followers</string>
+
 </resources>

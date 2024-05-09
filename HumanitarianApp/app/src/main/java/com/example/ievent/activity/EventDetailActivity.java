@@ -123,6 +123,8 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
+
+
     @SuppressLint("SetTextI18n")
     private void setVariables() {
         Event event = (Event) getIntent().getSerializableExtra("event");
