@@ -14,12 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 
-public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageViewHolder> {
+public class P2PChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ChatMessage> messages;
 
     private String senderId;
 
+    private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+    private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
 
     public P2PChatAdapter(List<ChatMessage> messages, String senderId) {
@@ -29,16 +31,30 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
 
     @NonNull
     @Override
-    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(viewType == 1 ? R.layout.message_item : R.layout.message_item, parent, false);
-        return new MessageViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.message_item_sent, parent, false);
+            return new SentMessageHolder(view);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.message_item_received, parent, false);
+            return new ReceivedMessageHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChatMessage message = messages.get(position);
-        holder.messageTextView.setText(message.getMessage());
+
+        if (holder instanceof SentMessageHolder) {
+            SentMessageHolder sentHolder = (SentMessageHolder) holder;
+            sentHolder.messageText.setText(message.getMessage());
+        } else if (holder instanceof ReceivedMessageHolder) {
+            ReceivedMessageHolder receivedHolder = (ReceivedMessageHolder) holder;
+            receivedHolder.messageText.setText(message.getMessage());
+        }
     }
 
     @Override
@@ -51,18 +67,28 @@ public class P2PChatAdapter extends RecyclerView.Adapter<P2PChatAdapter.MessageV
 //        uid = FirebaseAuth.getInstance().getUid();
         if(senderId == null || senderId.isEmpty()) return 3;
         if(senderId.equals(messages.get(position).getUserId())){
-            return 1;
+            return VIEW_TYPE_MESSAGE_SENT;
         }else
-            return 0;
+            return VIEW_TYPE_MESSAGE_RECEIVED;
     }
 
-    static class MessageViewHolder extends RecyclerView.ViewHolder {
-        TextView messageTextView;
+    public class SentMessageHolder extends RecyclerView.ViewHolder {
+        TextView messageText;
 
-        public MessageViewHolder(@NonNull View itemView) {
+        public SentMessageHolder(View itemView) {
             super(itemView);
-            messageTextView = itemView.findViewById(R.id.chat_recycler_view);
+            messageText = itemView.findViewById(R.id.text_message_body_sent);
         }
     }
+
+    public class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+        TextView messageText;
+
+        public ReceivedMessageHolder(View itemView) {
+            super(itemView);
+            messageText = itemView.findViewById(R.id.text_message_body_received);
+        }
+    }
+
 }
 
