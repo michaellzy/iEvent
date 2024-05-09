@@ -142,4 +142,17 @@ public class IEventDatabase{
     public void getChatMessages(int number, String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
         ChatDataManager.getInstance().getMessagesEndCertainTime(number, senderId, receiverId, time, listener);
     }
+
+
+
+    /**
+     * use this method to get the new messages sent by the sender and receiver
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param time the time to start the search
+     * @param listener the listener to handle the result
+     */
+    public void getNewMessages(String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
+        ChatDataManager.getInstance().getNewMessages(senderId, receiverId, time, listener);
+    }
 }

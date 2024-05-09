@@ -1,16 +1,15 @@
 package com.example.ievent.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ievent.R;
 import com.example.ievent.databinding.ActivityEventDetailBinding;
 import com.example.ievent.entity.Event;
+
 
 public class EventDetailActivity extends AppCompatActivity {
 

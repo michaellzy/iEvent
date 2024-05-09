@@ -1,7 +1,13 @@
 package com.example.ievent.database.data_manager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
@@ -98,8 +104,50 @@ public class ChatDataManager {
         });
     }
 
+    /**
+     * use this method to get the new messages sent by the sender and receiver
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param time the time to start the search
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getNewMessages(String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
+        String chatKey = getChatKey(senderId, receiverId);
+        chatRef.child(chatKey).orderByChild("time").startAfter(time + 1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ChatMessage chatMessage = snapshot.getValue(ChatMessage.class);
+                ArrayList<ChatMessage> chatMessages = new ArrayList<>();
+                chatMessages.add(chatMessage);
+                listener.onSuccess(chatMessages);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     private String getChatKey(String userId1, String userId2) {
         return userId1.compareTo(userId2) < 0 ? userId1 + "-" + userId2 : userId2 + "-" + userId1;
     }
+
+
 }
