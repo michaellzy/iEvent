@@ -1,9 +1,8 @@
 package com.example.ievent.entity;
 
-import com.example.ievent.database.data_manager.UserDataManager;
-import com.example.ievent.database.listener.OrgDataListener;
 import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
+
 
 public class Event implements java.io.Serializable{
     private String type;
@@ -111,6 +110,7 @@ public class Event implements java.io.Serializable{
         return participants;
     }
 
+
     public void setParticipants(ArrayList<User> participants) {
         this.participants = participants;
     }
@@ -170,8 +170,6 @@ public class Event implements java.io.Serializable{
         if(e.getImg() == null || e.getImg().isEmpty()) {
             e.setImg("https://t.mwm.moe/fj");
         }
-
-
     }
 
 }

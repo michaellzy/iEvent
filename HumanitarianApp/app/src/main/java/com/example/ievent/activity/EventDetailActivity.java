@@ -1,9 +1,9 @@
 package com.example.ievent.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,13 +14,15 @@ import com.example.ievent.R;
 import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityEventDetailBinding;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends BaseActivity {
 
     ActivityEventDetailBinding eventDetailBinding;
 
@@ -152,10 +154,31 @@ public class EventDetailActivity extends AppCompatActivity {
         });
 
         eventDetailBinding.imageViewChat.setOnClickListener(v -> {
-            Intent intent = new Intent(this, P2PChatActivity.class);
-            intent.putExtra("receiverId", event.getOrganizer());
-            // Open chat activity
-            startActivity(intent);
+            // get the organizer by organizer id
+            if(event.getOrgId() == null){
+                return;
+            }
+
+            Log.i("ORGANIZEDID", "setVariables: " + event.getOrgId());
+            db.getUserById(event.getOrgId(), new UserDataListener() {
+
+
+                @Override
+                public void onSuccess(ArrayList<User> data) {
+                    Toast.makeText(EventDetailActivity.this, "success to get the organizer", Toast.LENGTH_SHORT).show();
+                    if (!data.isEmpty()) {
+                        Intent intent = new Intent(EventDetailActivity.this, P2PChatActivity.class);
+                        User receiver = data.get(0);
+                        intent.putExtra("receiver", receiver);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(EventDetailActivity.this, "Failed to get the organizer: " + errorMessage, Toast.LENGTH_LONG).show();
+                }
+            });
         });
 
 

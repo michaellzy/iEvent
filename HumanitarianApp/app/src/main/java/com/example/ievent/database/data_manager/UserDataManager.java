@@ -133,6 +133,32 @@ public class UserDataManager {
             }
         });
     }
+
+
+    /**
+     * Retrieves a simgle user based on their ID.
+     * @param uid The user's ID.
+     * @param listener Listener to handle the result or failure.
+     */
+    public synchronized void getUserById(String uid, UserDataListener listener) {
+        DocumentReference userDoc = userRef.document(uid);
+        userDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    ArrayList<User> users = new ArrayList<>();
+                    users.add(user);
+                    listener.onSuccess(users);
+                } else {
+                    listener.onFailure("User not found");
+                }
+            } else {
+                listener.onFailure("Failed to fetch user: " + task.getException().getMessage());
+            }
+        });
+    }
+
     /**
      * Retrieves multiple users based on a list of user IDs.
      * @param ids List of user IDs.

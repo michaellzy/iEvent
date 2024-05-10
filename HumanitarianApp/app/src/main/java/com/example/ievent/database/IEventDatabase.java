@@ -47,21 +47,13 @@ public class IEventDatabase{
         return instance;
     }
 
-
+    // ----------------------------------- USER Operation ----------------------------------- //
     /***
      * store new user to the database during sign up phase
      * @param user the new user to add to
      */
     public void addNewUser(String uid, User user) {
         UserDataManager.getInstance().addNewUser(uid, user);
-    }
-
-    public void addNewOrganizer(String uid, Organizer organizer) {
-        OrganizerDataManager.getInstance().addOrganizer(uid, organizer);
-    }
-
-    public void getOrganizer(String uid, OrgDataListener listener) {
-        OrganizerDataManager.getInstance().getOrganizer(uid, listener);
     }
 
     /***
@@ -82,6 +74,27 @@ public class IEventDatabase{
     public void updateUserAvatar(String uid, String avatar, UserDataListener listener) {
         UserDataManager.getInstance().updateUserAvatar(uid, avatar, listener);
     }
+
+
+    /**
+     * Retrieves a simgle user based on their ID.
+     * @param uid The user's ID.
+     * @param listener Listener to handle the result or failure.
+     */
+    public void getUserById(String uid, UserDataListener listener) {
+        UserDataManager.getInstance().getUserById(uid, listener);
+    }
+
+    // // -----------------------------------organizer Operation ----------------------------------- //
+
+    public void addNewOrganizer(String uid, Organizer organizer) {
+        OrganizerDataManager.getInstance().addOrganizer(uid, organizer);
+    }
+
+    public void getOrganizer(String uid, OrgDataListener listener) {
+        OrganizerDataManager.getInstance().getOrganizer(uid, listener);
+    }
+
 
 
     // ----------------------------------- EVENTS ----------------------------------- //
@@ -113,13 +126,16 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
+
+
+
+
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
     }
 
     public void downloadAvatar(ImageView imageView, String uid, Activity activity) {
-
         MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 

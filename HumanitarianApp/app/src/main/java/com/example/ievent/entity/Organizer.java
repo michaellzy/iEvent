@@ -24,10 +24,10 @@ public class Organizer extends User implements java.io.Serializable,Observer {
         // Adds an event to the list of events the participant has joined
         // organizedEventList.add(event);
         OrganizerDataManager.getInstance().addOrganizedEvent(super.getUid(), eventId);
-        // 发布新活动，通知所有关注者
 
     }
-    // 注册观察者
+
+
     public void registerFollowers(List<User> followers) {
         for (User follower : followers) {
             postSubject.registerObserver(follower);
