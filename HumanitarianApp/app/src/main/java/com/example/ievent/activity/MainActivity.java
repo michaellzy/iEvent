@@ -226,7 +226,7 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
         createNotificationChannel();
-        OrganizerDataManager.getInstance().setupFollowerListener(mAuth.getCurrentUser().getUid(), new FollowerNumListener() {
+        db.setupFollowerListener(mAuth.getCurrentUser().getUid(), new FollowerNumListener() {
             @Override
             public void reached(boolean isReached) {
                 if (isReached) {

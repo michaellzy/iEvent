@@ -9,6 +9,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+
 import com.example.ievent.R;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.FollowerNumListener;
@@ -143,34 +146,10 @@ public class OrganizerDataManager {
     }
 
 
-    private void showCongratulationsNotification(Context context, String organizerId) {
-        DocumentReference organizerRef = FirebaseFirestore.getInstance().collection("Organizers").document(organizerId);
-        organizerRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                Organizer organizer = documentSnapshot.toObject(Organizer.class);
-                if (organizer != null) {
-                    String organizerName = organizer.getUserName();  // 假设Organizer类有一个getUserName()方法
-
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    Notification notification = new Notification.Builder(context, "followers")
-                            .setContentTitle("Congratulations " + organizerName)
-                            .setContentText("You have reached 5 followers!")
-                            .setSmallIcon(R.mipmap.ievent_logo)
-                            .setAutoCancel(true)
-                            .build();
-
-                    notificationManager.notify(1, notification);
-                } else {
-                    Log.e("NotificationError", "Organizer data not found");
-                }
-            } else {
-                Log.e("NotificationError", "Document does not exist");
-            }
-        }).addOnFailureListener(e -> Log.e("NotificationError", "Error fetching organizer", e));
-    }
-
     public void setupFollowerListener(String organizerId, FollowerNumListener listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
+        // 记录上次的粉丝数量，初始值为 0
+        AtomicInteger previousFollowerCount = new AtomicInteger(0);
         organizerRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -182,10 +161,16 @@ public class OrganizerDataManager {
 
                 if (snapshot != null && snapshot.exists()) {
                     List<String> followersList = (List<String>) snapshot.get("followersList");
-                    if (followersList != null && followersList.size() == 3) {
-                        // 达到5个粉丝，触发通知.
-                        listener.reached(true);
-                        Log.i("OrganizerDataManager", "reached num of followers");
+                    if (followersList != null) {
+                        int currentFollowerCount = followersList.size();
+                        // 检查粉丝数量是否从四变为五
+                        if (previousFollowerCount.get() == 4 && currentFollowerCount == 5) {
+                            // 达到5个粉丝，触发通知.
+                            listener.reached(true);
+                            Log.i("OrganizerDataManager", "reached num of followers");
+                        }
+                        // 更新上次的粉丝数量
+                        previousFollowerCount.set(currentFollowerCount);
                     }
                 } else {
                     Log.d("MainActivity", "Current data: null");
@@ -193,5 +178,6 @@ public class OrganizerDataManager {
             }
         });
     }
+
 
 }

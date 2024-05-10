@@ -10,6 +10,7 @@ import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.FollowerNumListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.OrganizedEventListener;
 import com.example.ievent.database.listener.UserDataListener;
@@ -17,10 +18,13 @@ import com.example.ievent.entity.ChatMessage;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 
 import java.util.EventListener;
+import java.util.List;
 
 
 /**
@@ -206,4 +210,68 @@ public class IEventDatabase{
     public void getNewMessages(String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
         ChatDataManager.getInstance().getNewMessages(senderId, receiverId, time, listener);
     }
+
+
+    //followers and subscriptions
+    /**
+     * Adds an event to a user's list of events.
+     * @param uid The user ID to which the event will be added.
+     * @param eventId The ID of the event to add.
+     * @param listener A callback to handle the outcome of the add operation.
+     */
+
+    public synchronized void addEventToUser(String uid, String eventId, DataListener<Void> listener){
+        UserDataManager.getInstance().addEventToUser(uid,eventId,listener);
+    }
+
+
+    /**
+     * Sets up a listener to monitor changes in the number of followers an organizer has. Notification
+     * @param organizerId The organizer's user ID whose follower count is to be monitored.
+     * @param listener The listener that handles the logic for when the follower count changes.
+     */
+    public void setupFollowerListener(String organizerId, FollowerNumListener listener){
+        OrganizerDataManager.getInstance().setupFollowerListener(organizerId,listener);
+    }
+
+    /**
+     * Adds a follower to an organizer.
+     * @param organizerId The ID of the organizer who will gain a new follower.
+     * @param followerId The ID of the user who will follow the organizer.
+     * @param listener A callback to handle the result of the operation.
+     */
+
+    public void addFollower(String organizerId, String followerId, DataListener<Void> listener){
+        OrganizerDataManager.getInstance().addFollower(organizerId,followerId,listener);
+    }
+
+    /**
+     * Adds a user to the current user's subscription list.
+     * @param currentUserId The UID of the user who is subscribing.
+     * @param targetUserId The UID of the user to be subscribed to.
+     * @param listener Callback for handling the operation's result.
+     */
+    public synchronized void addSubscription(String currentUserId, String targetUserId, DataListener<Void> listener){
+        UserDataManager.getInstance().addSubscription(currentUserId,targetUserId,listener);
+    }
+
+    /**
+     * Retrieves multiple users based on a list of user IDs.
+     * @param ids List of user IDs.
+     * @param listener Listener to handle the result or failure.
+     */
+    public synchronized void getAllUsersByIds(List<String> ids, UserDataListener listener){
+        UserDataManager.getInstance().getAllUsersByIds(ids,listener);
+    }
+
+    /**
+     * Retrieves the events that a participant is involved in.
+     * @param uid The user ID of the participant whose events are to be retrieved.
+     * @param listener Listener to handle the results or failures of the data retrieval.
+     */
+
+    public synchronized void getParticipantEvents(String uid, EventDataListener listener){
+        UserDataManager.getInstance().getParticipantEvents(uid,listener);
+    }
+
 }

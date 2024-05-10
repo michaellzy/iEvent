@@ -96,7 +96,7 @@ public class UserAcitivity extends BaseActivity {
                 switch (type) {
                     case "Tickets":
                         Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
-                        UserDataManager.getInstance().getParticipantEvents(uid, new EventDataListener() {
+                        db.getParticipantEvents(uid, new EventDataListener() {
                             @Override
                             public void isAllData(boolean isAll) {
 
@@ -155,13 +155,13 @@ public class UserAcitivity extends BaseActivity {
             return;
         }
         // 获取用户的 organizer 实例
-        OrganizerDataManager.getInstance().getOrganizer(uid, new OrgDataListener() {
+        db.getOrganizer(uid, new OrgDataListener() {
             @Override
             public void onSuccess(ArrayList<Organizer> organizers) {
                 if (!organizers.isEmpty()) {
                     Organizer organizer = organizers.get(0);
                     ArrayList<String> followerIds = organizer.getFollowersList();
-                    UserDataManager.getInstance().getAllUsersByIds(followerIds, new UserDataListener() {
+                    db.getAllUsersByIds(followerIds, new UserDataListener() {
                         @Override
                         public void onSuccess(ArrayList<User> users) {
                             setupRecyclerViewByUsers("Followers", users);
@@ -219,13 +219,13 @@ public class UserAcitivity extends BaseActivity {
     }
     private void setupSubscriptionsView() {
         String uid = mAuth.getUid();
-        UserDataManager.getInstance().getLoggedInUser(uid, new UserDataListener() {
+        db.getLoggedInUser(uid, new UserDataListener() {
             @Override
             public void onSuccess(ArrayList<User> users) {
                 User currentUser = users.get(0);
                 ArrayList<String> subscriptionIds = currentUser.getSubscribedList();
 
-                UserDataManager.getInstance().getAllUsersByIds(subscriptionIds, new UserDataListener() {
+                db.getAllUsersByIds(subscriptionIds, new UserDataListener() {
                     @Override
                     public void onSuccess(ArrayList<User> subscribedUsers) {
                         setupRecyclerViewByUsers("Sub", subscribedUsers);

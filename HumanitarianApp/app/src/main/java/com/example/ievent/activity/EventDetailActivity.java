@@ -52,7 +52,7 @@ public class EventDetailActivity extends BaseActivity {
 
         eventDetailBinding.buttonGetTicket.setOnClickListener(v -> {
             if (event != null && userId != null) {
-                UserDataManager.getInstance().addEventToUser(userId, event.getEventId(), new DataListener<Void>() {
+                db.addEventToUser(userId, event.getEventId(), new DataListener<Void>() {
                     @Override
                     public void onSuccess(ArrayList<Void> result) {
                         Toast.makeText(EventDetailActivity.this, "Ticket acquired successfully!", Toast.LENGTH_SHORT).show();
@@ -81,7 +81,7 @@ public class EventDetailActivity extends BaseActivity {
                     return; // 结束方法，不执行后续操作
                 }
                 view.setEnabled(false); // Disable the button to prevent multiple clicks
-                OrganizerDataManager.getInstance().addFollower(organizerID, userId, new DataListener<Void>() {
+                db.addFollower(organizerID, userId, new DataListener<Void>() {
                     @Override
                     public void onSuccess(ArrayList<Void> data) {
                         runOnUiThread(() -> {
@@ -89,7 +89,7 @@ public class EventDetailActivity extends BaseActivity {
                             followIcon.setImageResource(R.drawable.ic_follow_y); // Change the icon to indicate followed
                             view.setEnabled(true); // Re-enable the button
                         });
-                        UserDataManager.getInstance().addSubscription(userId, organizerID, new DataListener<Void>() {
+                        db.addSubscription(userId, organizerID, new DataListener<Void>() {
                             @Override
                             public void onSuccess(ArrayList<Void> subscriptionData) {
                                 runOnUiThread(() -> {
