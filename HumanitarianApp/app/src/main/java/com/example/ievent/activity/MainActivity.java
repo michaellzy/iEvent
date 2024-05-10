@@ -1,13 +1,5 @@
 package com.example.ievent.activity;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -44,16 +36,6 @@ import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 
 import java.util.ArrayList;
 import java.util.List;

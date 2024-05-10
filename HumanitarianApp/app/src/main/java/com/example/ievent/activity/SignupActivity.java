@@ -1,5 +1,4 @@
 package com.example.ievent.activity;
-import androidx.annotation.Nullable;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,8 +12,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.example.ievent.R;
-import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;

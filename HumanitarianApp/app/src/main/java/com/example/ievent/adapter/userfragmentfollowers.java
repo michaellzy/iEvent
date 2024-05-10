@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
-import com.example.ievent.entity.Participant;
 import com.example.ievent.entity.User;
 
 import java.util.ArrayList;

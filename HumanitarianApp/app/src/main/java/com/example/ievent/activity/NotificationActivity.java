@@ -1,12 +1,10 @@
 package com.example.ievent.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 
 import com.example.ievent.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
