@@ -93,6 +93,7 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String type = Objects.requireNonNull(tab.getText()).toString();
+                Log.d("TabSelection", "Selected tab: " + type); // Log to confirm which tab is selected
                 switch (type) {
                     case "Tickets":
                         Log.d("TabSelection", "Tickets tab is selected"); // Confirm this branch executes
@@ -140,6 +141,7 @@ public class UserAcitivity extends BaseActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 onTabSelected(tab);  // This will reload the data when the tab is reselected
+
             }
         });
 
@@ -197,7 +199,7 @@ public class UserAcitivity extends BaseActivity {
                         "TEMP", "onEventsUpdated: " + temp.size());
                 db.fetchDocuments(temp, new EventDataListener() {
                     @Override
-                    public void isAllData(boolean isAll) {
+                    public void isAllData(boolean isALl) {
 
                     }
 
@@ -205,6 +207,7 @@ public class UserAcitivity extends BaseActivity {
                     public void onSuccess(ArrayList<Event> data) {
                         setupRecyclerViewByEvents("Post", data);
                     }
+
                     @Override
                     public void onFailure(String errorMessage) {
                         Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
