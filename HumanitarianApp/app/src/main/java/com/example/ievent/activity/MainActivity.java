@@ -376,6 +376,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
 
+
             @Override
             public void onSuccess(ArrayList<Event> data) {
                 runOnUiThread(() -> {

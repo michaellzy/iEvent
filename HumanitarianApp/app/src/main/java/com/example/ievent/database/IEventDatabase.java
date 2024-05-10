@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.EventListener;
 import java.util.List;
 
@@ -129,11 +130,27 @@ public class IEventDatabase{
     public void getEvents(int pageSize, EventDataListener listener) {
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
+    public void getGreaterThan(double price, EventDataListener listener){
+        EventDataManager.getInstance().getGreaterThan(price,listener);
+    }
+    public void getLessThan(double price, EventDataListener listener){
+        EventDataManager.getInstance().getLessThan(price,listener);
+    }
+    public void getDateAfter(int timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getDateAfter(timestamp,listener);
 
+    }
+    public void getDateBefore(int timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getDateBefore(timestamp,listener);
 
+    }
+    public void getAllEventsByPrice(double price, EventDataListener listener){
+        EventDataManager.getInstance().getAllEventsByPrice(price,listener);
 
-
-
+    }
+    public void getAllEventsByDate(long timestamp, EventDataListener listener){
+        EventDataManager.getInstance().getAllEventsByDate(timestamp,listener);
+    }
     // ----------------------------------- Media Operations ----------------------------------- //
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
@@ -274,4 +291,7 @@ public class IEventDatabase{
         UserDataManager.getInstance().getParticipantEvents(uid,listener);
     }
 
+    public synchronized void getEventsByFilters(String type, String titlePrefix, Date startDate, Date endDate, double minPrice, double maxPrice, EventDataListener listener){
+        EventDataManager.getInstance().getEventsByFilters(type,titlePrefix, startDate, endDate,minPrice,maxPrice,listener);
+    }
 }
