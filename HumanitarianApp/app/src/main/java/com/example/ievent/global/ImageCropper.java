@@ -2,9 +2,7 @@ package com.example.ievent.global;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import androidx.activity.result.ActivityResultLauncher;
-
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 

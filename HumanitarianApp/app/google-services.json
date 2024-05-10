@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "961394315027",
-    "project_id": "ievent-d9176",
-    "storage_bucket": "ievent-d9176.appspot.com"
+    "project_number": "30071464298",
+    "firebase_url": "https://ievent-455e0-default-rtdb.firebaseio.com",
+    "project_id": "ievent-455e0",
+    "storage_bucket": "ievent-455e0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:961394315027:android:c49dea84868a64391954e6",
+        "mobilesdk_app_id": "1:30071464298:android:df98df83a6b736aa4d0513",
         "android_client_info": {
           "package_name": "com.example.ievent"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCa97SjkVk1WAf4G_MN10WUB9MpvFIt2PA"
+          "current_key": "AIzaSyBdxsgUiNo9_VJyyLc1J8QE6-M_qNp6tqc"
         }
       ],
       "services": {

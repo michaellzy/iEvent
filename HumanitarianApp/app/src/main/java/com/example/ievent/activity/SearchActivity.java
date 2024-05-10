@@ -49,16 +49,15 @@ public class SearchActivity extends BaseActivity {
 //                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_notifications) {
+                    startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
                     return true;
                 }
                 return false;
             }
         });
-
-
         initSearchWidgets();
         setUpData();
     }
@@ -84,6 +83,12 @@ public class SearchActivity extends BaseActivity {
 
         // gets data here
         db.getAllEventsByFuzzyName("Saturdays", new EventDataListener() {
+
+            @Override
+            public void isAllData(boolean isAll) {
+
+            }
+
             @Override
             public void onSuccess(ArrayList<Event> events) {
                 // set up the data here

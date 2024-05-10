@@ -41,7 +41,7 @@ public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<Recommend
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
         holder.price.setText("$" + event.getPrice());
-        holder.organizer.setText("iEvent");
+        holder.organizer.setText(event.getOrganizer());
 
         Glide.with(holder.itemView.getContext()).
                 load(event.getImg()).

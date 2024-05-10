@@ -3,21 +3,41 @@ package com.example.ievent.entity;
 import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 
+
 public class Event implements java.io.Serializable{
     private String type;
     private String title;
     private String description;
 
+    private String eventId;
+
     private String organizer;
+
+    private String orgId;
     private String location;
 
     @PropertyName("date-time")
     private String dateTime;
-    private int price;
+    private double price;
     private String img;
+
+    private long timestamp;
     private ArrayList<User> participants;
 
     public Event() {}
+
+    public Event(String type, String title, String description, String organizer, String orgId, String location, String dateTime, double price, String img, long timestamp) {
+        this.type = type;
+        this.title = title;
+        this.description = description;
+        this.organizer = organizer;
+        this.orgId = orgId;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.price = price;
+        this.img = img;
+        this.timestamp = timestamp;
+    }
 
     public String getType() {
         return type;
@@ -69,11 +89,11 @@ public class Event implements java.io.Serializable{
         this.dateTime = dateTime;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -90,10 +110,26 @@ public class Event implements java.io.Serializable{
         return participants;
     }
 
+
     public void setParticipants(ArrayList<User> participants) {
         this.participants = participants;
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
 
     @Override
     public String toString() {
@@ -127,15 +163,13 @@ public class Event implements java.io.Serializable{
             e.setDescription("This organizer is too lazy to write a description.");
         }
 
-        if(e.getOrganizer() == null || e.getOrganizer().isEmpty()) {
-            e.setOrganizer("Unknown");
+        if(e.getOrganizer() == null ) {
+            e.setOrganizer(null);
         }
 
         if(e.getImg() == null || e.getImg().isEmpty()) {
             e.setImg("https://t.mwm.moe/fj");
         }
-
-
     }
 
 }

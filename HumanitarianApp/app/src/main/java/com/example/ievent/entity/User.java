@@ -1,11 +1,16 @@
 package com.example.ievent.entity;
 
-public class User {
-    private String userName = "XXX";
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class User implements Observer, Serializable {
+    private String userName;
     private String email;
 
     private String uid;
+    private ArrayList<String> subscribedList =new ArrayList<>();
+
 
 
     public String getAvatar() {
@@ -20,11 +25,19 @@ public class User {
 
     private String avatar;
 
-    public User() {}
+    public User() {
+
+    }
+
+    public User(String uid) {
+        this.uid = uid;
+    }
+
     public User(String uid, String email, String userName){
         this.uid = uid;
         this.email = email;
         this.userName = userName;
+
     }
 
     public String getUserName() {
@@ -41,5 +54,25 @@ public class User {
 
     public String getUid() {
         return uid;
+    }
+
+    public ArrayList<String> getSubscribedList() {
+        return subscribedList;
+    }
+
+    public void addSubscription(String userId) {
+        subscribedList.add(userId);
+    }
+
+    public void removeSubscription(String userId) {
+        subscribedList.remove(userId);
+    }
+
+
+    @Override
+    public void update(Event event) {
+        // 在这里处理接收到的通知，比如显示通知消息
+        System.out.println(userName + " received notification for event: " + event);
+
     }
 }
