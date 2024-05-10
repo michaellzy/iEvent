@@ -19,20 +19,26 @@ public class P2PChatActivity extends BaseActivity {
 
     private ActivityP2pChatBinding binding;
 
+
     private ArrayList<ChatMessage> messages = new ArrayList<>();
+
 
     private String receiverId;
 
+
     // use this to download the old messages end before this time: base
-    private long timeEnd = 0;
+    private long timeEnd = System.currentTimeMillis();
 
 
     // use this to download the new messages start after this time: base
-    private long timeStart = 0;
+    private long timeStart = System.currentTimeMillis();
 
 
     // number of messages to get: offset
     private int n = 20;
+
+    // the number of messages which can cover the screen
+    private static final int FILLNUMBER = 10;
 
     /** the adapter of the current recycleView */
     P2PChatAdapter P2pAdapter;
@@ -51,7 +57,10 @@ public class P2PChatActivity extends BaseActivity {
         setVariables();
     }
 
-    /** set Variables */
+
+
+
+    /** set Variables such as the intent data, UI Listeners and layout of the */
     private void setVariables() {
         // --- initialize data --- //
         String senderId = mAuth.getUid();
@@ -63,7 +72,6 @@ public class P2PChatActivity extends BaseActivity {
         if(receiverId == null || receiverId.isEmpty()) {
             receiverId = "4";
         }
-
 
 
 
@@ -103,11 +111,16 @@ public class P2PChatActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
                 Toast.makeText(P2PChatActivity.this, "success to get the message", Toast.LENGTH_SHORT).show();
-                Log.i("MESSAGESSSS", "onSuccess: " + data.size());
+
                 messages = data;
 
-                // update the timeEnd
-                timeEnd = messages.get(0).getTime() - 1;
+                // if message size is not only 1 update the timeEnd
+                if(!messages.isEmpty()){
+                    timeEnd = messages.get(0).getTime() - 1;
+                }
+
+                // update the layout of the recyclerView based on the number of messages
+                updateRecyclerViewLayout(data.size());
 
                 P2pAdapter = new P2PChatAdapter(messages, finalSenderId);
                 binding.chatRecyclerView.setAdapter(P2pAdapter);
@@ -122,20 +135,29 @@ public class P2PChatActivity extends BaseActivity {
         // search from when the user enters the chat room
         timeStart = System.currentTimeMillis();
         // if the data added in database, then update the adapter
+        String finalSenderId1 = senderId;
         db.getNewMessages(senderId, receiverId, timeStart, new DataListener<ChatMessage>() {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
                 Toast.makeText(P2PChatActivity.this, "success to get the message", Toast.LENGTH_SHORT).show();
                 Log.i("MESSAGESSSS", "onSuccess: " + data.size());
+
                 messages.addAll(data);
-
                 // update the timeStart
-                timeStart = messages.get(messages.size() - 1).getTime() + 1;
-                P2pAdapter.notifyItemInserted(messages.size() - data.size());
+                if (!data.isEmpty()) {
+                    timeStart = messages.get(messages.size() - 1).getTime() + 1;
+                }
 
+                if (P2pAdapter != null) {
+                    P2pAdapter.notifyItemInserted(messages.size() - data.size());
+                } else {
+                    // if P2pAdapter is null, then initialize it
+                    P2pAdapter = new P2PChatAdapter(messages, finalSenderId1);
+                    binding.chatRecyclerView.setAdapter(P2pAdapter);
+                }
 
                 // if the user is sending the message, then scroll to the bottom
-                if(isSending){
+                if (isSending && !messages.isEmpty()) {
                     binding.chatRecyclerView.scrollToPosition(messages.size() - 1);
                     isSending = false;
                 }
@@ -147,6 +169,11 @@ public class P2PChatActivity extends BaseActivity {
             }
         });
     }
+
+
+
+
+
 
     /**
      * load more messages when the user scrolls to the top
@@ -187,6 +214,22 @@ public class P2PChatActivity extends BaseActivity {
                 Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * update the layout of the recyclerView (messages stack from the bottom or top)
+     * @param messageCount the number of messages
+     */
+    private void updateRecyclerViewLayout(int messageCount) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        if (messageCount < FILLNUMBER) {
+            // if the message can't fill the screen, start from the top
+            layoutManager.setStackFromEnd(false);
+        } else {
+            // if the message can fill the screen, start from the bottom
+            layoutManager.setStackFromEnd(true);
+        }
+        binding.chatRecyclerView.setLayoutManager(layoutManager);
     }
 
 

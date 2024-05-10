@@ -2,6 +2,7 @@ package com.example.ievent.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -138,7 +139,7 @@ public class EventDetailActivity extends AppCompatActivity {
         // bind event to map button
         eventDetailBinding.imageViewMap.setOnClickListener(v -> {
             // Open map activity and add description to the intent
-            android.content.Intent intent = new android.content.Intent(this, MapActivity.class);
+            Intent intent = new Intent(this, MapActivity.class);
             // here put the name of destination
             intent.putExtra("destination", event.getLocation());
             startActivity(intent);
@@ -146,7 +147,14 @@ public class EventDetailActivity extends AppCompatActivity {
 
         eventDetailBinding.imageViewDetailOrganizerPic.setOnClickListener(v -> {
             // Open organizer profile activity
-            android.content.Intent intent = new android.content.Intent(this, UserAcitivity.class);
+            Intent intent = new Intent(this, UserAcitivity.class);
+            startActivity(intent);
+        });
+
+        eventDetailBinding.imageViewChat.setOnClickListener(v -> {
+            Intent intent = new Intent(this, P2PChatActivity.class);
+            intent.putExtra("receiverId", event.getOrganizer());
+            // Open chat activity
             startActivity(intent);
         });
 
