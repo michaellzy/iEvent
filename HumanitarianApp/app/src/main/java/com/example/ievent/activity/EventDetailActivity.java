@@ -73,7 +73,7 @@ public class EventDetailActivity extends BaseActivity {
         Event event = (Event) getIntent().getSerializableExtra("event");
         String userId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
         if (event != null && userId != null) {
-            String organizerID = event.getOrganizer();
+            String organizerID = event.getOrgId();
             if (organizerID != null) {
                 // 添加条件检查，确保用户不能关注自己
                 if (userId.equals(organizerID)) {

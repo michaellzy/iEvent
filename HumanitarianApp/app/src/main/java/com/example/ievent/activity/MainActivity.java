@@ -39,6 +39,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends BaseActivity {
 
@@ -210,6 +211,25 @@ public class MainActivity extends BaseActivity {
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
                     Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
                 });
+                //subscribed notification
+
+                    db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
+                        @Override
+                        public void onSuccess(ArrayList<User> udata) {
+                            User curUser = udata.get(0);
+                            for(Event event : events) {
+                                if (curUser.getSubscribedList().contains(event.getOrgId())) {
+                                    showEventNotification(event);
+                                    break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(String errorMessage) {
+
+                        }
+                    });
+
             }
 
             @Override
@@ -255,6 +275,42 @@ public class MainActivity extends BaseActivity {
                 .build();
         notificationManager.notify(1, notification);
     }
+
+    private void showEventNotification(Event event) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        创建跳转到 EventDetailActivity 的 Intent
+//        Intent intent = new Intent(this, EventDetailActivity.class);
+//        intent.setAction("com.example.ievent.VIEW_EVENT");  // 使用自定义的action
+//        intent.putExtra("event", event);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Ensure notification channels are created on Android Oreo and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "events",
+                    "Event Notifications",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            channel.setDescription("Notifications for new events");
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Building the notification
+        Notification notification = new Notification.Builder(this, "events")
+                .setContentTitle("New Event Notification") // Using organizer's name
+                .setContentText("Your followed organizer " + event.getOrganizer() + " has posted a new event: " + event.getTitle())
+                .setSmallIcon(R.mipmap.ievent_logo) // Ensure this resource exists
+//                .setContentIntent(pendingIntent)  // 设置点击通知后的动作
+                .setAutoCancel(true)
+                .build();
+
+        // Posting the notification
+        int notificationId = new Random().nextInt();
+        notificationManager.notify(notificationId, notification);
+        Log.d("NotificationSent", "Notification sent for new event by " + event.getOrganizer() + " with ID " + notificationId);
+    }
+
 
 
     private void createNotificationChannel() {

@@ -45,7 +45,9 @@ public class EventDataManager {
     private ArrayList<EventUpdateListener> listeners = new ArrayList<>();
 
     private EventDataManager(){
-//          eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
+
+//         eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
+
         eventRef = FirebaseFirestore.getInstance().collection("events");
         eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
