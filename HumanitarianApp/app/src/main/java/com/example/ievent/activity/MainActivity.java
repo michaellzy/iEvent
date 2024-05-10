@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity {
             return false;
         });
 
-        // 初始化NavigationView和HeaderView
+        // Initialize NavigationView  & HeaderView
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_drawer_include);
         View headerView = navigationView.getHeaderView(0);
@@ -217,7 +217,7 @@ public class MainActivity extends BaseActivity {
                         @Override
                         public void onSuccess(ArrayList<User> udata) {
                             User curUser = udata.get(0);
-                            for(Event event : events) {
+                            for(Event event : data) {
                                 if (curUser.getSubscribedList().contains(event.getOrgId())) {
                                     showEventNotification(event);
                                     break;
@@ -226,10 +226,8 @@ public class MainActivity extends BaseActivity {
                         }
                         @Override
                         public void onFailure(String errorMessage) {
-
                         }
                     });
-
             }
 
             @Override
@@ -245,7 +243,6 @@ public class MainActivity extends BaseActivity {
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
-        createNotificationChannel();
         db.setupFollowerListener(mAuth.getCurrentUser().getUid(), new FollowerNumListener() {
             @Override
             public void reached(boolean isReached) {
@@ -278,13 +275,6 @@ public class MainActivity extends BaseActivity {
 
     private void showEventNotification(Event event) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        创建跳转到 EventDetailActivity 的 Intent
-//        Intent intent = new Intent(this, EventDetailActivity.class);
-//        intent.setAction("com.example.ievent.VIEW_EVENT");  // 使用自定义的action
-//        intent.putExtra("event", event);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         // Ensure notification channels are created on Android Oreo and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -312,21 +302,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name_followers);
-            String description = getString(R.string.channel_description_followers);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("followers", name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-
-    // 设置 NavigationView 的选项监听器
+    //navigation drawer
     private void setupNavigationView(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -351,15 +327,12 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
             finish(); // Close current activity
         } else {
-            // Handle other menu items if needed
+            // Handle other menu items
         }
-
         // Highlight the selected item in the navigation drawer
         menuItem.setChecked(true);
-
         // Set action bar title if you have a toolbar set up
         setTitle(menuItem.getTitle());
-
         // Close the navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
     }

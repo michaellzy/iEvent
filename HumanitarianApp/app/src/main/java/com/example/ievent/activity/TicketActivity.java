@@ -2,6 +2,7 @@ package com.example.ievent.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class TicketActivity extends BaseActivity {
 
                     @Override
                     public void onFailure (String errorMessage){
-                        Toast.makeText(TicketActivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        Log.d("Ticket","Failed to load tickets: " + errorMessage);
                     }
                 });
 

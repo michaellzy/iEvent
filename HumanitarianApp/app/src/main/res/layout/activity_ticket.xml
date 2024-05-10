@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tickets"
-        android:fontFamily="@font/arvo_bold"
+        android:padding="15dp"
+        android:fontFamily="@font/poppins_bold"
         android:textStyle="bold"
-        android:textSize="38dp"
+        android:textSize="40dp"
         tools:layout_editor_absoluteX="37dp"
         tools:layout_editor_absoluteY="29dp"
         android:layout_marginTop="30dp"/>
@@ -25,18 +26,17 @@
         android:layout_height="4dp"
         android:background="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/textView"
-        android:layout_marginTop="15dp"
          />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_tickets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"
-        android:paddingTop="58dp"
+        android:paddingTop="55dp"
         tools:listitem="@layout/user_fragment_tickets" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

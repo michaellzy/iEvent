@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="@id/subscriber_image"
         android:layout_marginStart="16dp"
         android:text="XXXXXX"
+        android:fontFamily="@font/poppins_semibold"
         android:textSize="16sp" />
 
     <ImageView

@@ -53,7 +53,6 @@ public class UserAcitivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         binding = ActivityUserBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
@@ -111,7 +110,7 @@ public class UserAcitivity extends BaseActivity {
                             @Override
                             public void onFailure(String errorMessage) {
                                 setupRecyclerViewByEvents("Tickets", new ArrayList<>());
-                                Toast.makeText(UserAcitivity.this, "Failed to load tickets: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                Log.d("Tickets","Failed to load tickets: " + errorMessage);
                             }
                         });
                         break;
@@ -140,7 +139,7 @@ public class UserAcitivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                onTabSelected(tab);  // This will reload the data when the tab is reselected
+                onTabSelected(tab);  // reload the data when the tab is reselected
 
             }
         });
@@ -153,10 +152,10 @@ public class UserAcitivity extends BaseActivity {
     private void setupFollowersView() {
         String uid = FirebaseAuth.getInstance().getUid();  // Get current user's UID
         if (uid == null) {
-            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+            Log.d("User","User not logged in.");
             return;
         }
-        // 获取用户的 organizer 实例
+
         db.getOrganizer(uid, new OrgDataListener() {
             @Override
             public void onSuccess(ArrayList<Organizer> organizers) {
@@ -171,17 +170,18 @@ public class UserAcitivity extends BaseActivity {
 
                         @Override
                         public void onFailure(String errorMessage) {
-                            Toast.makeText(UserAcitivity.this, "Failed to load followers: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            Log.d("followers","Failed to load followers: " + errorMessage);
                         }
                     });
                 } else {
-                    Toast.makeText(UserAcitivity.this, "No organizer found for the user.", Toast.LENGTH_SHORT).show();
+                    Log.d("organizer","No organizer found for the user.");
                 }
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(UserAcitivity.this, "Failed to get organizer: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.d("organizer","Failed to get organizer: " + errorMessage);
+
             }
         });
     }
@@ -192,7 +192,7 @@ public class UserAcitivity extends BaseActivity {
         db.fetchOrganizedData(uid, new OrganizedEventListener() {
             @Override
             public void onEventsUpdated(List<String> eventIds) {
-                Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+                Log.d("useractivity","EventList" +  eventIds.size());
 
                 ArrayList<String> temp = new ArrayList<>(eventIds);
                 Log.i(
@@ -210,13 +210,15 @@ public class UserAcitivity extends BaseActivity {
 
                     @Override
                     public void onFailure(String errorMessage) {
-                        Toast.makeText(UserAcitivity.this, "List" +  eventIds.size(), Toast.LENGTH_SHORT).show();
+                        Log.d("UserActivity","List" +  eventIds.size());
+
                     }
                 });
             }
             @Override
             public void onError(String error) {
-                Toast.makeText(UserAcitivity.this, "List error", Toast.LENGTH_SHORT).show();
+                Log.d("UserActivity","List error");
+
             }
         });
     }
@@ -237,14 +239,16 @@ public class UserAcitivity extends BaseActivity {
                     @Override
                     public void onFailure(String errorMessage) {
                         setupRecyclerViewByUsers("Sub", new ArrayList<>());
-                        Toast.makeText(UserAcitivity.this, "Failed to load subscriptions: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        Log.d("UserActivity","Failed to load subscriptions: " + errorMessage);
+
                     }
                 });
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(UserAcitivity.this, "Failed to retrieve user data.", Toast.LENGTH_SHORT).show();
+                Log.d("UserActivity","Failed to retrieve user data.");
+
             }
         });
     }

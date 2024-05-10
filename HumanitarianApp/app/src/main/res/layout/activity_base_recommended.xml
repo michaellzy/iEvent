@@ -29,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Activity Name"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_bold"
+            android:textFontWeight="900"
             android:textStyle="bold"
             android:textSize="16sp" />
 
@@ -60,14 +61,5 @@
             android:textStyle="bold"
             android:textSize="16sp" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/icon_love"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_love" />
 
 </RelativeLayout>

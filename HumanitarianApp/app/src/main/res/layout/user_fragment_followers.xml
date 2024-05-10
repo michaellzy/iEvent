@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="@id/subscriber_image"
         app:layout_constraintBottom_toBottomOf="@id/subscriber_image"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_semibold"
         android:text="XXXXXX"
         android:textSize="16sp" />
 
