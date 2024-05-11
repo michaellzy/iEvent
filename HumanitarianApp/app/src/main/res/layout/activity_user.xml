@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent">
 
     <!-- Profile Picture -->
@@ -18,52 +19,34 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
+    <!-- Email TextView -->
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/plus_extra"
         android:text="Peter Pan"
-        android:fontFamily="@font/arvo_bold"
-        android:layout_marginTop="18dp"
-        android:paddingTop="28dp"
-        android:layout_marginStart="3dp"
+        android:textColor="@color/darkPurple"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.593"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@id/profile_image"
-        tools:layout_editor_absoluteY="36dp"
-        tools:ignore="MissingConstraints" />
-
-    <!-- Logout Button -->
-
-
-
-    <!-- TabLayout for the top navigation tabs -->
+        app:layout_constraintTop_toTopOf="@id/profile_image" />
 
     <TextView
         android:id="@+id/tv_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/arvo_bold"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/plus_extra"
+        android:textColor="@color/darkPurple"
         android:text="Email..."
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
-
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="94dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="20dp"
-        android:text="Logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.558"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_email" />
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_name" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

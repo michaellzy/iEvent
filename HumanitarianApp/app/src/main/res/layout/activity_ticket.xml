@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_3"
     android:layout_height="match_parent"
-    android:padding="12dp"
     tools:context=".activity.TicketActivity">
 
     <TextView
@@ -13,26 +13,35 @@
         android:layout_height="wrap_content"
         android:text="Tickets"
         android:padding="15dp"
-        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/darkPurple"
+        android:fontFamily="@font/plus_extra"
         android:textStyle="bold"
         android:textSize="40dp"
+        android:layout_marginStart="8dp"
         tools:layout_editor_absoluteX="37dp"
         tools:layout_editor_absoluteY="29dp"
         android:layout_marginTop="30dp"/>
 
     <View
         android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@android:color/black"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/colorPurple"
         app:layout_constraintTop_toBottomOf="@id/textView"
-         />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.9"
+        android:padding="10dp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_tickets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="93dp"
+        android:padding="4dp"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"

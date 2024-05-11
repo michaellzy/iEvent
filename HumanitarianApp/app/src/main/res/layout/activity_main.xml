@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
+    android:background="@drawable/bg_3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
@@ -29,7 +30,7 @@
         android:layout_height="96dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
-        app:civ_border_color="#FFDA7891"
+        app:civ_border_color="@color/colorPink2"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,8 +42,9 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/your_event"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="20sp"
+        android:textColor="@color/darkPurple"
+        android:fontFamily="@font/plus_extra"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_image" />
@@ -68,8 +70,9 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/recommended_activities"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="20sp"
+        android:textColor="#171b2e"
+        android:fontFamily="@font/plus_extra"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recycler_view_your_event" />
@@ -79,6 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="10dp"
+        android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/tv_recommended_activities"
         tools:listitem="@layout/activity_base_recommended" />
     <!--    <androidx.viewpager.widget.ViewPager-->
