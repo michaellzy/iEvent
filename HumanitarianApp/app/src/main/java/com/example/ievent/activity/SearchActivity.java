@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.ordered_map.Iterator;
+import com.example.ievent.database.ordered_map.OrderedEvent;
 import com.example.ievent.entity.Event;
 import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
@@ -46,8 +48,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -56,13 +59,16 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     private RecyclerView recyclerView;
     private SearchView searchView;
     private RecommendedActivitiesAdapter recommendedActivitiesAdapter;
-    private List<Event> eventList = new ArrayList<>();
+    private ArrayList<Event> eventList = new ArrayList<>();
+    private OrderedEvent<Double, Event> orderedEvents;
+    private boolean isAscending = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Button filterbutton = findViewById(R.id.filter_button);
+        Button sortbutton = findViewById(R.id.ascending_button);
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
         recommendedActivitiesAdapter = new RecommendedActivitiesAdapter(eventList);
@@ -85,6 +91,37 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 return false;
             }
         });
+        orderedEvents = new OrderedEvent<>();
+
+        sortbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isAscending) {
+                    // If currently in descending order, reverse to ascending
+                    Collections.reverse(eventList);  // Reverse the list to make it ascending
+                    sortbutton.setText("Now Descending");  // Update button text to reflect the next possible action
+                } else {
+                    // Sort the list in ascending order if not already sorted
+                    orderedEvents = new OrderedEvent<Double, Event>(); // Initialize
+                    for (Event event : eventList) {
+                        orderedEvents.insert(event.getPrice(), event);
+                    }
+                    // Use the iterator to get sorted list
+                    Iterator it = orderedEvents.getIterator();
+                    ArrayList<Event> sortedEvents = new ArrayList<>();
+                    while (it.hasNext()) {
+                        LinkedList<Event> eventsLinkedList = (LinkedList<Event>) it.next();
+                        sortedEvents.addAll(new ArrayList<>(eventsLinkedList));
+                    }
+                    eventList.clear();
+                    eventList.addAll(sortedEvents);  // Now eventList is sorted in ascending
+                    sortbutton.setText("Now Ascending");  // Update button text to reflect the next possible action
+                }
+                recommendedActivitiesAdapter.notifyDataSetChanged();  // Notify the adapter
+                isAscending = !isAscending;  // Toggle the sort order for the next click
+            }
+        });
+
 
         filterbutton.setOnClickListener(new View.OnClickListener() {
             @Override
