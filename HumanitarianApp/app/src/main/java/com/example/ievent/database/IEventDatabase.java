@@ -273,6 +273,16 @@ public class IEventDatabase{
     }
 
     /**
+     * Removes a user from the current user's subscription list.
+     * @param currentUserId The UID of the user who is unsubscribing.
+     * @param targetUserId The UID of the user to be unsubscribed from.
+     * @param listener Callback for handling the operation's result.
+     */
+    public synchronized void removeSubscription(String currentUserId, String targetUserId, DataListener<Void> listener){
+        UserDataManager.getInstance().removeSubscription(currentUserId,targetUserId,listener);
+    }
+
+    /**
      * Retrieves multiple users based on a list of user IDs.
      * @param ids List of user IDs.
      * @param listener Listener to handle the result or failure.
