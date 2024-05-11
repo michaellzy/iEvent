@@ -96,6 +96,10 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         sortbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (eventList.isEmpty()) {
+                    Toast.makeText(SearchActivity.this, "No events available to sort.", Toast.LENGTH_SHORT).show();
+                    return; // Prevent further execution
+                }
                 if (!isAscending) {
                     // If currently in descending order, reverse to ascending
                     Collections.reverse(eventList);  // Reverse the list to make it ascending
@@ -311,7 +315,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
             Exp expression = parser.parse();
             if (expression == null) {
                 Log.d("SearchActivityPS", "No valid query expression found.");
-                Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "invalid query", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -352,6 +356,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         } else {
             // If the expression is neither, log an error and return early
             Log.e("SearchActivityPS", "Unsupported comparison type");
+            Toast.makeText(this, "Unsupported comparison type", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -429,9 +434,12 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 eventList.addAll(events);
                 recommendedActivitiesAdapter.notifyDataSetChanged();
 
-                if (!eventList.isEmpty()) {
-                    Event firstEvent = eventList.get(0);
-                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
+//                if (!eventList.isEmpty()) {
+//                    Event firstEvent = eventList.get(0);
+//                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
+//                }
+                if (eventList.isEmpty()) {
+                    Toast.makeText(SearchActivity.this, "No events found.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -495,10 +503,5 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
             return dateString; // Return original if parsing fails.
         }
     }
-    private void updateRecyclerView(ArrayList<Event> events) {
-        Log.d("SearchActivity", "Updating RecyclerView with " + events.size() + " events");
-        RecommendedActivitiesAdapter adapter = (RecommendedActivitiesAdapter) recyclerView.getAdapter();
-        adapter.setEvents(events);
-        adapter.notifyDataSetChanged();
-    }
+
 }
