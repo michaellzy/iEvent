@@ -15,7 +15,7 @@ public class Tokenizer {
             return;
         }
         buffer = buffer.trim();
-        Log.d("Tokenizer", "Trimmed Buffer before processing: " + buffer);
+//        Log.d("Tokenizer", "Trimmed Buffer before processing: " + buffer);
 
         char firstChar = buffer.charAt(0);
         int idx = 0;
@@ -23,7 +23,7 @@ public class Tokenizer {
         if (firstChar == '+' || firstChar == '/' || firstChar == '<' || firstChar == '>' || firstChar == '(' || firstChar == ')'||firstChar == '=') {
             currentToken = new Token(String.valueOf(firstChar), mapCharToType(firstChar));
             idx = 1; // these are single character tokens
-            Log.d("Tokenizer", "Processed operator token: " + currentToken.getToken());
+//            Log.d("Tokenizer", "Processed operator token: " + currentToken.getToken());
         } else if (Character.isDigit(firstChar) || (firstChar == '.' && buffer.length() > 1 && Character.isDigit(buffer.charAt(1)))) {
             if (buffer.contains("-") && !buffer.contains(".")) {
                 // Assume the format is mm-dd
@@ -46,7 +46,7 @@ public class Tokenizer {
                     number.append(buffer.charAt(idx++));
                 }
                 currentToken = new Token(number.toString(), Token.Type.DOUBLE);
-                Log.d("Tokenizer", "Processed number token: " + number.toString() + " as DOUBLE");
+//                Log.d("Tokenizer", "Processed number token: " + number.toString() + " as DOUBLE");
             }
         } else if (Character.isLetter(firstChar)) {
             StringBuilder identifier = new StringBuilder(String.valueOf(firstChar));
@@ -55,15 +55,15 @@ public class Tokenizer {
                 identifier.append(buffer.charAt(idx++));
             }
             currentToken = new Token(identifier.toString(), Token.Type.STR);
-            Log.d("Tokenizer", "Processed identifier token: " + identifier.toString());
+//            Log.d("Tokenizer", "Processed identifier token: " + identifier.toString());
         } else {
             throw new Token.IllegalTokenException("Invalid token found from the expression " + firstChar + " received");
         }
 
         // Update the buffer to reflect the consumed characters
         buffer = buffer.substring(idx);
-        Log.d("Tokenizer", "Buffer after processing: " + buffer);
-        Log.d("Tokenizer", "Current token: " + currentToken.getToken() + ", Type: " + currentToken.getType());
+//        Log.d("Tokenizer", "Buffer after processing: " + buffer);
+//        Log.d("Tokenizer", "Current token: " + currentToken.getToken() + ", Type: " + currentToken.getType());
     }
 
     private Token.Type mapCharToType(char ch) {

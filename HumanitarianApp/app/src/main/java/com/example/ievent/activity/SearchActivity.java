@@ -87,7 +87,6 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                performSearch(newText);
                 return false;
             }
         });
@@ -231,18 +230,18 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 "MentalHealth", "MotorbikeTours", "MusicFestivals",
                 "MuseumofAustralia", "SchoolHolidays", "WarehouseSale",
                 "Wellness", "Other"
-        };
+        }; // All type of events
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // adding all events in the spinner
         spinnerFilterOptions.setAdapter(adapter);
 
         setDateField((EditText) bottomSheetView.findViewById(R.id.startDate));
-        setDateField((EditText) bottomSheetView.findViewById(R.id.endDate));
+        setDateField((EditText) bottomSheetView.findViewById(R.id.endDate)); // get the date for start and end
 
         EditText minPrice = bottomSheetView.findViewById(R.id.minPrice);
         EditText maxPrice = bottomSheetView.findViewById(R.id.maxPrice);
         minPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL); // limit the input type for price field
 
         // Initialize TextWatcher to validate fields
         TextWatcher validateTextWatcher = new TextWatcher() {
@@ -278,7 +277,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         ArrayList<Event> filteredList = filterEvents(type, startDate, endDate, minPrice, maxPrice);
         eventList.clear();
         eventList.addAll(filteredList);
-//        recommendedActivitiesAdapter.setEvents(filteredList);
+        // after the filter was applied, change the current eventList and use adapter to notice
         recommendedActivitiesAdapter.notifyDataSetChanged();
     }
 
@@ -292,7 +291,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         ArrayList<Event> filteredList = new ArrayList<>();
 
         for (Event event : eventList) {
-            long eventTimestamp = event.getTimestamp();
+            long eventTimestamp = event.getTimestamp(); // filter the date by timestamp in db
             if (event.getType().equals(type) &&
                     eventTimestamp >= startTimestamp && eventTimestamp <= endTimestamp &&
                     event.getPrice() >= minPrice && event.getPrice() <= maxPrice) {
@@ -309,11 +308,12 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
     private void performSearch(String query) {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
+        // calling the tokenizer and parser
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
         try {
             Exp expression = parser.parse();
-            if (expression == null) {
+            if (expression == null) { // check if the parse is valid
                 Log.d("SearchActivityPS", "No valid query expression found.");
                 Toast.makeText(this, "invalid query", Toast.LENGTH_SHORT).show();
                 return;
@@ -366,6 +366,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
 
     private void handleEquality(Exp expression, EventDataListener listener) {
+        // handle "=" casel
         EqualExp eqExp = (EqualExp) expression;
         String fieldName = ((VariableExp) eqExp.getLeft()).getVariableName();
         Exp rightExp = eqExp.getRight();
@@ -382,6 +383,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
 
     private void handleEqualitySearch(String fieldName, String value, EventDataListener listener) {
+        // designed 3 kinds of "=" search, type=variable, price=value, date=date
         Log.d("SearchActivity", "Field name before handleEqualitySearch: " + fieldName);
         switch (fieldName) {
             case "type":
@@ -452,6 +454,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
     private String extractSearchKeyword(Exp expression) {
         if (expression instanceof VariableExp) {
+            // if only 1 variable, use fuzzy search
             return ((VariableExp) expression).toString();
         } else if (expression instanceof AndExp) {
             String leftKeyword = extractSearchKeyword(((AndExp) expression).getLeft());
