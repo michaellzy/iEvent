@@ -17,16 +17,17 @@
 
         <EditText
             android:id="@+id/edittext_chat"
-            android:layout_width="0dp"
+            android:layout_width="312dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="91dp"
+            android:layout_toStartOf="@+id/button_send"
             android:layout_weight="1"
             android:hint="Type a message"
             android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toStartOf="@+id/button_send" />
+            android:inputType="textMultiLine"
+            android:minHeight="48dp" />
 
         <Button
             android:id="@+id/button_send"
@@ -34,7 +35,8 @@
             android:layout_height="wrap_content"
             android:text="Send"
             android:layout_alignParentEnd="true"
-            android:layout_alignBaseline="@id/edittext_chat" />
+            android:layout_alignBaseline="@id/edittext_chat"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
     <!-- chat list -->
