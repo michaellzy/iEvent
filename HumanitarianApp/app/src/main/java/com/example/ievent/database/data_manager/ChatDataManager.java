@@ -1,8 +1,12 @@
 package com.example.ievent.database.data_manager;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.database.listener.BlockListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
@@ -58,11 +62,16 @@ public class ChatDataManager {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String key = childSnapshot.getKey(); // 获取键，例如 "a-b"
                     Boolean isBlocked = childSnapshot.getValue(Boolean.class); // 获取阻止状态的值
-
+                    Log.d("BlockCheck", "Key: " + key + ", IsBlocked: " + isBlocked);
                     if (isBlocked != null && isBlocked) { // 确保值为true
                         String[] parts = key.split("-");
+                        Log.d("BlockCheck", "parts[0]: " + parts[0] + ", parts[1]: " + parts[1] + ",");
+                        Log.d("BlockCheck", "senderId: " + senderId + ", receiverId: " + receiverId + ",");
                         if (parts.length == 2) {
+                            Log.d("BlockCheck", "shenqi ");
+                            Log.d("BlockCheck", "" + (parts[0].equals(senderId) && parts[1].equals(receiverId)));
                             if (parts[0].equals(senderId) && parts[1].equals(receiverId)) {
+                                Log.d("BlockCheck", "shenqi+1");
                                 result = "11"; // 第一个是senderId
                                 break;
                             } else if (parts[0].equals(receiverId) && parts[1].equals(senderId)) {

@@ -97,12 +97,20 @@ public class P2PChatActivity extends BaseActivity {
                 public void onSuccess(String result) {
                     // 根据 result 的值处理逻辑
                     if ("11".equals(result)) {
-                        Toast.makeText( P2PChatActivity.this, "Sender is blocked by the receiver.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText( P2PChatActivity.this, "Sender is blocked by the receiver. please unblock first", Toast.LENGTH_SHORT).show();
                     } else if ("10".equals(result)) {
                         Toast.makeText( P2PChatActivity.this, "Receiver is blocked by the sender.", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText( P2PChatActivity.this, "tmd,meifanying", Toast.LENGTH_SHORT).show();
+                        String message = binding.edittextChat.getText().toString();
+                        if(message.isEmpty()) {
+                            Toast.makeText(P2PChatActivity.this, "Please enter the message", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        // send the message
+                        db.SendMessage(finalSenderId, receiver.getUid(), message);
+                        isSending = true;
+                        binding.edittextChat.setText("");
                     }
                 }
                 @Override
@@ -111,19 +119,7 @@ public class P2PChatActivity extends BaseActivity {
                     Toast.makeText(P2PChatActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
                 }
             });
-            String message = binding.edittextChat.getText().toString();
-            if(message.isEmpty()) {
-                Toast.makeText(this, "Please enter the message", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // send the message
-            db.SendMessage(finalSenderId, receiver.getUid(), message);
-            isSending = true;
-            binding.edittextChat.setText("");
         });
-
-
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
