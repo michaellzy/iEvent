@@ -58,20 +58,13 @@ public class ChatDataManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String result = "00"; // 默认结果，表示没有阻止或阻止未生效
-
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String key = childSnapshot.getKey(); // 获取键，例如 "a-b"
                     Boolean isBlocked = childSnapshot.getValue(Boolean.class); // 获取阻止状态的值
-                    Log.d("BlockCheck", "Key: " + key + ", IsBlocked: " + isBlocked);
                     if (isBlocked != null && isBlocked) { // 确保值为true
                         String[] parts = key.split("-");
-                        Log.d("BlockCheck", "parts[0]: " + parts[0] + ", parts[1]: " + parts[1] + ",");
-                        Log.d("BlockCheck", "senderId: " + senderId + ", receiverId: " + receiverId + ",");
                         if (parts.length == 2) {
-                            Log.d("BlockCheck", "shenqi ");
-                            Log.d("BlockCheck", "" + (parts[0].equals(senderId) && parts[1].equals(receiverId)));
                             if (parts[0].equals(senderId) && parts[1].equals(receiverId)) {
-                                Log.d("BlockCheck", "shenqi+1");
                                 result = "11"; // 第一个是senderId
                                 break;
                             } else if (parts[0].equals(receiverId) && parts[1].equals(senderId)) {
@@ -83,7 +76,6 @@ public class ChatDataManager {
                 }
                 listener.onSuccess(result); // 使用回调返回结果
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 listener.onFailure(databaseError.getMessage()); // 处理错误
@@ -91,6 +83,37 @@ public class ChatDataManager {
         });
     }
 
+
+    public synchronized void AddBlockMessage(String senderId, String receiverId) {
+        DatabaseReference blockRef = FirebaseDatabase.getInstance().getReference("block");
+        // 创建数据库引用的路径
+        String key = senderId + "-" + receiverId;
+        // 访问特定的子节点
+        blockRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // 检查数据是否存在
+                if (dataSnapshot.exists()) {
+                    // 如果存在，获取当前的阻止状态
+                    Boolean isBlocked = dataSnapshot.getValue(Boolean.class);
+                    if (isBlocked != null) {
+                        // 切换阻止状态: 如果是true，则变为false；如果是false，则变为true
+                        dataSnapshot.getRef().setValue(!isBlocked);
+                        Log.d("AddBlockMessage", "Block status changed for: " + key + " to: " + !isBlocked);
+                    }
+                } else {
+                    // 如果不存在，创建新条目并设置为true
+                    dataSnapshot.getRef().setValue(true);
+                    Log.d("AddBlockMessage", "New block added: " + key);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // 处理可能的数据库读取错误
+                Log.e("AddBlockMessage", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
 
     /**
      * store new message to the database

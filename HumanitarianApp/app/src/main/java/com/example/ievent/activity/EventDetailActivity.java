@@ -236,6 +236,19 @@ public class EventDetailActivity extends BaseActivity {
             });
         });
 
+        eventDetailBinding.imageViewBlock.setOnClickListener(v ->{
+            String senderId = mAuth.getUid();
+            String receiverId = event.getOrgId();
+            if (senderId == null || receiverId == null) {
+                Toast.makeText(EventDetailActivity.this, "User ID or Organizer ID is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d("BlockOperation", "Attempting to change block status for: " + senderId + " and " + receiverId);
+            db.AddBlockMessage(senderId, receiverId);
+            Toast.makeText(EventDetailActivity.this, "block state has changed",Toast.LENGTH_SHORT).show();
+        });
+
 
 
 
@@ -259,4 +272,5 @@ public class EventDetailActivity extends BaseActivity {
         eventDetailBinding.textViewDetailActivityPriceContent.setText(" AUD " + event.getPrice() );
         eventDetailBinding.textViewDetailActivityDescriptionContent.setText(event.getDescription());
     }
+
 }

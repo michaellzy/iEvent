@@ -185,6 +185,10 @@ public class IEventDatabase{
         ChatDataManager.getInstance().blockMessage(senderId, receiverId, listener);
     }
 
+    public void AddBlockMessage(String senderId, String receiverId){
+        ChatDataManager.getInstance().AddBlockMessage(senderId, receiverId);
+    }
+
     /**
      * store new message to the database
      * @param senderId the id of the sender
