@@ -145,8 +145,36 @@ public class ChatDataManager {
     }
 
 
+    /**
+     * get the chat key
+     * @param userId1 the id of the user1
+     * @param userId2 the id of the user2
+     * @return the chat key
+     */
     private String getChatKey(String userId1, String userId2) {
         return userId1.compareTo(userId2) < 0 ? userId1 + "-" + userId2 : userId2 + "-" + userId1;
+    }
+
+
+    /**
+     * set the chatlog of two users
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param listener the listener to handle the result
+     */
+    public synchronized void setChatLog(String senderId, String receiverId, DataListener<Boolean> listener) {
+        FirebaseDatabase.getInstance().getReference("chatlog").child(senderId).child(receiverId).setValue(true).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseDatabase.getInstance().getReference("chatlog").child(receiverId).child(senderId).setValue(true).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                    } else {
+                        listener.onFailure(Objects.requireNonNull(task1.getException()).getMessage());
+                    }
+                });
+            } else {
+                listener.onFailure(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
     }
 
 

@@ -11,8 +11,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ievent.R;
-import com.example.ievent.database.data_manager.OrganizerDataManager;
-import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityEventDetailBinding;
