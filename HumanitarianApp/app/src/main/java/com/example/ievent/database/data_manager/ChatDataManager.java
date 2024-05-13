@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.database.listener.BlockListener;
+import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
 import com.google.firebase.database.ChildEventListener;
@@ -84,32 +85,47 @@ public class ChatDataManager {
     }
 
 
-    public synchronized void AddBlockMessage(String senderId, String receiverId) {
+    public synchronized void CheckBlockStatus(String senderId, String receiverId, BlockstateListener listener) {
         DatabaseReference blockRef = FirebaseDatabase.getInstance().getReference("block");
-        // 创建数据库引用的路径
         String key = senderId + "-" + receiverId;
-        // 访问特定的子节点
         blockRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // 检查数据是否存在
                 if (dataSnapshot.exists()) {
-                    // 如果存在，获取当前的阻止状态
+                    Boolean isBlocked = dataSnapshot.getValue(Boolean.class);
+                    listener.onSuccess(isBlocked);
+                    Log.d("isBlocked", "isBlocked: " + isBlocked);
+                } else {
+                    listener.onSuccess(false);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailure(databaseError.getMessage());
+                Log.e("AddBlockMessage", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public synchronized void AddBlockMessage(String senderId, String receiverId) {
+        DatabaseReference blockRef = FirebaseDatabase.getInstance().getReference("block");
+        String key = senderId + "-" + receiverId;
+        blockRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
                     Boolean isBlocked = dataSnapshot.getValue(Boolean.class);
                     if (isBlocked != null) {
-                        // 切换阻止状态: 如果是true，则变为false；如果是false，则变为true
                         dataSnapshot.getRef().setValue(!isBlocked);
-                        Log.d("AddBlockMessage", "Block status changed for: " + key + " to: " + !isBlocked);
+                        Log.d("AddBlockMessage", "Block status changed for: " + key + " to: " + isBlocked);
                     }
                 } else {
-                    // 如果不存在，创建新条目并设置为true
                     dataSnapshot.getRef().setValue(true);
                     Log.d("AddBlockMessage", "New block added: " + key);
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // 处理可能的数据库读取错误
                 Log.e("AddBlockMessage", "Database error: " + databaseError.getMessage());
             }
         });

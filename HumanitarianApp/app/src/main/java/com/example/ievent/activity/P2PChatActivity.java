@@ -15,7 +15,7 @@ import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityP2pChatBinding;
 import com.example.ievent.entity.ChatMessage;
 import com.example.ievent.entity.User;
-
+import android.app.AlertDialog;
 import java.util.ArrayList;
 
 
@@ -62,8 +62,6 @@ public class P2PChatActivity extends BaseActivity {
     }
 
 
-
-
     /** set Variables such as the intent data, UI Listeners and layout of the */
     private void setVariables() {
         // --- initialize data --- //
@@ -95,13 +93,20 @@ public class P2PChatActivity extends BaseActivity {
             db.blockMessage(finalSenderId, receiverId, new BlockListener() {
                 @Override
                 public void onSuccess(String result) {
-                    // 根据 result 的值处理逻辑
+                    AlertDialog.Builder builder = new AlertDialog.Builder(P2PChatActivity.this);
+                    builder.setTitle("message");
+                    builder.setPositiveButton("verify", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
                     if ("11".equals(result)) {
-                        Toast.makeText( P2PChatActivity.this, "Sender is blocked by the receiver. please unblock first", Toast.LENGTH_SHORT).show();
+                        builder.setMessage("Receiver is blocked by yourself. Please unblock first.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     } else if ("10".equals(result)) {
-                        Toast.makeText( P2PChatActivity.this, "Receiver is blocked by the sender.", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
+                        builder.setMessage("You are blocked by the receiver.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else{
                         String message = binding.edittextChat.getText().toString();
                         if(message.isEmpty()) {
                             Toast.makeText(P2PChatActivity.this, "Please enter the message", Toast.LENGTH_SHORT).show();
@@ -195,10 +200,6 @@ public class P2PChatActivity extends BaseActivity {
             }
         });
     }
-
-
-
-
 
 
     /**
