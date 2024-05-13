@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ievent.adapter.P2PChatAdapter;
+import com.example.ievent.database.listener.BlockListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityP2pChatBinding;
@@ -74,6 +75,8 @@ public class P2PChatActivity extends BaseActivity {
         receiver = (User) getIntent().getSerializableExtra("receiver");
         Log.i("RECEIVER111", "setVariables: " + receiver);
 
+        String receiverId = receiver.getUid();
+
 
         // ---  bind listeners --- //
         binding.chatRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -89,6 +92,25 @@ public class P2PChatActivity extends BaseActivity {
         });
         String finalSenderId = senderId;
         binding.buttonSend.setOnClickListener(v -> {
+            db.blockMessage(finalSenderId, receiverId, new BlockListener() {
+                @Override
+                public void onSuccess(String result) {
+                    // 根据 result 的值处理逻辑
+                    if ("11".equals(result)) {
+                        Toast.makeText( P2PChatActivity.this, "Sender is blocked by the receiver.", Toast.LENGTH_SHORT).show();
+                    } else if ("10".equals(result)) {
+                        Toast.makeText( P2PChatActivity.this, "Receiver is blocked by the sender.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText( P2PChatActivity.this, "tmd,meifanying", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(String error) {
+                    // 处理可能的错误
+                    Toast.makeText(P2PChatActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
             String message = binding.edittextChat.getText().toString();
             if(message.isEmpty()) {
                 Toast.makeText(this, "Please enter the message", Toast.LENGTH_SHORT).show();

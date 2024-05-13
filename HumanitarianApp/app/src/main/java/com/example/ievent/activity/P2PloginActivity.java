@@ -47,6 +47,7 @@ public class P2PloginActivity extends BaseActivity {
         BlockMessages.add("6nD4n8BkLUb2xkrBQS3n0d6nRKA3-Kb84rvbkTiYDppEPZPT7NuKXd5Pd2");
         BlockMessages.add("bikdh4LjE2Qpu1EXMFrSv1c8HUG3-ZyKnS8CTIUV0XTHqEknM2tGnvKT43");
         BlockMessages.add("Jc3x2WGFgK0tQWxYxEstcEiJH6d2-INFgd1oC8JeYFVQyCwfYFXQOXk92");
+        BlockMessages.add("6nD4n8BkLUb2xkrBQS3n0d6nRKA3-nnngdJF3R3aW1vS2cg0UX9cpjNw2");
 
         //overturn
         BlockMessages.add("Kb84rvbkTiYDppEPZPT7NuKXd5Pd2-owDAoIqVfMAT3m40Dgsf9ETk1T72");
