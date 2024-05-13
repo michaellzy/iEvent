@@ -304,4 +304,9 @@ public class IEventDatabase{
     public synchronized void getEventsByFilters(String type, String titlePrefix, Date startDate, Date endDate, double minPrice, double maxPrice, EventDataListener listener){
         EventDataManager.getInstance().getEventsByFilters(type,titlePrefix, startDate, endDate,minPrice,maxPrice,listener);
     }
+
+
+    public synchronized void fetchEventsByOrganizerIds(List<String> organizerIds, EventDataListener listener) {
+        EventDataManager.getInstance().fetchEventsByOrganizerIds(organizerIds,listener);
+    }
 }

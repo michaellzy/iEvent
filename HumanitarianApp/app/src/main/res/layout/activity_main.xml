@@ -24,24 +24,24 @@
 
     <!--    android:src="@drawable/profile"-->
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        app:civ_border_color="@color/colorPink2"
-        app:civ_border_width="2dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="4dp"
+            app:civ_border_color="@color/colorPink2"
+            app:civ_border_width="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
 
-    <TextView
+        <TextView
         android:id="@+id/tv_your_event"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/your_event"
+        android:text="From Subscriptions"
         android:textColor="@color/darkPurple"
         android:fontFamily="@font/plus_extra"
         android:textSize="23sp"
@@ -50,19 +50,23 @@
         app:layout_constraintTop_toBottomOf="@id/profile_image" />
 
 
-    <!-- Your event section -->
-    <androidx.recyclerview.widget.RecyclerView
+        <!-- Your event section -->
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_your_event"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_your_event"
         tools:listitem="@layout/activity_base_your_event" />
 
-    <!-- Recommended Activities section -->
+
+
+        <!-- Recommended Activities section -->
 
     <TextView
         android:id="@+id/tv_recommended_activities"
@@ -126,6 +130,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
+
+        <ImageView
+            android:id="@+id/drawer_btn"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginStart="12dp"
+            app:srcCompat="@drawable/ic_drawer"
+            app:tint="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

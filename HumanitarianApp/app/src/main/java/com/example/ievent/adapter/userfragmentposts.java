@@ -1,6 +1,7 @@
 package com.example.ievent.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+import com.example.ievent.activity.EventDetailActivity;
 import com.example.ievent.entity.Event;
 
 import java.util.ArrayList;
@@ -46,6 +48,13 @@ public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.Vi
         Glide.with(holder.itemView.getContext()).
                 load(event.getImg()).
                 into(holder.imageView);
+
+        // When the user clicks on the item, the EventDetailActivity will be opened.
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
+            intent.putExtra("event", event);
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override

@@ -22,8 +22,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -374,4 +376,40 @@ public class EventDataManager {
         HandleQuery(query, listener);
 
     }
+
+    public synchronized void fetchEventsByOrganizerIds(List<String> organizerIds, EventDataListener listener) {
+
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+
+        for (String orgId : organizerIds) {
+            // Create a query for each organizer ID
+            Query query = eventRef.whereEqualTo("orgId", orgId);
+
+            // Asynchronously retrieve each document and add the task to the list
+            tasks.add(query.get());
+        }
+
+        // Wait for all tasks to complete
+        Tasks.whenAllSuccess(tasks).addOnSuccessListener(documents -> {
+            ArrayList<Event> events = new ArrayList<>();
+            for (Object document : documents) {
+                QuerySnapshot snapshot = (QuerySnapshot) document;
+                for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                    Event event = doc.toObject(Event.class);
+                    if (event != null) {
+                        events.add(event);
+                    }
+                }
+            }
+            if (!events.isEmpty()) {
+                listener.onSuccess(events);
+            } else {
+                listener.isAllData(true);
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFailure("Error fetching documents: " + e.getMessage());
+        });
+    }
+
+
 }
