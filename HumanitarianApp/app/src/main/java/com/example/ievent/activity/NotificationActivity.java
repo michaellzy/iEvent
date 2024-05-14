@@ -13,13 +13,10 @@ import com.example.ievent.adapter.ChatLogAdapter;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.databinding.ActivityNotificationBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
-// TODO: Only when it has chat messages, it can be shown
+
 public class NotificationActivity extends BaseActivity {
 
     ActivityNotificationBinding binding;
@@ -56,68 +53,19 @@ public class NotificationActivity extends BaseActivity {
             }
             return false;
         });
-
-
         setVariables();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        showLoading(true);
-        int tabIndex = binding.tabLayout.getSelectedTabPosition();
-
-        if(tabIndex == 0) {
-            showNotice();
-        } else {
-            showMessage();
-        }
+        showMessage();
     }
 
     private void setVariables(){
         binding.subRecycler.setLayoutManager(new LinearLayoutManager(this));
-
-        // bind the tablayout listener
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // get the selected tab
-                HashMap<String, Runnable> tabMap = new HashMap<>();
-                tabMap.put("Notice", () -> {
-                    showNotice();
-                });
-                tabMap.put("Message", () -> {
-                    showMessage();
-                });
-                Objects.requireNonNull(tabMap.get(Objects.requireNonNull(tab.getText()).toString())).run();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-        // directly show the notice
-        showNotice();
+        showMessage();
     }
-
-
-
-
-    private void showNotice(){
-        // show all Notice
-        showLoading(true);
-        showEmptyView(false);
-
-        // after get the data:
-        showLoading(false);
-        showEmptyView(true);
-    }
-
-
 
 
     private void showMessage(){
