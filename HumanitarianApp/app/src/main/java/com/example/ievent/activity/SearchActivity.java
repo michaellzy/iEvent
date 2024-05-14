@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.ordered_map.Iterator;
+import com.example.ievent.database.ordered_map.OrderedEvent;
 import com.example.ievent.entity.Event;
 import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
@@ -46,8 +48,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -56,13 +59,16 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     private RecyclerView recyclerView;
     private SearchView searchView;
     private RecommendedActivitiesAdapter recommendedActivitiesAdapter;
-    private List<Event> eventList = new ArrayList<>();
+    private ArrayList<Event> eventList = new ArrayList<>();
+    private OrderedEvent<Double, Event> orderedEvents;
+    private boolean isAscending = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Button filterbutton = findViewById(R.id.filter_button);
+        Button sortbutton = findViewById(R.id.ascending_button);
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
         recommendedActivitiesAdapter = new RecommendedActivitiesAdapter(eventList);
@@ -81,10 +87,44 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                performSearch(newText);
                 return false;
             }
         });
+        orderedEvents = new OrderedEvent<>();
+
+        sortbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (eventList.isEmpty()) {
+                    Toast.makeText(SearchActivity.this, "No events available to sort.", Toast.LENGTH_SHORT).show();
+                    return; // Prevent further execution
+                }
+                if (!isAscending) {
+                    // If currently in descending order, reverse to ascending
+                    Collections.reverse(eventList);  // Reverse the list to make it ascending
+                    sortbutton.setText("Now Descending");  // Update button text to reflect the next possible action
+                } else {
+                    // Sort the list in ascending order if not already sorted
+                    orderedEvents = new OrderedEvent<Double, Event>(); // Initialize
+                    for (Event event : eventList) {
+                        orderedEvents.insert(event.getPrice(), event);
+                    }
+                    // Use the iterator to get sorted list
+                    Iterator it = orderedEvents.getIterator();
+                    ArrayList<Event> sortedEvents = new ArrayList<>();
+                    while (it.hasNext()) {
+                        LinkedList<Event> eventsLinkedList = (LinkedList<Event>) it.next();
+                        sortedEvents.addAll(new ArrayList<>(eventsLinkedList));
+                    }
+                    eventList.clear();
+                    eventList.addAll(sortedEvents);  // Now eventList is sorted in ascending
+                    sortbutton.setText("Now Ascending");  // Update button text to reflect the next possible action
+                }
+                recommendedActivitiesAdapter.notifyDataSetChanged();  // Notify the adapter
+                isAscending = !isAscending;  // Toggle the sort order for the next click
+            }
+        });
+
 
         filterbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,18 +230,18 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 "MentalHealth", "MotorbikeTours", "MusicFestivals",
                 "MuseumofAustralia", "SchoolHolidays", "WarehouseSale",
                 "Wellness", "Other"
-        };
+        }; // All type of events
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // adding all events in the spinner
         spinnerFilterOptions.setAdapter(adapter);
 
         setDateField((EditText) bottomSheetView.findViewById(R.id.startDate));
-        setDateField((EditText) bottomSheetView.findViewById(R.id.endDate));
+        setDateField((EditText) bottomSheetView.findViewById(R.id.endDate)); // get the date for start and end
 
         EditText minPrice = bottomSheetView.findViewById(R.id.minPrice);
         EditText maxPrice = bottomSheetView.findViewById(R.id.maxPrice);
         minPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        maxPrice.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL); // limit the input type for price field
 
         // Initialize TextWatcher to validate fields
         TextWatcher validateTextWatcher = new TextWatcher() {
@@ -237,7 +277,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         ArrayList<Event> filteredList = filterEvents(type, startDate, endDate, minPrice, maxPrice);
         eventList.clear();
         eventList.addAll(filteredList);
-//        recommendedActivitiesAdapter.setEvents(filteredList);
+        // after the filter was applied, change the current eventList and use adapter to notice
         recommendedActivitiesAdapter.notifyDataSetChanged();
     }
 
@@ -251,7 +291,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         ArrayList<Event> filteredList = new ArrayList<>();
 
         for (Event event : eventList) {
-            long eventTimestamp = event.getTimestamp();
+            long eventTimestamp = event.getTimestamp(); // filter the date by timestamp in db
             if (event.getType().equals(type) &&
                     eventTimestamp >= startTimestamp && eventTimestamp <= endTimestamp &&
                     event.getPrice() >= minPrice && event.getPrice() <= maxPrice) {
@@ -268,13 +308,14 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
     private void performSearch(String query) {
         Log.d("SearchActivityPS", "performSearch: Start, Query: " + query);
+        // calling the tokenizer and parser
         Tokenizer tokenizer = new Tokenizer(query);
         Parser parser = new Parser(tokenizer);
         try {
             Exp expression = parser.parse();
-            if (expression == null) {
+            if (expression == null) { // check if the parse is valid
                 Log.d("SearchActivityPS", "No valid query expression found.");
-                Toast.makeText(this, "unknown query", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "invalid query", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -315,6 +356,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         } else {
             // If the expression is neither, log an error and return early
             Log.e("SearchActivityPS", "Unsupported comparison type");
+            Toast.makeText(this, "Unsupported comparison type", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -324,6 +366,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
 
 
     private void handleEquality(Exp expression, EventDataListener listener) {
+        // handle "=" casel
         EqualExp eqExp = (EqualExp) expression;
         String fieldName = ((VariableExp) eqExp.getLeft()).getVariableName();
         Exp rightExp = eqExp.getRight();
@@ -340,6 +383,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
 
     private void handleEqualitySearch(String fieldName, String value, EventDataListener listener) {
+        // designed 3 kinds of "=" search, type=variable, price=value, date=date
         Log.d("SearchActivity", "Field name before handleEqualitySearch: " + fieldName);
         switch (fieldName) {
             case "type":
@@ -392,9 +436,12 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 eventList.addAll(events);
                 recommendedActivitiesAdapter.notifyDataSetChanged();
 
-                if (!eventList.isEmpty()) {
-                    Event firstEvent = eventList.get(0);
-                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
+//                if (!eventList.isEmpty()) {
+//                    Event firstEvent = eventList.get(0);
+//                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
+//                }
+                if (eventList.isEmpty()) {
+                    Toast.makeText(SearchActivity.this, "No events found.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -407,6 +454,7 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
     private String extractSearchKeyword(Exp expression) {
         if (expression instanceof VariableExp) {
+            // if only 1 variable, use fuzzy search
             return ((VariableExp) expression).toString();
         } else if (expression instanceof AndExp) {
             String leftKeyword = extractSearchKeyword(((AndExp) expression).getLeft());
@@ -458,10 +506,5 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
             return dateString; // Return original if parsing fails.
         }
     }
-    private void updateRecyclerView(ArrayList<Event> events) {
-        Log.d("SearchActivity", "Updating RecyclerView with " + events.size() + " events");
-        RecommendedActivitiesAdapter adapter = (RecommendedActivitiesAdapter) recyclerView.getAdapter();
-        adapter.setEvents(events);
-        adapter.notifyDataSetChanged();
-    }
+
 }
