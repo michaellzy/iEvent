@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+// TODO: Only when it has chat messages, it can be shown
 public class NotificationActivity extends BaseActivity {
 
     ActivityNotificationBinding binding;
