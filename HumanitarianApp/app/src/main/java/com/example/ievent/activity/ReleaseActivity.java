@@ -19,7 +19,6 @@ import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
-import com.example.ievent.global.ImageCropper;
 import com.example.ievent.global.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -65,7 +64,7 @@ public class ReleaseActivity extends BaseActivity {
 //        });
 
         uploadEventBinding.uploadImage.setOnClickListener(v -> {
-            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, false, 4,3);
+            Utility.ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, false, 4,3);
         });
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
 
@@ -97,13 +96,13 @@ public class ReleaseActivity extends BaseActivity {
             double eventPrice = Double.parseDouble(uploadEventBinding.uploadEventPrice.getText().toString());
             String eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
 
-            String formatEventDate = Utility.formatDate(uploadEventBinding.uploadEventDate.getText().toString());
-            String formatEventStartTime = Utility.formatTime(uploadEventBinding.uploadStartTime.getText().toString());
-            String formatEventEndTime = Utility.formatTime(uploadEventBinding.uploadEndTime.getText().toString());
+            String formatEventDate = Utility.TimeFormatter.formatDate(uploadEventBinding.uploadEventDate.getText().toString());
+            String formatEventStartTime = Utility.TimeFormatter.formatTime(uploadEventBinding.uploadStartTime.getText().toString());
+            String formatEventEndTime = Utility.TimeFormatter.formatTime(uploadEventBinding.uploadEndTime.getText().toString());
             String eventDateTime = formatEventDate + ", " + formatEventStartTime + " - " + formatEventEndTime;
             String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
 
-            long timestamp = Utility.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
+            long timestamp = Utility.TimeFormatter.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
 
 
             String orgId = mAuth.getCurrentUser().getUid();

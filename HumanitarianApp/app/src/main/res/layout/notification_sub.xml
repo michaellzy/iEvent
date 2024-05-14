@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <!-- 显示活动名的 TextView -->
+    <!-- TextView -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="96dp"

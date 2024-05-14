@@ -18,8 +18,6 @@ import com.example.ievent.adapter.userfragmentfollowers;
 import com.example.ievent.adapter.userfragmentposts;
 import com.example.ievent.adapter.userfragmentsubscriptionAdapter;
 import com.example.ievent.adapter.userfragmentticketsAdapter;
-import com.example.ievent.database.data_manager.OrganizerDataManager;
-import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.OrgDataListener;
@@ -29,7 +27,7 @@ import com.example.ievent.databinding.ActivityUserBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
-import com.example.ievent.global.ImageCropper;
+import com.example.ievent.global.Utility;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -84,7 +82,7 @@ public class UserAcitivity extends BaseActivity {
 
         profileImageView.setOnClickListener(v -> {
             // Open image picker
-            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
+            Utility.ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
         });
 
 
@@ -261,7 +259,7 @@ public class UserAcitivity extends BaseActivity {
 
         binding.profileImage.setOnClickListener(v -> {
             // Open image picker
-            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
+            Utility.ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, true, 1,1);
         });
     }
 
