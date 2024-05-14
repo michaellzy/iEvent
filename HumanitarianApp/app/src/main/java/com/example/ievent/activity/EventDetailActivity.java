@@ -239,12 +239,27 @@ public class EventDetailActivity extends BaseActivity {
                 .into(eventDetailBinding.imageViewDetailEventPic);
 
 
-        Glide.with(this)
-                .load("https://t.mwm.moe/mp")
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.default_avatar)
-                .into(eventDetailBinding.imageViewDetailOrganizerPic);
+        db.getUserById(event.getOrgId(), new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                if (!data.isEmpty() && data.get(0).getAvatar() != null && !EventDetailActivity.this.isDestroyed()) {
+                    User organizer = data.get(0);
+
+                    Glide.with(EventDetailActivity.this)
+                            .load(organizer.getAvatar())
+                            .placeholder(R.drawable.default_avatar)
+                            .into(eventDetailBinding.imageViewDetailOrganizerPic);
+                }else{
+                    eventDetailBinding.imageViewDetailOrganizerPic.setImageResource(R.drawable.default_avatar);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("organizer", "Failed to get organizer: " + errorMessage);
+            }
+        });
+
 
 
         eventDetailBinding.textViewDetailActivityName.setText(event.getTitle());
