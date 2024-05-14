@@ -178,4 +178,26 @@ public class ChatDataManager {
     }
 
 
+    /**
+     * get the chatlog of a user
+     * @param userId the id of the user
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getChatLog(String userId, DataListener<String> listener) {
+        FirebaseDatabase.getInstance().getReference("chatlog").child(userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<String> chatLogs = new ArrayList<>();
+                for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                    if(Boolean.TRUE.equals(snapshot.getValue(Boolean.class))){
+                        chatLogs.add(snapshot.getKey());
+                    }
+                }
+                listener.onSuccess(chatLogs);
+            } else {
+                listener.onFailure(Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+    }
+
+
 }

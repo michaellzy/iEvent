@@ -29,7 +29,6 @@ public class Utility {
 
     private Utility() {}
 
-
     public static class TimeFormatter{
         /**
          * This method is used to format the timestamp to a readable format

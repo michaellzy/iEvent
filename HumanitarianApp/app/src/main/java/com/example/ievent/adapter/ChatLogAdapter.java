@@ -1,6 +1,7 @@
 package com.example.ievent.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ievent.R;
 import com.example.ievent.database.IEventDatabase;
+import com.example.ievent.database.listener.DataListener;
+import com.example.ievent.database.listener.UserDataListener;
+import com.example.ievent.entity.ChatMessage;
+import com.example.ievent.entity.User;
+import com.example.ievent.global.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +55,38 @@ public class ChatLogAdapter extends RecyclerView.Adapter<ChatLogAdapter.ChatLogV
     public void onBindViewHolder(@NonNull ChatLogViewHolder holder, int position) {
         String receiverId = receiverIds.get(position);
 
+        database.getTheLastChatMessage(senderId, receiverId, 1, new DataListener<ChatMessage>() {
+            @Override
+            public void onSuccess(ArrayList<ChatMessage> data) {
+                ChatMessage chatMessage = data.get(0);
+                holder.messageTextView.setText(chatMessage.getMessage());
+                holder.timestampTextView.setText(Utility.TimeFormatter.formatTimestamp(chatMessage.getTime()));
+            }
 
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.i(TAG, "onFailure: " + errorMessage);
+            }
+        });
+
+        database.getUserById(receiverId, new UserDataListener() {
+
+
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User user = data.get(0);
+                holder.receiverTextView.setText(user.getUserName());
+                Glide.with(holder.itemView.getContext())
+                        .load(user.getAvatar())
+                        .placeholder(R.drawable.default_avatar)
+                        .into(holder.avatarImageView);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.i(TAG, "onFailure: " + errorMessage);
+            }
+        });
 
     }
 
@@ -71,31 +109,6 @@ public class ChatLogAdapter extends RecyclerView.Adapter<ChatLogAdapter.ChatLogV
             messageTextView = itemView.findViewById(R.id.chatlog_message);
             timestampTextView = itemView.findViewById(R.id.chatlog_time);
             avatarImageView = itemView.findViewById(R.id.chatlog_avatar);
-        }
-    }
-
-    // ChatLog class
-    public static class ChatLog {
-        private String sender;
-        private String message;
-        private long timestamp;
-
-        public ChatLog(String sender, String message, long timestamp) {
-            this.sender = sender;
-            this.message = message;
-            this.timestamp = timestamp;
-        }
-
-        public String getSender() {
-            return sender;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
         }
     }
 }

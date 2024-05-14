@@ -246,6 +246,15 @@ public class IEventDatabase{
         ChatDataManager.getInstance().setChatLog(senderId, receiverId, listener);
     }
 
+    /**
+     * get the chatlog of a user
+     * @param userId the id of the user
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getChatLog(String userId, DataListener<String> listener) {
+        ChatDataManager.getInstance().getChatLog(userId, listener);
+    }
+
 
     // ----------------------------------- Other added Operations ----------------------------------- //
 

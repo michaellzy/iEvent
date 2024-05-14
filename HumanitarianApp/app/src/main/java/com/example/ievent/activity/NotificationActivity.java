@@ -1,19 +1,28 @@
 package com.example.ievent.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.ievent.R;
+import com.example.ievent.adapter.ChatLogAdapter;
+import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.databinding.ActivityNotificationBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class NotificationActivity extends BaseActivity {
 
     ActivityNotificationBinding binding;
+
+    private static final String TAG = "NotificationActivity11111";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +56,14 @@ public class NotificationActivity extends BaseActivity {
         });
 
 
+        setVariables();
 
     }
 
 
     private void setVariables(){
+        binding.subRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         // bind the tablayout listener
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -77,12 +89,30 @@ public class NotificationActivity extends BaseActivity {
     }
 
 
+
+
     private void showNotice(){
         // show all Notice
     }
 
 
+
+
     private void showMessage(){
-        // show all Message
+        db.getChatLog(mAuth.getUid(), new DataListener<String>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(ArrayList<String> data) {
+                Log.i(TAG, "onSuccess: " + data.size());
+                ChatLogAdapter adapter = new ChatLogAdapter(NotificationActivity.this, data, mAuth.getUid());
+                binding.subRecycler.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.i(TAG, "onFailure: ");
+            }
+        });
     }
 }
