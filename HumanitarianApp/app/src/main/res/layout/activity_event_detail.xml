@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/arvoTextStyle"
+    android:background="@drawable/bg_3"
     tools:context=".activity.EventDetailActivity">
 
     <ScrollView
@@ -57,7 +57,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
                     app:civ_border_width="2dp"
-                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_color="@color/colorPurple"
                     tools:ignore="MissingConstraints"
                     tools:srcCompat="@tools:sample/avatars" />
 
@@ -66,8 +66,8 @@
                     android:id="@+id/imageView_add_follow"
                     android:layout_width="52dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="72dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="120dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="onAddFollowClick"
@@ -76,38 +76,39 @@
                     app:srcCompat="@drawable/ic_add_follow"
                     tools:ignore="MissingConstraints" />
 
-
                 <ImageView
                     android:id="@+id/imageView_chat"
-                    android:layout_width="39dp"
-                    android:layout_height="43dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toStartOf="@+id/imageView_map"
                     app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
-                    app:srcCompat="@drawable/ic_chat"
+                    app:srcCompat="@drawable/icon_ct1"
                     tools:ignore="MissingConstraints" />
 
                 <ImageView
                     android:id="@+id/imageView_map"
-                    android:layout_width="37dp"
-                    android:layout_height="54dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView_fav"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
-                    app:srcCompat="@drawable/ic_map"
-                    tools:ignore="MissingConstraints" />
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="3dp"
 
-                <ImageView
-                    android:id="@+id/imageView_fav"
-                    android:layout_width="38dp"
-                    android:layout_height="47dp"
-                    android:layout_marginTop="7dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"
-                    app:srcCompat="@drawable/ic_love"
+                    app:srcCompat="@drawable/icon_mt"
                     tools:ignore="MissingConstraints" />
+
+                <!--                <ImageView-->
+<!--                    android:id="@+id/imageView_fav"-->
+<!--                    android:layout_width="38dp"-->
+<!--                    android:layout_height="47dp"-->
+<!--                    android:layout_marginTop="7dp"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/imageView_detail_event_pic"-->
+<!--                    app:srcCompat="@drawable/ic_love"-->
+<!--                    tools:ignore="MissingConstraints" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -117,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="25dp"
-                android:padding="12dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/textView_detail_activity_name"
@@ -125,6 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Activity Name"
+                    android:textColor="#0c1334"
                     android:fontFamily="@font/poppins_bold"
                     android:textFontWeight="850"
                     android:textSize="28sp"
@@ -138,7 +140,7 @@
                     android:layout_marginTop="18dp"
                     android:text="Activity Time"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@+id/textView_detail_activity_name"
                     tools:ignore="MissingConstraints" />
@@ -151,17 +153,27 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/textView_detail_activity_location_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <!--                <TextView-->
+<!--                    android:id="@+id/textView_detail_activity_location_title"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="Location:"-->
+<!--                    android:fontFamily="@font/poppins_semibold"-->
+<!--                    android:textSize="19sp"-->
+<!--                    android:textStyle="bold" />-->
+
+
+                <ImageView
+                    android:id="@+id/imageView_map2"
+                    android:layout_width="62dp"
+                    android:layout_height="38dp"
                     android:layout_weight="1"
-                    android:text="Location:"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_map"
+                    app:tint="@color/colorPurple"
+                     />
 
                 <TextView
                     android:id="@+id/textView_detail_activity_location_content"
@@ -170,6 +182,8 @@
                     android:text="location_content"
                     android:fontFamily="@font/poppins_light"
                     android:textSize="20sp" />
+
+
 
             </LinearLayout>
 
@@ -182,15 +196,23 @@
                 android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView_detail_activity_price_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/imageView_price"
+                    android:layout_width="62dp"
+                    android:layout_height="38dp"
                     android:layout_weight="1"
-                    android:text="Price:"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:src="@drawable/ic_price"
+                    app:tint="@color/colorPurple" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView_detail_activity_price_title"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="Price:"-->
+<!--                    android:fontFamily="@font/poppins_semibold"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textStyle="bold" />-->
 
                 <TextView
                     android:id="@+id/textView_detail_activity_price_content"
@@ -205,8 +227,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="12dp">
+                android:layout_marginTop="20dp"
+                android:padding="20dp">
+
+
 
                 <TextView
                     android:id="@+id/textView_detail_activity_description_title"

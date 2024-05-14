@@ -4,6 +4,7 @@
     <style name="UnderlineEditText" parent="@android:style/Widget.EditText">
         <item name="android:textColorHighlight">@color/quantum_pink200</item>
     </style>
+<!--    <item name="android:textColorHighlight">@color/quantum_pink200</item>-->
 
     <style name="NavigationViewStyle" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextColor">@color/white</item>
