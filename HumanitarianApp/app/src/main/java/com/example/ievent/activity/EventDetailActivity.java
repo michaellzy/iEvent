@@ -19,6 +19,7 @@ import com.example.ievent.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EventDetailActivity extends BaseActivity {
 
@@ -32,18 +33,13 @@ public class EventDetailActivity extends BaseActivity {
         setContentView(eventDetailBinding.getRoot());
 
         setVariables();
-        eventDetailBinding.imageViewDetailBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        eventDetailBinding.imageViewDetailBackBtn.setOnClickListener(v -> finish());
         setupTicketButton();
     }
 
     private void setupTicketButton() {
         Event event = (Event) getIntent().getSerializableExtra("event");
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Adjust based on your user session management
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();  // Adjust based on your user session management
 
         eventDetailBinding.buttonGetTicket.setOnClickListener(v -> {
             if (event != null && userId != null) {

@@ -1,8 +1,21 @@
 package com.example.ievent.global;
 
 
+import android.app.Activity;
+import android.content.Intent;
+
+import androidx.activity.result.ActivityResultLauncher;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -15,47 +28,95 @@ import java.util.TimeZone;
 public class Utility {
 
     private Utility() {}
-    public static String formatDate(String inputDate) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
-        SimpleDateFormat outputFormat = new SimpleDateFormat("E, dd MMM", Locale.ENGLISH);
-        String formattedDate;
-        try {
-            Date date = inputFormat.parse(inputDate);
-            formattedDate = outputFormat.format(date);
-        } catch (ParseException e) {
-            formattedDate = "";
-            System.out.println(e.getMessage());
+
+
+    public static class TimeFormatter{
+        /**
+         * This method is used to format the timestamp to a readable format
+         * @param timestamp the timestamp to be formatted
+         * @return the formatted timestamp
+         */
+        public static String formatTimestamp(long timestamp) {
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+            LocalDateTime now = LocalDateTime.now();
+
+            DateTimeFormatter formatter;
+            if (ChronoUnit.DAYS.between(now, dateTime) < 1) {
+                formatter = DateTimeFormatter.ofPattern("HH:mm");
+            } else if (ChronoUnit.DAYS.between(now, dateTime) < 7) {
+                formatter = DateTimeFormatter.ofPattern("EE HH:mm");
+            } else {
+                formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            }
+
+            return dateTime.format(formatter);
         }
-        return formattedDate;
+
+
+        public static String formatDate(String inputDate) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("E, dd MMM", Locale.ENGLISH);
+            String formattedDate;
+            try {
+                Date date = inputFormat.parse(inputDate);
+                formattedDate = outputFormat.format(date);
+            } catch (ParseException e) {
+                formattedDate = "";
+                System.out.println(e.getMessage());
+            }
+            return formattedDate;
+        }
+
+        public static String formatTime(String inputTime) {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);  // 24-hour format
+            SimpleDateFormat outputFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH); // 12-hour format with AM/PM
+            String formattedTime;
+            try {
+                Date date = inputFormat.parse(inputTime);
+                formattedTime = outputFormat.format(date);
+            } catch (ParseException e) {
+                formattedTime = "";
+                System.out.println("Error parsing the time: " + e.getMessage());
+            }
+            return formattedTime;
+        }
+
+        public static long convertToTimestamp(String inputDate) {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
+
+            // Set the timezone to Australian Eastern Standard Time (AEST)
+            sdf.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
+            long timestamp;
+            try {
+                Date date = sdf.parse(inputDate);
+                timestamp = date.getTime() / 1000; // Convert milliseconds to seconds
+            } catch (ParseException e) {
+                timestamp = 0;
+                System.out.println("Error parsing the date: " + e.getMessage());
+            }
+            return timestamp;
+        }
     }
 
-    public static String formatTime(String inputTime) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);  // 24-hour format
-        SimpleDateFormat outputFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH); // 12-hour format with AM/PM
-        String formattedTime;
-        try {
-            Date date = inputFormat.parse(inputTime);
-            formattedTime = outputFormat.format(date);
-        } catch (ParseException e) {
-            formattedTime = "";
-            System.out.println("Error parsing the time: " + e.getMessage());
-        }
-        return formattedTime;
-    }
+    public static class ImageCropper{
+        /**
+         * Start the crop image activity
+         * @param activity your activity
+         * @param l the activity result launcher
+         * @param isCircle if the crop image is a circle
+         * @param x the aspect ratio x
+         * @param y the aspect ratio y
+         */
+        public static void startCropImageActivity(Activity activity, ActivityResultLauncher l, boolean isCircle, int x, int y) {
 
-    public static long convertToTimestamp(String inputDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
-
-        // Set the timezone to Australian Eastern Standard Time (AEST)
-        sdf.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
-        long timestamp;
-        try {
-            Date date = sdf.parse(inputDate);
-            timestamp = date.getTime() / 1000; // Convert milliseconds to seconds
-        } catch (ParseException e) {
-            timestamp = 0;
-            System.out.println("Error parsing the date: " + e.getMessage());
+            Intent intent = CropImage.activity()
+                    .setCropShape(isCircle ? CropImageView.CropShape.OVAL : CropImageView.CropShape.RECTANGLE)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setFixAspectRatio(isCircle)
+                    .setAspectRatio(x, y)
+                    .setAutoZoomEnabled(true)
+                    .getIntent(activity);
+            l.launch(intent);
         }
-        return timestamp;
     }
 }

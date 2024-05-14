@@ -242,8 +242,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
 
     private ArrayList<Event> filterEvents(String type, String startDate, String endDate, double minPrice, double maxPrice) {
-        long startTimestamp = Utility.convertToTimestamp(startDate);
-        long endTimestamp = Utility.convertToTimestamp(endDate);
+        long startTimestamp = Utility.TimeFormatter.convertToTimestamp(startDate);
+        long endTimestamp = Utility.TimeFormatter.convertToTimestamp(endDate);
 
         Log.d("SearchActivity", "Start Date: " + startDate + ", Start Timestamp: " + startTimestamp);
         Log.d("SearchActivity", "End Date: " + endDate + ", End Timestamp: " + endTimestamp);
