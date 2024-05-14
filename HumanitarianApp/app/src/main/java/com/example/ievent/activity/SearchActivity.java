@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OnFilterAppliedListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
@@ -51,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class SearchActivity extends BaseActivity implements OnFilterAppliedListener{
+public class SearchActivity extends BaseActivity implements OnFilterAppliedListener {
 
     private RecyclerView recyclerView;
     private SearchView searchView;

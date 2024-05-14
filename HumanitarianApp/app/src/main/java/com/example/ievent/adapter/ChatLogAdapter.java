@@ -1,6 +1,9 @@
 package com.example.ievent.adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+import com.example.ievent.activity.EventDetailActivity;
+import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.database.IEventDatabase;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
@@ -48,12 +53,32 @@ public class ChatLogAdapter extends RecyclerView.Adapter<ChatLogAdapter.ChatLogV
     @Override
     public ChatLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.message_sub, parent, false);
+
         return new ChatLogViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatLogViewHolder holder, int position) {
         String receiverId = receiverIds.get(position);
+
+        holder.itemView.setOnClickListener(v -> {
+            database.getUserById(receiverId, new UserDataListener() {
+                @Override
+                public void onSuccess(ArrayList<User> data) {
+                    if (!data.isEmpty()) {
+                        Intent intent = new Intent(context, P2PChatActivity.class);
+                        User receiver = data.get(0);
+                        intent.putExtra("receiver", receiver);
+                        startActivity(context, intent, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+
+                }
+            });
+        });
 
         database.getTheLastChatMessage(senderId, receiverId, 1, new DataListener<ChatMessage>() {
             @Override

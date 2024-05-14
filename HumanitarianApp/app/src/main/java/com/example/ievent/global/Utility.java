@@ -11,11 +11,13 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -35,21 +37,30 @@ public class Utility {
          * @param timestamp the timestamp to be formatted
          * @return the formatted timestamp
          */
+
         public static String formatTimestamp(long timestamp) {
             LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-            LocalDateTime now = LocalDateTime.now();
+            LocalDate today = LocalDate.now();
+            LocalDate dateOnly = dateTime.toLocalDate();
 
-            DateTimeFormatter formatter;
-            if (ChronoUnit.DAYS.between(now, dateTime) < 1) {
-                formatter = DateTimeFormatter.ofPattern("HH:mm");
-            } else if (ChronoUnit.DAYS.between(now, dateTime) < 7) {
-                formatter = DateTimeFormatter.ofPattern("EE HH:mm");
+            if (dateOnly.equals(today)) {
+                // Today within the current day, show time in hour and minute
+                return dateTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+            } else if (dateOnly.equals(today.minusDays(1))) {
+                // Yesterday, show "Yesterday"
+                return "Yesterday";
+            } else if (dateOnly.isAfter(today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))) && dateOnly.isBefore(today)) {
+                // This week (Monday to before today), show day of the week
+                return dateTime.format(DateTimeFormatter.ofPattern("EEEE"));
+            } else if (dateTime.getYear() == today.getYear()) {
+                // Within this year but past this week, show month and day
+                return dateTime.format(DateTimeFormatter.ofPattern("MM-dd"));
             } else {
-                formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                // For previous years, show year, month, and day
+                return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             }
-
-            return dateTime.format(formatter);
         }
+
 
 
         public static String formatDate(String inputDate) {

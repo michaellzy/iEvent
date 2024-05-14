@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -58,9 +59,20 @@ public class NotificationActivity extends BaseActivity {
 
 
         setVariables();
-
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        showLoading(true);
+        int tabIndex = binding.tabLayout.getSelectedTabPosition();
+
+        if(tabIndex == 0) {
+            showNotice();
+        } else {
+            showMessage();
+        }
+    }
 
     private void setVariables(){
         binding.subRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -87,6 +99,9 @@ public class NotificationActivity extends BaseActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        // directly show the notice
+        showNotice();
     }
 
 
@@ -94,12 +109,21 @@ public class NotificationActivity extends BaseActivity {
 
     private void showNotice(){
         // show all Notice
+        showLoading(true);
+        showEmptyView(false);
+
+        // after get the data:
+        showLoading(false);
+        showEmptyView(true);
     }
 
 
 
 
     private void showMessage(){
+        showLoading(true);
+        showEmptyView(false);
+
         db.getChatLog(mAuth.getUid(), new DataListener<String>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -108,6 +132,9 @@ public class NotificationActivity extends BaseActivity {
                 ChatLogAdapter adapter = new ChatLogAdapter(NotificationActivity.this, data, mAuth.getUid());
                 binding.subRecycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+
+                showLoading(false);
+                showEmptyView(data.isEmpty());
             }
 
             @Override
@@ -115,5 +142,15 @@ public class NotificationActivity extends BaseActivity {
                 Log.i(TAG, "onFailure: ");
             }
         });
+    }
+
+
+    private void showLoading(boolean show) {
+        binding.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.subRecycler.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
+    private void showEmptyView(boolean show) {
+        binding.TextViewEmpty.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
