@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
-import com.example.ievent.activity.EventDetailActivity;
 import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.database.IEventDatabase;
 import com.example.ievent.database.listener.DataListener;
@@ -28,6 +27,11 @@ import com.example.ievent.global.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for chat log
+ *
+ * @author Tengkai Wang
+ */
 public class ChatLogAdapter extends RecyclerView.Adapter<ChatLogAdapter.ChatLogViewHolder> {
 
     private List<String> receiverIds;

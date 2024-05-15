@@ -2,8 +2,10 @@ package com.example.ievent.entity;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
+/**
+ * Participant class that extends the User class. It represents a participant in the system.
+ * @author Zhiyuan Lu
+ */
 public class Participant extends User {
 
 

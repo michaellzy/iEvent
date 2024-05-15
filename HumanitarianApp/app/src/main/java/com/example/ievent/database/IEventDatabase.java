@@ -3,6 +3,7 @@ package com.example.ievent.database;
 import android.app.Activity;
 import android.net.Uri;
 import android.widget.ImageView;
+
 import com.example.ievent.database.data_manager.ChatDataManager;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;
@@ -20,18 +21,15 @@ import com.example.ievent.entity.ChatMessage;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
-
 import java.util.Date;
-import java.util.EventListener;
 import java.util.List;
 
 
 /**
- *  the database interface, all data operations will be processed inside the class
+ *  the database interface, all data operations will be processed inside the class, and
+ *  @author team
  */
 public class IEventDatabase{
 
@@ -94,10 +92,20 @@ public class IEventDatabase{
 
     // // -----------------------------------organizer Operation ----------------------------------- //
 
+    /**
+     * store new organizer to the database during sign up phase
+     * @param uid the user id
+     * @param organizer the new organizer to add to
+     */
     public void addNewOrganizer(String uid, Organizer organizer) {
         OrganizerDataManager.getInstance().addOrganizer(uid, organizer);
     }
 
+    /**
+     * get the user object by the organizer id
+     * @param uid the user id
+     * @param listener the listener to handle the data
+     */
     public void getOrganizer(String uid, OrgDataListener listener) {
         OrganizerDataManager.getInstance().getOrganizer(uid, listener);
     }
@@ -106,6 +114,10 @@ public class IEventDatabase{
 
     // ----------------------------------- EVENTS ----------------------------------- //
 
+    /**
+     * store new event to the database
+     * @param e the new event to add to
+     */
     public void addNewEvent(Event e) {
         EventDataManager.getInstance().addNewEvent(e);
     }
@@ -138,54 +150,66 @@ public class IEventDatabase{
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
 
-
     public void getGreaterThan(double price, EventDataListener listener){
         EventDataManager.getInstance().getGreaterThan(price,listener);
     }
     public void getLessThan(double price, EventDataListener listener){
         EventDataManager.getInstance().getLessThan(price,listener);
     }
-    public void getDateAfter(int timestamp, EventDataListener listener){
-        EventDataManager.getInstance().getDateAfter(timestamp,listener);
 
-    }
-    public void getDateBefore(int timestamp, EventDataListener listener){
-        EventDataManager.getInstance().getDateBefore(timestamp,listener);
-
-    }
     public void getAllEventsByPrice(double price, EventDataListener listener){
         EventDataManager.getInstance().getAllEventsByPrice(price,listener);
 
     }
+
     public void getAllEventsByDate(long timestamp, EventDataListener listener){
         EventDataManager.getInstance().getAllEventsByDate(timestamp,listener);
     }
     // ----------------------------------- Media Operations ----------------------------------- //
+
+    /**
+     * upload the avatar of the user
+     * @param uid the user id
+     * @param file the file to upload
+     * @param listener the listener to handle the data
+     */
     public void uploadAvatar(String uid, Uri file, DataListener<String> listener){
         MediaManager.getInstance().uploadAvatar(uid, file, listener);
     }
 
+    /**
+     * download the avatar of the user
+     * @param imageView the image view to display the avatar
+     * @param uid the user id
+     * @param activity the activity to display the image
+     */
     public void downloadAvatar(ImageView imageView, String uid, Activity activity) {
         MediaManager.getInstance().loadAvatarIntoView(imageView, uid, activity);
     }
 
+    /**
+     * upload the event image
+     * @param file the file to upload
+     * @param listener the listener to handle the data
+     */
     public void uploadEventImage(Uri file, DataListener<String> listener) {
         MediaManager.getInstance().uploadEventImg(file, listener);
     }
-
 
 
     public void fetchOrganizedData(String uid, OrganizedEventListener listener){
         OrganizerDataManager.getInstance().fetchOragnizedData(uid, listener);
     }
 
+    /**
+     * fetch the documents of the events by the event ids
+     * @param EventIds the list of event ids
+     * @param listener the listener to handle the data
+     */
     public void fetchDocuments(ArrayList<String> EventIds , EventDataListener listener){
         EventDataManager.getInstance().fetchDocuments(EventIds,listener);
     }
 
-    public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener){
-        EventDataManager.getInstance().getAllEventsByIds(ids, listener);
-    }
 
     // ----------------------------------- Chat Operations ----------------------------------- //
     public void blockMessage(String senderId, String receiverId, BlockListener listener){

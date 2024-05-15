@@ -18,7 +18,12 @@ import com.example.ievent.entity.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对于推荐活动的RecyclerView
+/**
+ * Adapter for recommended activities
+ * @author Haolin Li
+ * @author Zhiyuan Lu
+ * @author Tengkai Wang
+ */
 public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<RecommendedActivitiesAdapter.ViewHolder> {
     private List<Event> eventList;
 
@@ -35,8 +40,6 @@ public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<Recommend
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        ActivityModel activity = activitiesList.get(position);
-        // In the onBindViewHolder method, we set the data to the views.
         Event event = eventList.get(position);
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
@@ -58,13 +61,11 @@ public class RecommendedActivitiesAdapter extends RecyclerView.Adapter<Recommend
 
     @Override
     public int getItemCount() {
-//        return activitiesList.size();
         return eventList.size();
     }
 
     public void setEvents(ArrayList<Event> events) {
         eventList.addAll(events);
-        // notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

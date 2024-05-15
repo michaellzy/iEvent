@@ -1,11 +1,9 @@
 package com.example.ievent.tokenparser;
 
-import android.util.Log;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+/**
+ * Represents a parser for the grammar.
+ * @author Haolin Li
+ */
 public class Parser {
     public static class IllegalProductionException extends IllegalArgumentException {
         public IllegalProductionException(String errorMessage) {

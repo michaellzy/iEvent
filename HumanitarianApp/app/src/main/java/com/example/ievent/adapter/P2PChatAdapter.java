@@ -15,7 +15,11 @@ import com.example.ievent.entity.User;
 
 import java.util.List;
 
-
+/**
+ * Adapter for P2P chat
+ * This class is used to handle the chat adapter for P2P chat
+ * @author Xuan Li
+ */
 public class P2PChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ChatMessage> messages;

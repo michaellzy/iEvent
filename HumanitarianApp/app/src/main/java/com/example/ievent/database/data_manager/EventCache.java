@@ -4,6 +4,10 @@ import com.example.ievent.entity.Event;
 
 import java.util.ArrayList;
 
+/**
+ * EventCache
+ * @author Zhiyuan Lu
+ */
 public class EventCache {
     private static EventCache instance;
     private ArrayList<Event> events;

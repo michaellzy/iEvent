@@ -2,10 +2,6 @@ package com.example.ievent.database.data_manager;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.example.ievent.database.data_structure.IEventAVLTree;
-import com.example.ievent.database.data_structure.IEventData;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.entity.Event;
@@ -15,21 +11,19 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * use Firestore database to load, store and update event information
  * This is a Singleton class with thread-safe implementation
+ * @author team
  */
 public class EventDataManager {
     private static EventDataManager instance;
@@ -39,7 +33,6 @@ public class EventDataManager {
     private final CollectionReference eventRef;
 
     /** AVL tree to store events ordered by the key */
-    private IEventAVLTree eventAVLTree = new IEventAVLTree(new IEventData(0, new LinkedList<>()));
 
     private DocumentSnapshot lastVisible;
 
@@ -204,14 +197,7 @@ public class EventDataManager {
         Query q = eventRef.whereLessThanOrEqualTo("price",(double)(price)).limit(30);
         HandleQuery(q, listener);
     }
-    public synchronized void getDateAfter(long timestamp, EventDataListener listener) {
-        Query q = eventRef.whereGreaterThanOrEqualTo("timestamp", timestamp).limit(30);
-        HandleQuery(q, listener);
-    }
-    public synchronized void getDateBefore(long timestamp, EventDataListener listener) {
-        Query q = eventRef.whereLessThanOrEqualTo("timestamp", timestamp).limit(30);
-        HandleQuery(q, listener);
-    }
+
     public synchronized void getAllEventsByPrice(double price, EventDataListener listener){
         Query q = eventRef.whereEqualTo("price", price).limit(30);
         HandleQuery(q, listener);
@@ -246,37 +232,6 @@ public class EventDataManager {
         HandleQuery(q, listener);
     }
 
-    public synchronized void getAllEventsByIds(ArrayList<String> ids, EventDataListener listener) {
-        ArrayList<Event> events = new ArrayList<>();
-        ArrayList<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-
-        for (String id : ids) {
-            DocumentReference docRef = eventRef.document(id);
-            tasks.add(docRef.get()); // Add each document fetch task to the list
-        }
-
-        Tasks.whenAllComplete(tasks).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                boolean allFound = true;
-                for (Task<DocumentSnapshot> documentTask : tasks) {
-                    DocumentSnapshot document = documentTask.getResult();
-                    if (document.exists()) {
-                        events.add(document.toObject(Event.class));
-                    } else {
-                        allFound = false;
-                        Log.e("EventDataManager", "Document not found: " + document.getId());
-                    }
-                }
-                if (allFound) {
-                    listener.onSuccess(events);
-                } else {
-                    listener.onFailure("One or more documents could not be found");
-                }
-            } else {
-                listener.onFailure("Error getting documents: " + task.getException().getMessage());
-            }
-        });
-    }
 
 
     // ----------------------------------- SEARCH SECTION END ------------------------------------ //

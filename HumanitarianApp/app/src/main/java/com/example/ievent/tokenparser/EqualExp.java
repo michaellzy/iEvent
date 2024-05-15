@@ -1,5 +1,9 @@
 package com.example.ievent.tokenparser;
 
+/**
+ * Represents an EQUAL expression in the grammar.
+ * @author Haolin Li
+ */
 public class EqualExp extends Exp {
     private Exp left;
     private Exp right;

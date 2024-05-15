@@ -16,7 +16,10 @@ import com.example.ievent.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对于推荐活动的RecyclerView
+/**
+ * Adapter for user subscription
+ * @author Xuan Li
+ */
 public class userfragmentsubscriptionAdapter extends RecyclerView.Adapter<userfragmentsubscriptionAdapter.ViewHolder> {
     private List<User> UserList;
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
+import com.example.ievent.entity.ConcreteUserFactory;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
 import com.example.ievent.global.Utility;
@@ -27,6 +27,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * This class is used to release the event.
+ * The event information will be uploaded to the database.
+ * @author Zhiyuan Lu
+ * @author HaoLin Li
+ * @author Qianwen Shen
+ */
 public class ReleaseActivity extends BaseActivity {
 
     ActivityUploadEventBinding uploadEventBinding;
@@ -76,6 +83,9 @@ public class ReleaseActivity extends BaseActivity {
 
     }
 
+    /**
+     * Save event data to the database
+     */
     private void saveEventData() {
         try {
             // Intent to receive user data from main activity
@@ -130,7 +140,7 @@ public class ReleaseActivity extends BaseActivity {
                 @Override
                 public void onFailure(String errorMessage) {
 
-                    Organizer org = new Organizer(mAuth.getCurrentUser().getUid(), email, userName);
+                    Organizer org = (Organizer) ConcreteUserFactory.getInstance().createUser("Organizer", mAuth.getCurrentUser().getUid(), email, userName);
                     db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
@@ -141,6 +151,10 @@ public class ReleaseActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * Upload the event image to Firebase Storage
+     */
     private void uploadEvent() {
         db.uploadEventImage(this.uri, new DataListener<String>() {
             @Override
@@ -154,7 +168,6 @@ public class ReleaseActivity extends BaseActivity {
             public void onFailure(String errorMessage) {
                 Toast.makeText(ReleaseActivity.this, "upload event failed", Toast.LENGTH_SHORT).show();
                 uploadEventBinding.progressBarUpload.setVisibility(View.GONE);
-
             }
         });
     }
@@ -162,6 +175,7 @@ public class ReleaseActivity extends BaseActivity {
     private void setupDatePicker() {
         uploadEventBinding.uploadEventDate.setOnClickListener(v -> showDatePickerDialog());
     }
+
     private void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -174,7 +188,6 @@ public class ReleaseActivity extends BaseActivity {
                     c.set(Calendar.YEAR, yearSelect);
                     c.set(Calendar.MONTH, monthOfYear);
                     c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    // String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1;
                     String formattedDate = String.format(Locale.getDefault(), "%1$tA, %1$td %1$tB, %1$tY", c);
                     uploadEventBinding.uploadEventDate.setText(formattedDate);
                 }, year, month, day);

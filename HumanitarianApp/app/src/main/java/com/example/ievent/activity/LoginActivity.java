@@ -18,7 +18,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
+/***
+ * Activity for user login
+ * @author Zhiyuan Lu
+ * @author Haolin Li
+ */
 public class LoginActivity extends BaseActivity {
     private TextInputEditText emailEditText;
     private TextInputEditText passwordEditText;
@@ -56,6 +60,9 @@ public class LoginActivity extends BaseActivity {
         getPrefData();
     }
 
+    /**
+     * login user
+     */
     private void loginUser() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -85,7 +92,6 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     // login failed, show failed message
                     passwordEditText.setError("Invalid password");
-                    // Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -97,7 +103,6 @@ public class LoginActivity extends BaseActivity {
             if (TextUtils.isEmpty(password)) {
                 passwordEditText.setError("Password can not be empty");
             }
-            // Toast.makeText(this, "Email and password are required.", Toast.LENGTH_SHORT).show();
         }
     }
 

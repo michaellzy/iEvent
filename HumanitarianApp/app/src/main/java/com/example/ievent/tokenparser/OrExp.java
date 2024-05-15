@@ -1,5 +1,9 @@
 package com.example.ievent.tokenparser;
 
+/**
+ * Represents an OR expression in the grammar.
+ * @author Haolin Li
+ */
 public class OrExp extends Exp {
     private Exp left;
     private Exp right;
@@ -21,8 +25,4 @@ public class OrExp extends Exp {
     public Exp getRight() {
         return right;
     }
-
-    // public int evaluate() {
-    //     // 实现逻辑OR的求值逻辑
-    // }
 }
