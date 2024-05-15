@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
@@ -70,6 +71,14 @@ public class MainActivity extends BaseActivity {
 
     private EventUpdateListener updateListener;
 
+    // these variables for DataStream
+    private Handler handler = new Handler();
+    private Runnable loadDocumentRunnable;
+
+    private long timestamp = System.currentTimeMillis();
+
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -120,6 +129,36 @@ public class MainActivity extends BaseActivity {
             if (updateListener == null)
                 loadMoreEvents();
         }
+
+        loadDocumentRunnable = new Runnable() {
+            @Override
+            public void run() {
+                db.loadLatestEvent(timestamp, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isAll) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        MainActivity.this.timestamp = data.get(0).getTimestamp() - 1;
+                        runOnUiThread(() -> {
+                            events.addAll(0, data);
+                            recEventAdapter.notifyItemRangeInserted(0, data.size());
+                            Toast.makeText(MainActivity.this, "new events found", Toast.LENGTH_SHORT).show();
+                        });
+
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
+                handler.postDelayed(this, 15000);
+            }
+        };
+        handler.post(loadDocumentRunnable);
 
 
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -191,7 +230,6 @@ public class MainActivity extends BaseActivity {
                 profileImageView.setOnClickListener(v -> {
                     startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
                 });
-                Toast.makeText(MainActivity.this, "Welcome, " + user.getUserName(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -241,6 +279,7 @@ public class MainActivity extends BaseActivity {
                     events.addAll(0, data);
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
                     Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
+                    recyclerViewRec.smoothScrollToPosition(0);
                 });
                 //subscribed notification
 

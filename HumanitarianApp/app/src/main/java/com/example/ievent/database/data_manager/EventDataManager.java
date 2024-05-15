@@ -332,7 +332,7 @@ public class EventDataManager {
         });
     }
 
-    private synchronized void loadLatestEvent(long timestamp, EventDataListener listener) {
+    public synchronized void loadLatestEvent(long timestamp, EventDataListener listener) {
         Query q = eventRef.orderBy("timestamp").endAt(timestamp).limitToLast(1);
         HandleQuery(q, listener);
     }

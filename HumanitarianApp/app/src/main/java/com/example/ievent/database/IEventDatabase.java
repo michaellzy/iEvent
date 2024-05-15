@@ -353,4 +353,8 @@ public class IEventDatabase{
     public synchronized void fetchEventsByOrganizerIds(List<String> organizerIds, EventDataListener listener) {
         EventDataManager.getInstance().fetchEventsByOrganizerIds(organizerIds,listener);
     }
+
+    public synchronized void loadLatestEvent(long timestamp, EventDataListener listener) {
+        EventDataManager.getInstance().loadLatestEvent(timestamp, listener);
+    }
 }
