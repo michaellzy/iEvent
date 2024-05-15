@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_3"
     tools:context=".activity.SearchActivity">
 
     <!-- Filters LinearLayout -->
@@ -29,10 +30,12 @@
                 android:iconifiedByDefault="false"
                 android:queryHint="search for events" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/baseline_filter_alt_24"
                 android:text="Filter"/>
         </LinearLayout>
 
@@ -44,11 +47,13 @@
             android:orientation="horizontal"
             android:layout_below="@id/ll_filters"
             android:layout_marginTop="8dp">  <!-- Added margin for clear spacing -->
-            <Button
-                android:id="@+id/ascending_button"
+            <ImageButton
+                android:id="@+id/sort_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sort Ascending"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/baseline_arrow_upward_24"
+                android:contentDescription="sort" />
         </LinearLayout>
 
         <!-- RecyclerView -->
