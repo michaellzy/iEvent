@@ -168,6 +168,7 @@ public class UserAcitivity extends BaseActivity {
 
                         @Override
                         public void onFailure(String errorMessage) {
+                            setupRecyclerViewByUsers("Followers", new ArrayList<>());
                             Log.d("followers","Failed to load followers: " + errorMessage);
                         }
                     });
@@ -208,6 +209,7 @@ public class UserAcitivity extends BaseActivity {
 
                     @Override
                     public void onFailure(String errorMessage) {
+                        setupRecyclerViewByEvents("Post", new ArrayList<>());
                         Log.d("UserActivity","List" +  eventIds.size());
 
                     }
