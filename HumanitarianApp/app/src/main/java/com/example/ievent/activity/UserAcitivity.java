@@ -209,7 +209,6 @@ public class UserAcitivity extends BaseActivity {
 
                     @Override
                     public void onFailure(String errorMessage) {
-                        setupRecyclerViewByEvents("Post", new ArrayList<>());
                         Log.d("UserActivity","List" +  eventIds.size());
 
                     }
