@@ -20,7 +20,6 @@ public class P2PChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private List<ChatMessage> messages;
 
-
     private User receiver;
 
     private User sender;

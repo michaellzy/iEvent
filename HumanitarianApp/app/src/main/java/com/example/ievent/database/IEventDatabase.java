@@ -127,9 +127,16 @@ public class IEventDatabase{
         EventDataManager.getInstance().getAllEventByFuzzyName(name, listener);
     }
 
+    /**
+     * get all events by the page size
+     * @param pageSize the number of events to get
+     * @param listener the listener to handle the data
+     */
     public void getEvents(int pageSize, EventDataListener listener) {
         EventDataManager.getInstance().loadEvents(pageSize, listener);
     }
+
+
     public void getGreaterThan(double price, EventDataListener listener){
         EventDataManager.getInstance().getGreaterThan(price,listener);
     }
@@ -229,6 +236,28 @@ public class IEventDatabase{
     }
 
 
+    /**
+     * set the chatlog of two users
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     * @param listener the listener to handle the result
+     */
+    public synchronized void setChatLog(String senderId, String receiverId, DataListener<Boolean> listener) {
+        ChatDataManager.getInstance().setChatLog(senderId, receiverId, listener);
+    }
+
+    /**
+     * get the chatlog of a user
+     * @param userId the id of the user
+     * @param listener the listener to handle the result
+     */
+    public synchronized void getChatLog(String userId, DataListener<String> listener) {
+        ChatDataManager.getInstance().getChatLog(userId, listener);
+    }
+
+
+    // ----------------------------------- Other added Operations ----------------------------------- //
+
     //followers and subscriptions
     /**
      * Adds an event to a user's list of events.
@@ -273,6 +302,16 @@ public class IEventDatabase{
     }
 
     /**
+     * Removes a user from the current user's subscription list.
+     * @param currentUserId The UID of the user who is unsubscribing.
+     * @param targetUserId The UID of the user to be unsubscribed from.
+     * @param listener Callback for handling the operation's result.
+     */
+    public synchronized void removeSubscription(String currentUserId, String targetUserId, DataListener<Void> listener){
+        UserDataManager.getInstance().removeSubscription(currentUserId,targetUserId,listener);
+    }
+
+    /**
      * Retrieves multiple users based on a list of user IDs.
      * @param ids List of user IDs.
      * @param listener Listener to handle the result or failure.
@@ -286,12 +325,16 @@ public class IEventDatabase{
      * @param uid The user ID of the participant whose events are to be retrieved.
      * @param listener Listener to handle the results or failures of the data retrieval.
      */
-
     public synchronized void getParticipantEvents(String uid, EventDataListener listener){
         UserDataManager.getInstance().getParticipantEvents(uid,listener);
     }
 
     public synchronized void getEventsByFilters(String type, String titlePrefix, Date startDate, Date endDate, double minPrice, double maxPrice, EventDataListener listener){
         EventDataManager.getInstance().getEventsByFilters(type,titlePrefix, startDate, endDate,minPrice,maxPrice,listener);
+    }
+
+
+    public synchronized void fetchEventsByOrganizerIds(List<String> organizerIds, EventDataListener listener) {
+        EventDataManager.getInstance().fetchEventsByOrganizerIds(organizerIds,listener);
     }
 }

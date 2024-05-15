@@ -30,6 +30,7 @@ import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.ordered_map.Iterator;
 import com.example.ievent.database.ordered_map.OrderedEvent;
+import com.example.ievent.database.listener.OnFilterAppliedListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
@@ -53,10 +54,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class SearchActivity extends BaseActivity implements OnFilterAppliedListener{
+public class SearchActivity extends BaseActivity implements OnFilterAppliedListener {
 
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -286,8 +288,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     }
 
     private ArrayList<Event> filterEvents(String type, String startDate, String endDate, double minPrice, double maxPrice) {
-        long startTimestamp = Utility.convertToTimestamp(startDate);
-        long endTimestamp = Utility.convertToTimestamp(endDate);
+        long startTimestamp = Utility.TimeFormatter.convertToTimestamp(startDate);
+        long endTimestamp = Utility.TimeFormatter.convertToTimestamp(endDate);
 
         Log.d("SearchActivity", "Start Date: " + startDate + ", Start Timestamp: " + startTimestamp);
         Log.d("SearchActivity", "End Date: " + endDate + ", End Timestamp: " + endTimestamp);

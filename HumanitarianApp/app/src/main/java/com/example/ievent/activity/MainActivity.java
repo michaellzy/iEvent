@@ -1,12 +1,15 @@
 package com.example.ievent.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,15 +28,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
+import com.example.ievent.adapter.YourEventsAdapter;
 import com.example.ievent.database.data_manager.EventCache;
 import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.database.listener.FollowerNumListener;
+import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
+import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,6 +54,8 @@ public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private YourEventsAdapter yourEventAdapter;
+    private RecyclerView recyclerViewYourEvents;
 
     private RecyclerView recyclerViewRec;
 
@@ -86,6 +96,13 @@ public class MainActivity extends BaseActivity {
 
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
+
+        //from subscriptions part
+        recyclerViewYourEvents = findViewById(R.id.recycler_view_your_event);
+        yourEventAdapter = new YourEventsAdapter(new ArrayList<>());
+        recyclerViewYourEvents.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)); // This line can be omitted if layoutManager is set in XML
+        recyclerViewYourEvents.setAdapter(yourEventAdapter);
+        loadSubscribedEvents();
 
         events = new ArrayList<>();
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
@@ -149,6 +166,19 @@ public class MainActivity extends BaseActivity {
         ImageView profileImageView = headerView.findViewById(R.id.profile_image);
         TextView usernameTextView = headerView.findViewById(R.id.textView_header_name);
         TextView emailTextView = headerView.findViewById(R.id.textView_header_email);
+
+        ImageView drawerButton = findViewById(R.id.drawer_btn);
+
+        drawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
 
         db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
             @Override
@@ -219,6 +249,7 @@ public class MainActivity extends BaseActivity {
                             User curUser = udata.get(0);
                             for(Event event : data) {
                                 if (curUser.getSubscribedList().contains(event.getOrgId())) {
+                                    promptForNotificationPermission();
                                     showEventNotification(event);
                                     break;
                                 }
@@ -248,12 +279,73 @@ public class MainActivity extends BaseActivity {
             public void reached(boolean isReached) {
                 if (isReached) {
                     Log.i("MainActivity", "show notification");
+                    promptForNotificationPermission();
                     showLocalNotification();
                 }
             }
         });
 
     }
+
+    private void loadSubscribedEvents() {
+        String uid=mAuth.getCurrentUser().getUid();
+        db.getLoggedInUser(uid, new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User current_user=data.get(0);
+                ArrayList<String> subscribedList=current_user.getSubscribedList();
+                db.fetchEventsByOrganizerIds(subscribedList, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isAll) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        yourEventAdapter.setEvents(data);
+                        yourEventAdapter.notifyDataSetChanged();
+                        Log.d("Main", "size of organizer: " + data.size());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+    }
+
+
+    //Request to open notifications
+    private void promptForNotificationPermission() {
+        if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Enable Notifications")
+                    .setMessage("Notifications are disabled. Enable them in settings to receive important event updates.")
+                    .setPositiveButton("Go to Settings", (dialogInterface, i) -> {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            intent.putExtra("app_package", getPackageName());
+                            intent.putExtra("app_uid", getApplicationInfo().uid);
+                        } else {
+                            intent.setData(Uri.parse("package:" + getPackageName()));
+                        }
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        }
+    }
+
 
     private void showLocalNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -267,7 +359,7 @@ public class MainActivity extends BaseActivity {
         Notification notification = new Notification.Builder(this, "followers")
                 .setContentTitle("Congratulations!")
                 .setContentText("You have reached 5 followers!")
-                .setSmallIcon(R.mipmap.ievent_logo)  // 确保这里的图标文件存在
+                .setSmallIcon(R.mipmap.ievent_logo)
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(1, notification);
@@ -288,10 +380,9 @@ public class MainActivity extends BaseActivity {
 
         // Building the notification
         Notification notification = new Notification.Builder(this, "events")
-                .setContentTitle("New Event Notification") // Using organizer's name
+                .setContentTitle("New Event Notification")
                 .setContentText("Your followed organizer " + event.getOrganizer() + " has posted a new event: " + event.getTitle())
-                .setSmallIcon(R.mipmap.ievent_logo) // Ensure this resource exists
-//                .setContentIntent(pendingIntent)  // 设置点击通知后的动作
+                .setSmallIcon(R.mipmap.ievent_logo)
                 .setAutoCancel(true)
                 .build();
 

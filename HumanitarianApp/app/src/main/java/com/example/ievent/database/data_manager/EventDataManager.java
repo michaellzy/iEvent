@@ -20,10 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -45,99 +46,21 @@ public class EventDataManager {
     private ArrayList<EventUpdateListener> listeners = new ArrayList<>();
 
     private EventDataManager(){
-
-//         eventRef = FirebaseFirestore.getInstance().collection("testevent-lzy");
-
         eventRef = FirebaseFirestore.getInstance().collection("events");
-        eventRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    notifyError("Listen failed " + error);
-                    return;
-                }
-
-                ArrayList<Event> newEvents = new ArrayList<>();
-                for (DocumentChange dc : value.getDocumentChanges()) {
-                    if (dc.getType() == DocumentChange.Type.ADDED) {
-                        newEvents.add(dc.getDocument().toObject(Event.class));
-                    }
-                }
-                notifyEventUpdate(newEvents);
+        eventRef.addSnapshotListener((value, error) -> {
+            if (error != null) {
+                notifyError("Listen failed " + error);
+                return;
             }
+
+            ArrayList<Event> newEvents = new ArrayList<>();
+            for (DocumentChange dc : value.getDocumentChanges()) {
+                if (dc.getType() == DocumentChange.Type.ADDED) {
+                    newEvents.add(dc.getDocument().toObject(Event.class));
+                }
+            }
+            notifyEventUpdate(newEvents);
         });
-
-
-//        getAllEventsByType("wellness", new EventDataListener() {
-//            @Override
-//            public void isAllData(boolean isALl) {
-//                //;
-//            }
-//
-//            @Override
-//            public void onSuccess(ArrayList<Event> events) {
-//                eventAVLTree = IEventAVLTree.insertEvents(events, IEventAVLTree.keyType.Price, eventAVLTree);
-//        getAllEventsByType("wellness", new EventDataListener() {
-//            @Override
-//            public void onSuccess(ArrayList<Event> events) {
-//
-//                String s = "";
-//                for (Event e : events) {
-//                    s += e.getPrice() + " ";
-//                }
-//                Log.i("AVLTree", "onSuccess: " + s);
-//
-////                eventAVLTree = eventAVLTree.insert(new IEventData(0, new LinkedList<>()))
-////                        .insert(new IEventData(3, new LinkedList<>()))
-////                        .insert(new IEventData(2, new LinkedList<>()))
-////                        .insert(new IEventData(2, new LinkedList<>()));
-//
-//
-////                eventAVLTree = eventAVLTree.insertEvents(events, IEventAVLTree.KeyType.PRICE);
-////                StringBuilder sb = new StringBuilder();
-////                for (IEventData iEventData : eventAVLTree.inOrder()) {
-////                    sb.append(iEventData.getKey()).append(" ");
-////                }
-////                Log.i("AVLTree", "onSuccess: " + sb);
-////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(-1000, 1000).size() + "");
-//
-////                StringBuilder sb = new StringBuilder();
-////                for (String id : eventAVLTree.getEventIdsInRange(0, 0)) {
-////                    sb.append(id).append("\n");
-////                }
-////                Log.i("AVLTree", "onSuccess: " + sb);
-//
-//
-//
-////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
-////                eventAVLTree.deleteByIdRef("Carer Wellness Program - Thirroul - NSW", 0);
-//////                Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
-////                eventAVLTree = eventAVLTree.insertEvents(events, IEventAVLTree.KeyType.PRICE);
-////                StringBuilder sb = new StringBuilder();
-//
-//
-////                ArrayList<String> ids = eventAVLTree.getEventIdsInRange(0, 0);
-////                for (String string : ids) {
-////                    eventAVLTree = eventAVLTree.deleteByIdRef(string, 0);
-////                    Log.i("AVLTree", eventAVLTree.getEventIdsInRange(0, 0).size() + "");
-////                }
-////
-////
-////                sb = new StringBuilder();
-////                for (IEventData iEventData : eventAVLTree.inOrder()) {
-////                    sb.append(iEventData.getKey()).append(" ");
-////                }
-////                Log.i("AVLTree", "onSuccess: " + sb);
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(String error) {
-//                Log.e("AVLTree", "onFailure: " + error);
-//            }
-//        });
     }
 
     public synchronized static EventDataManager getInstance(){
@@ -374,4 +297,40 @@ public class EventDataManager {
         HandleQuery(query, listener);
 
     }
+
+    public synchronized void fetchEventsByOrganizerIds(List<String> organizerIds, EventDataListener listener) {
+
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+
+        for (String orgId : organizerIds) {
+            // Create a query for each organizer ID
+            Query query = eventRef.whereEqualTo("orgId", orgId);
+
+            // Asynchronously retrieve each document and add the task to the list
+            tasks.add(query.get());
+        }
+
+        // Wait for all tasks to complete
+        Tasks.whenAllSuccess(tasks).addOnSuccessListener(documents -> {
+            ArrayList<Event> events = new ArrayList<>();
+            for (Object document : documents) {
+                QuerySnapshot snapshot = (QuerySnapshot) document;
+                for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                    Event event = doc.toObject(Event.class);
+                    if (event != null) {
+                        events.add(event);
+                    }
+                }
+            }
+            if (!events.isEmpty()) {
+                listener.onSuccess(events);
+            } else {
+                listener.isAllData(true);
+            }
+        }).addOnFailureListener(e -> {
+            listener.onFailure("Error fetching documents: " + e.getMessage());
+        });
+    }
+
+
 }

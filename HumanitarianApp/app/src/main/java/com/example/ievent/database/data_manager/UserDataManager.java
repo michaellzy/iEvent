@@ -210,6 +210,26 @@ public class UserDataManager {
                 });
     }
 
+    /**
+     * Removes a user from the current user's subscription list.
+     * @param currentUserId The UID of the user who is unsubscribing.
+     * @param targetUserId The UID of the user to be unsubscribed from.
+     * @param listener Callback for handling the operation's result.
+     */
+    public synchronized void removeSubscription(String currentUserId, String targetUserId, DataListener<Void> listener) {
+        DocumentReference currentUserRef = userRef.document(currentUserId);
+        currentUserRef.update("subscribedList", FieldValue.arrayRemove(targetUserId))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Subscription removed successfully!");
+                    listener.onSuccess(new ArrayList<>()); // Passing an empty list as no data needed to be returned.
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error removing subscription", e);
+                    listener.onFailure(e.getMessage());
+                });
+    }
+
+
 
 
 

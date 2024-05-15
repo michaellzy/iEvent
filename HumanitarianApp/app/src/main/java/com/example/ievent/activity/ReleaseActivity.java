@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,7 +20,6 @@ import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.databinding.ActivityUploadEventBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.Organizer;
-import com.example.ievent.global.ImageCropper;
 import com.example.ievent.global.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -34,13 +34,11 @@ public class ReleaseActivity extends BaseActivity {
 
     private Uri uri;
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-
     private ArrayAdapter<String> eventTypeAdapter;
 
     private ActivityResultLauncher cropImageActivityResultLauncher;
 
-
+    // List of predefined event types for selection
     final String[] eventTypeList = {"Boat Party", "Bollywood", "Climate Change", "Comedy", "Disability",
     "Indigenous", "Libraries Act", "Mental Health", "Motorbike Tour", "Music Festivals",
     "Museum of Australia", "School Holidays", "Warehouse Sale", "Wellness", "Other"};
@@ -58,14 +56,8 @@ public class ReleaseActivity extends BaseActivity {
 
         setupDatePicker();
 
-//        uploadEventBinding.uploadImage.setOnClickListener(v -> {
-//            Intent intentUpload = new Intent(Intent.ACTION_PICK);
-//            intentUpload.setType("image/*");
-//            startActivityForResult(intentUpload, 1);
-//        });
-
         uploadEventBinding.uploadImage.setOnClickListener(v -> {
-            ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, false, 4,3);
+            Utility.ImageCropper.startCropImageActivity(this, cropImageActivityResultLauncher, false, 4,3);
         });
         cropImageActivityResultLauncher = getCropImageActivityResultLauncher();
 
@@ -77,10 +69,8 @@ public class ReleaseActivity extends BaseActivity {
         });
 
         uploadEventBinding.uploadButtonConfirm.setOnClickListener(v -> {
+            runOnUiThread(() -> uploadEventBinding.progressBarUpload.setVisibility(View.VISIBLE));
             uploadEvent();
-            // Intent returnIntent = new Intent();
-            // Put the data you want to send back to MainActivity in the Intent
-            // setResult(RESULT_OK, returnIntent);
             finish();
         });
 
@@ -88,22 +78,38 @@ public class ReleaseActivity extends BaseActivity {
 
     private void saveEventData() {
         try {
+            // Intent to receive user data from main activity
             Intent intent = getIntent();
             String userName = intent.getStringExtra("userName");
             String email = intent.getStringExtra("email");
-            //TODO: error checking for none events
+
             String eventTitle = uploadEventBinding.uploadEventName.getText().toString();
             String eventLocation = uploadEventBinding.uploadEventLocation.getText().toString();
             double eventPrice = Double.parseDouble(uploadEventBinding.uploadEventPrice.getText().toString());
             String eventType = uploadEventBinding.autoCompleteEventType.getText().toString();
+            String eventDate = uploadEventBinding.uploadEventDate.getText().toString();
+            String eventStartTime = uploadEventBinding.uploadStartTime.getText().toString();
+            String eventEndTime = uploadEventBinding.uploadEndTime.getText().toString();
 
-            String formatEventDate = Utility.formatDate(uploadEventBinding.uploadEventDate.getText().toString());
-            String formatEventStartTime = Utility.formatTime(uploadEventBinding.uploadStartTime.getText().toString());
-            String formatEventEndTime = Utility.formatTime(uploadEventBinding.uploadEndTime.getText().toString());
+            // Check for empty fields
+            if (eventTitle.isEmpty() || eventLocation.isEmpty() || String.valueOf(eventPrice).isEmpty()
+                    || eventType.isEmpty() || eventDate.isEmpty() || eventStartTime.isEmpty() ||
+                    eventEndTime.isEmpty()) {
+                Toast.makeText(this, "All fields must be filled out.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String formatEventDate = Utility.TimeFormatter.formatDate(uploadEventBinding.uploadEventDate.getText().toString());
+            String formatEventStartTime = Utility.TimeFormatter.formatTime(uploadEventBinding.uploadStartTime.getText().toString());
+            String formatEventEndTime = Utility.TimeFormatter.formatTime(uploadEventBinding.uploadEndTime.getText().toString());
+
             String eventDateTime = formatEventDate + ", " + formatEventStartTime + " - " + formatEventEndTime;
             String eventDescription = uploadEventBinding.uploadEventDescription.getText().toString();
+            if (eventDescription.isEmpty()) {
+                eventDescription = "";
+            }
 
-            long timestamp = Utility.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
+            long timestamp = Utility.TimeFormatter.convertToTimestamp(uploadEventBinding.uploadEventDate.getText().toString());
 
 
             String orgId = mAuth.getCurrentUser().getUid();
@@ -113,7 +119,7 @@ public class ReleaseActivity extends BaseActivity {
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Organizer> data) {
-                    // Toast.makeText(ReleaseActivity.this, "This user is already an organizer!", Toast.LENGTH_SHORT).show();
+                    //
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                     Organizer curOrg = data.get(0);
@@ -141,10 +147,13 @@ public class ReleaseActivity extends BaseActivity {
             public void onSuccess(ArrayList<String> data) {
                 imageUri = data.get(0);
                 saveEventData();
+                runOnUiThread(() -> uploadEventBinding.progressBarUpload.setVisibility(View.GONE));
             }
 
             @Override
             public void onFailure(String errorMessage) {
+                Toast.makeText(ReleaseActivity.this, "upload event failed", Toast.LENGTH_SHORT).show();
+                uploadEventBinding.progressBarUpload.setVisibility(View.GONE);
 
             }
         });
@@ -179,7 +188,6 @@ public class ReleaseActivity extends BaseActivity {
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 (view, hourOfDay, minuteOfHour) -> {
-                    // 格式化时间字符串
                     String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minuteOfHour);
                     timeField.setText(formattedTime);
                 }, hour, minute, true);
@@ -198,10 +206,9 @@ public class ReleaseActivity extends BaseActivity {
 
                         CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
                         this.uri = cropResult.getUri();
+                        // Upload the image to Firebase Storage
                         uploadEventBinding.uploadImage.setImageURI(this.uri);
                         uploadEventBinding.uploadImage.setVisibility(View.VISIBLE);
-
-                        // Upload the image to Firebase Storage
                     }
                 }
             );

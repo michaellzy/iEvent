@@ -20,7 +20,13 @@ import java.util.ArrayList;
 
 public class P2PChatActivity extends BaseActivity {
 
+
+    final static String TAG = "P2PChatActivity1111111";
+
     private ActivityP2pChatBinding binding;
+
+    // check whether the chat log is set
+    private boolean isChatLogSet = false;
 
 
     private ArrayList<ChatMessage> messages = new ArrayList<>();
@@ -62,7 +68,6 @@ public class P2PChatActivity extends BaseActivity {
 
 
 
-
     /** set Variables such as the intent data, UI Listeners and layout of the */
     private void setVariables() {
         // --- initialize data --- //
@@ -75,7 +80,8 @@ public class P2PChatActivity extends BaseActivity {
         Log.i("RECEIVER111", "setVariables: " + receiver);
 
 
-        // ---  bind listeners --- //
+
+        // ---  bind listeners to recycleView and send button --- //
         binding.chatRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -110,14 +116,17 @@ public class P2PChatActivity extends BaseActivity {
         db.getTheLastChatMessage(senderId, receiver.getUid(), n, new DataListener<ChatMessage>() {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
-                Toast.makeText(P2PChatActivity.this, "success to get the message", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onSuccess: " + "success to get the message");
+                Log.i(TAG, "onSuccess: " + data.size());
 
                 messages = data;
+
 
                 // if message size is not only 1 update the timeEnd
                 if(!messages.isEmpty()){
                     timeEnd = messages.get(0).getTime() - 1;
                 }
+
 
                 // update the layout of the recyclerView based on the number of messages
                 updateRecyclerViewLayout(data.size());
@@ -144,20 +153,36 @@ public class P2PChatActivity extends BaseActivity {
             }
         });
 
+
+
+
         // search from when the user enters the chat room
         timeStart = System.currentTimeMillis();
         // if the data added in database, then update the adapter
-        String finalSenderId1 = senderId;
         db.getNewMessages(senderId, receiver.getUid(), timeStart, new DataListener<ChatMessage>() {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
-                Toast.makeText(P2PChatActivity.this, "success to get the message", Toast.LENGTH_SHORT).show();
-                Log.i("MESSAGESSSS", "onSuccess: " + data.size());
+                Log.i(TAG, "onSuccess: " + data.size());
+
 
                 messages.addAll(data);
                 // update the timeStart
                 if (!data.isEmpty()) {
                     timeStart = messages.get(messages.size() - 1).getTime() + 1;
+                    if(!isChatLogSet){
+                        db.setChatLog(finalSenderId, receiver.getUid(), new DataListener<Boolean>() {
+                            @Override
+                            public void onSuccess(ArrayList<Boolean> data) {
+                                isChatLogSet = true;
+                                Log.i(TAG, "onSuccess: " + "success to set the chat log");
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Log.i(TAG, "onFailure: " + "fail to set the chat log");
+                            }
+                        });
+                    }
                 }
 
                 if (P2pAdapter != null) {
@@ -173,7 +198,7 @@ public class P2PChatActivity extends BaseActivity {
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onFailure: " + "fail to get the message");
             }
         });
     }
@@ -197,11 +222,11 @@ public class P2PChatActivity extends BaseActivity {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
                 if(data.isEmpty()) {
-                    Toast.makeText(P2PChatActivity.this, "No more messages", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG,  "no more messages");
                     return;
                 }
 
-                Toast.makeText(P2PChatActivity.this, "get new" + data.size(), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "get new" + data.size());
 
 
                 messages.addAll(0, data);
@@ -215,10 +240,13 @@ public class P2PChatActivity extends BaseActivity {
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onFailure: " + "fail to get the message");
             }
         });
     }
+
+
+
 
     /**
      * update the layout of the recyclerView (messages stack from the bottom or top)
@@ -235,6 +263,4 @@ public class P2PChatActivity extends BaseActivity {
         }
         binding.chatRecyclerView.setLayoutManager(layoutManager);
     }
-
-
 }

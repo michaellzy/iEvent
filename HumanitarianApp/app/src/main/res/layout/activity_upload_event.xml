@@ -122,12 +122,19 @@
                 android:scrollbars="vertical"
                 android:background="@drawable/edit_text_background" />
 
+            <ProgressBar
+                android:id="@+id/progressBar_upload"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/upload_button_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Post Event"/>
+                android:text="Post Event" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
