@@ -64,6 +64,8 @@ public class EventDetailActivity extends BaseActivity {
         });
     }
 
+    //follow function
+
     public void onAddFollowClick(View view) {
         Event event = (Event) getIntent().getSerializableExtra("event");
         String userId = mAuth.getCurrentUser().getUid();
@@ -78,24 +80,7 @@ public class EventDetailActivity extends BaseActivity {
                         User user = data.get(0);
                         if (user.getSubscribedList().contains(organizerID)) {
                             // User already followed, perform unfollow
-                            db.removeSubscription(userId, organizerID, new DataListener<Void>() {
-                                @Override
-                                public void onSuccess(ArrayList<Void> data) {
-                                    runOnUiThread(() -> {
-                                        followIcon.setImageResource(R.drawable.ic_add_follow); // Change the icon to indicate unfollowed
-                                        Toast.makeText(EventDetailActivity.this, "You have unfollowed this organizer", Toast.LENGTH_SHORT).show();
-                                        view.setEnabled(true); // Re-enable the button
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(String errorMessage) {
-                                    runOnUiThread(() -> {
-                                        Toast.makeText(EventDetailActivity.this, "Failed to unfollow: " + errorMessage, Toast.LENGTH_SHORT).show();
-                                        view.setEnabled(true); // Re-enable the button
-                                    });
-                                }
-                            });
+                            removeFollowerAndSubscription(userId, organizerID, followIcon, view);
                         } else {
                             // User not followed yet, add follow and subscription
                             addFollowerAndSubscribe(organizerID, userId, view);
@@ -118,6 +103,45 @@ public class EventDetailActivity extends BaseActivity {
         }
     }
 
+    private void removeFollowerAndSubscription(String userId, String organizerID, ImageView followIcon, View view) {
+        // Remove the subscription from the user's list
+        db.removeSubscription(userId, organizerID, new DataListener<Void>() {
+            @Override
+            public void onSuccess(ArrayList<Void> data) {
+                // Now remove the follower from the organizer's list
+                db.removeFollower(organizerID, userId, new DataListener<Void>() {
+                    @Override
+                    public void onSuccess(ArrayList<Void> data) {
+                        runOnUiThread(() -> {
+                            followIcon.setImageResource(R.drawable.ic_add_follow); // Update icon to show unfollow
+                            Toast.makeText(EventDetailActivity.this, "You have unfollowed this organizer", Toast.LENGTH_SHORT).show();
+                            view.setEnabled(true); // Re-enable the button
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(EventDetailActivity.this, "Failed to remove follower: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            view.setEnabled(true); // Re-enable the button
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(EventDetailActivity.this, "Failed to unsubscribe: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true); // Re-enable the button
+                });
+            }
+        });
+    }
+
+
+
+
     private void addFollowerAndSubscribe(String organizerID, String userId, View view) {
         ImageView followIcon = findViewById(R.id.imageView_add_follow);
         db.addFollower(organizerID, userId, new DataListener<Void>() {
@@ -132,7 +156,7 @@ public class EventDetailActivity extends BaseActivity {
                     public void onSuccess(ArrayList<Void> subscriptionData) {
                         runOnUiThread(() -> {
                             followIcon.setImageResource(R.drawable.ic_follow_y); // Change the icon to indicate followed
-                            Toast.makeText(EventDetailActivity.this, "Followed and subscribed successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EventDetailActivity.this, "Followed successfully!", Toast.LENGTH_SHORT).show();
                             view.setEnabled(true); // Re-enable the button
                         });
                     }

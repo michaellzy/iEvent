@@ -145,6 +145,22 @@ public class OrganizerDataManager {
                 });
     }
 
+    public void removeFollower(String organizerId, String followerId, DataListener<Void> listener) {
+        DocumentReference organizerRef = orgRef.document(organizerId);
+        organizerRef.update("followersList", FieldValue.arrayRemove(followerId))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("OrganizerDataManager", "Follower removed successfully!");
+                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("OrganizerDataManager", "Error removing follower", e);
+                    listener.onFailure(e.getMessage());
+                });
+    }
+
+
+
+
 
     public void setupFollowerListener(String organizerId, FollowerNumListener listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
