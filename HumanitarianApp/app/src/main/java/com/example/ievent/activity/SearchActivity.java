@@ -2,6 +2,7 @@ package com.example.ievent.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -69,8 +71,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Button filterbutton = findViewById(R.id.filter_button);
-        Button sortbutton = findViewById(R.id.ascending_button);
+        ImageButton filterbutton = findViewById(R.id.filter_button);
+        ImageButton sortbutton = findViewById(R.id.sort_button);
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
         recommendedActivitiesAdapter = new RecommendedActivitiesAdapter(eventList);
@@ -104,7 +106,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 if (!isAscending) {
                     // If currently in descending order, reverse to ascending
                     Collections.reverse(eventList);  // Reverse the list to make it ascending
-                    sortbutton.setText("Now Descending");  // Update button text to reflect the next possible action
+//                    sortbutton.setText("Now Descending");  // Update button text to reflect the next possible action
+                    sortbutton.animate().rotation(0).setDuration(0).start();
                 } else {
                     // Sort the list in ascending order if not already sorted
                     orderedEvents = new OrderedEvent<Double, Event>(); // Initialize
@@ -120,7 +123,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                     }
                     eventList.clear();
                     eventList.addAll(sortedEvents);  // Now eventList is sorted in ascending
-                    sortbutton.setText("Now Ascending");  // Update button text to reflect the next possible action
+//                    sortbutton.setText("Now Ascending");  // Update button text to reflect the next possible action
+                    sortbutton.animate().rotation(180).setDuration(0).start();
                 }
                 recommendedActivitiesAdapter.notifyDataSetChanged();  // Notify the adapter
                 isAscending = !isAscending;  // Toggle the sort order for the next click
