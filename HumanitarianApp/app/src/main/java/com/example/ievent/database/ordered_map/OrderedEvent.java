@@ -2,7 +2,12 @@ package com.example.ievent.database.ordered_map;
 import java.util.LinkedList;
 import java.util.Stack;
 
-
+/**
+ * Ordered Event implementation.
+ * @param <K> key
+ * @param <V> value
+ * @author Zhiyuan Lu
+ */
 public class OrderedEvent<K extends Comparable<K>, V> implements Container {
     private AVLTree<K, V> root;
 
@@ -53,7 +58,6 @@ public class OrderedEvent<K extends Comparable<K>, V> implements Container {
                 return null;
             }
             AVLTree<K, V> node = stack.pop();
-            // K key = node.value.getKey();
             LinkedList<V> value = node.value.getValue();
             if (node.rightNode != null && !(node.rightNode instanceof AVLTree.EmptyAVL)) {
                 pushLeft((AVLTree<K, V>) node.rightNode);

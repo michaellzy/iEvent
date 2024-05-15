@@ -29,6 +29,8 @@ import java.util.List;
 
 /**
  * This class is used to display the map.
+ *
+ * @author Tengkai Wang
  */
 public class MapActivity extends BaseActivity implements OnMapReadyCallback {
     ActivityMapBinding mapActivityBinding;
@@ -139,7 +141,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
                 });
     }
 
-    // ----------------------------------------------------- tool methods -----------------------------------------------------
+    // ----------------------------------------------------- tool methods start -----------------------------------------------------
 
     /**
      * This method is used to set the marker on the map.

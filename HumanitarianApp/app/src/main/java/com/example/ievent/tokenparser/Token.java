@@ -2,6 +2,10 @@ package com.example.ievent.tokenparser;
 
 import java.util.Objects;
 
+/**
+ * Represents a token in the grammar.
+ * @author Haolin Li
+ */
 public class Token {
     public enum Type{DOUBLE,STR,AND,OR,LESS,MORE,LBRA,RBRA,EQUAL,DATE}
     public static class IllegalTokenException extends IllegalArgumentException {

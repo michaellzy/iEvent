@@ -1,5 +1,9 @@
 package com.example.ievent.tokenparser;
 
+/**
+ * Represents an variable expression in the grammar.
+ * @author Haolin Li
+ */
 public class VariableExp extends Exp {
     private String name;
 

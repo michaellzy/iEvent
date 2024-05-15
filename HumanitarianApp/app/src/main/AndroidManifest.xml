@@ -43,7 +43,6 @@
 
         </activity>
 
-        <activity android:name=".activity.P2PloginActivity" android:exported="true" />>
         <activity
             android:name=".activity.NotificationActivity"
             android:exported="false" />

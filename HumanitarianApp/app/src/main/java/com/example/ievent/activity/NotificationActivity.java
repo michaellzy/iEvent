@@ -16,7 +16,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is used to display the notification center
+ * @author Tengkai Wang
+ */
 public class NotificationActivity extends BaseActivity {
 
     ActivityNotificationBinding binding;
@@ -35,7 +38,6 @@ public class NotificationActivity extends BaseActivity {
         bottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
 
 
-        // TODO: it's a reusable code, consider moving it to BaseActivity
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
@@ -67,7 +69,9 @@ public class NotificationActivity extends BaseActivity {
         showMessage();
     }
 
-
+    /**
+     * This method is used to show the chat logs.
+     */
     private void showMessage(){
         showLoading(true);
         showEmptyView(false);
@@ -92,12 +96,22 @@ public class NotificationActivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * This method is used to show the loading animation.
+     *
+     * @param show A boolean value to show or hide the loading animation.
+     */
     private void showLoading(boolean show) {
         binding.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         binding.subRecycler.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
+
+    /**
+     * This method is used to show the empty view.
+     *
+     * @param show A boolean value to show or hide the empty text.
+     */
     private void showEmptyView(boolean show) {
         binding.TextViewEmpty.setVisibility(show ? View.VISIBLE : View.GONE);
     }

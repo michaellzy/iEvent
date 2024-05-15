@@ -1,6 +1,5 @@
 package com.example.ievent.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -32,15 +31,12 @@ import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.adapter.YourEventsAdapter;
 import com.example.ievent.database.data_manager.EventCache;
 import com.example.ievent.database.data_manager.EventDataManager;
-import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.EventUpdateListener;
 import com.example.ievent.database.listener.FollowerNumListener;
-import com.example.ievent.database.listener.OrgDataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityMainBinding;
 import com.example.ievent.entity.Event;
-import com.example.ievent.entity.Organizer;
 import com.example.ievent.entity.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,6 +46,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * the index page of the app, the entry
+ * @author Zhiyuan Lu
+ * @author Qianwen Shen
+ * @author Haolin Li
+ * @author Tengkai Wang
+ */
 public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
@@ -183,7 +186,6 @@ public class MainActivity extends BaseActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-//                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 return true;
             } else if (itemId == R.id.navigation_search) {
                 startActivity(new Intent(getApplicationContext(), SearchActivity.class));
@@ -309,11 +311,13 @@ public class MainActivity extends BaseActivity {
             }
         };
 
-
+        // load user avatar to view
         db.downloadAvatar(binding.profileImage, mAuth.getCurrentUser().getUid(), MainActivity.this);
+        // set click listener for user avatar, head for user profile
         binding.profileImage.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), UserAcitivity.class));
         });
+
         db.setupFollowerListener(mAuth.getCurrentUser().getUid(), new FollowerNumListener() {
             @Override
             public void reached(boolean isReached) {
@@ -327,6 +331,9 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * Load subscribed events
+     */
     private void loadSubscribedEvents() {
         String uid=mAuth.getCurrentUser().getUid();
         db.getLoggedInUser(uid, new UserDataListener() {
@@ -362,7 +369,9 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    //Request to open notifications
+    /**
+     * Prompt user to enable notifications if they are disabled
+     */
     private void promptForNotificationPermission() {
         if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
             new AlertDialog.Builder(this)

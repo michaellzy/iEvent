@@ -3,10 +3,7 @@ package com.example.ievent.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +13,15 @@ import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.entity.Event;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class is used to handle the ticket activity.
+ * This class is used to display the tickets that the user has purchased.
+ *
+ * @author Qianwen Shen
+ */
 public class TicketActivity extends BaseActivity {
     private RecyclerView recyclerView;
 
@@ -34,31 +35,27 @@ public class TicketActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_ticket);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.navigation_home) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    return true;
-                } else if (itemId == R.id.navigation_search) {
-                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.navigation_ticket) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                    return true;
-                } else if (itemId == R.id.navigation_notifications) {
-                    startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
-                    return true;
-                }
-                return false;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                return true;
+            } else if (itemId == R.id.navigation_search) {
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_ticket) {
+                return true;
+            } else if (itemId == R.id.navigation_notifications) {
+                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+                return true;
             }
+            return false;
         });
+
 
         String uid = mAuth.getUid();
         UserDataManager.getInstance().
-
                 getParticipantEvents(uid, new EventDataListener() {
                     @Override
                     public void isAllData(boolean isAll) {

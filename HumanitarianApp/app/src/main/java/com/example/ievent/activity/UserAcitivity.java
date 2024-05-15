@@ -36,7 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * This class is used to handle the user activity.
+ * This class is used to display the user's profile, tickets, posts, followers, and subscriptions.
+ * @author Xuan Li
+ * @author Qianwen Shen
+ * @author Tengkai Wang
+ */
 public class UserAcitivity extends BaseActivity {
 
     private RecyclerView recyclerView;
@@ -58,8 +64,8 @@ public class UserAcitivity extends BaseActivity {
         recyclerView = binding.textViewUsernameProfile;
         tabLayout = binding.tabLayout;
 
+
         // Initial setup
-//        setupRecyclerView("Post");
         String uid = mAuth.getUid();
         ImageView profileImageView = binding.profileImage;
         TextView usernameTextView = binding.tvName;
@@ -147,6 +153,10 @@ public class UserAcitivity extends BaseActivity {
         setPosts();
 
     }
+
+    /**
+     * Set up the followers view
+     */
     private void setupFollowersView() {
         String uid = FirebaseAuth.getInstance().getUid();  // Get current user's UID
         if (uid == null) {
@@ -184,7 +194,9 @@ public class UserAcitivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * Set up the posts view
+     */
     private void setPosts(){
         String uid = mAuth.getUid();
         db.fetchOrganizedData(uid, new OrganizedEventListener() {
@@ -220,6 +232,10 @@ public class UserAcitivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * Set up the subscriptions view
+     */
     private void setupSubscriptionsView() {
         String uid = mAuth.getUid();
         db.getLoggedInUser(uid, new UserDataListener() {
@@ -263,6 +279,11 @@ public class UserAcitivity extends BaseActivity {
         });
     }
 
+    /**
+     * Set up the recycler view by events
+     * @param type the type of the events
+     * @param events the list of events
+     */
     private void setupRecyclerViewByEvents(String type, ArrayList<Event> events){
         switch (type) {
             case "Post":
@@ -275,6 +296,11 @@ public class UserAcitivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * Set up the recycler view by users
+     * @param type the type of the users
+     * @param users the list of users
+     */
     private void setupRecyclerViewByUsers(String type, ArrayList<User> users){
         switch (type) {
             case "Sub":
@@ -289,6 +315,10 @@ public class UserAcitivity extends BaseActivity {
 
 
 
+    /**
+     * Get the crop image activity result launcher
+     * @return the crop image activity result launcher
+     */
     private ActivityResultLauncher getCropImageActivityResultLauncher() {
         return registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),

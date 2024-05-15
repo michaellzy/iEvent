@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,9 +15,14 @@ import com.example.ievent.R;
 import com.example.ievent.activity.EventDetailActivity;
 import com.example.ievent.entity.Event;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for your events
+ * This class is used to handle the your events adapter
+ * @author Haolin Li
+ * @author Qianwen Shen
+ */
 public class YourEventsAdapter extends RecyclerView.Adapter<YourEventsAdapter.ViewHolder> {
 
     private List<Event> eventList;

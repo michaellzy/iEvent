@@ -26,6 +26,8 @@ import java.util.TimeZone;
  * This class is used to store all the global variables and methods that are used in the project
  * all the fields and methods are static so that they can be accessed without creating an object of this class
  * the way to use this class: Utility.methodName() or Utility.fieldName
+ * @author Tengkai Wang
+ * @author Zhiyuan Lu
  */
 public class Utility {
 

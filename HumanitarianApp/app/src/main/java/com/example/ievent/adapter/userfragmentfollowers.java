@@ -20,13 +20,20 @@ import com.example.ievent.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对于推荐活动的RecyclerView
+/**
+ * Adapter for user fragment followers
+ * This class is used to handle the user fragment followers adapter
+ * @author Xuan Li
+ * @author Qianwen Shen
+ * @author Tengkai Wang
+ */
 public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfollowers.ViewHolder> {
     private List<User> UserList;
 
     public userfragmentfollowers() {
         this.UserList = new ArrayList<>();
     }
+
     public userfragmentfollowers(ArrayList<User> users) {
         this.UserList = users;
     }
@@ -62,12 +69,10 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
     public void setUsers(ArrayList<User> users) {
         clearUsers();
         UserList.addAll(users);
-        // notifyDataSetChanged();
     }
 
     public void clearUsers() {
         UserList.clear();
-//        notifyDataSetChanged();  // Notify the adapter that the data has been cleared
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

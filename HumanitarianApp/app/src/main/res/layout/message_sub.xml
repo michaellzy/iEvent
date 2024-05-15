@@ -25,17 +25,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="用户名"
+        android:text="usernaeme"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toEndOf="@id/chatlog_avatar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/chatlog_message"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="这里显示消息内容..."
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="here the last message..."
         app:layout_constraintStart_toEndOf="@id/chatlog_avatar"
         app:layout_constraintTop_toBottomOf="@id/chatlog_name" />
 
