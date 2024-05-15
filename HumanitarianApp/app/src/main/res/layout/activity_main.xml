@@ -28,8 +28,8 @@
             android:id="@+id/profile_image"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="252dp"
+            android:layout_marginTop="16dp"
             app:civ_border_color="@color/colorPink2"
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        android:background="@android:color/transparent"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
@@ -135,12 +136,12 @@
             android:id="@+id/drawer_btn"
             android:layout_width="33dp"
             android:layout_height="33dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginStart="12dp"
-            app:srcCompat="@drawable/ic_drawer"
-            app:tint="#FFFFFF"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_drawer"
+            app:tint="#FFFFFF" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

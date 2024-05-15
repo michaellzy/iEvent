@@ -97,6 +97,13 @@ public class MainActivity extends BaseActivity {
         Log.d("MainActivity", "onCreate executed");
         progressBar = findViewById(R.id.progressBar_main);
 
+        //from subscriptions part
+        recyclerViewYourEvents = findViewById(R.id.recycler_view_your_event);
+        yourEventAdapter = new YourEventsAdapter(new ArrayList<>());
+        recyclerViewYourEvents.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)); // This line can be omitted if layoutManager is set in XML
+        recyclerViewYourEvents.setAdapter(yourEventAdapter);
+        loadSubscribedEvents();
+
         events = new ArrayList<>();
         recyclerViewRec = findViewById(R.id.recycler_view_recommended);
         recEventAdapter = new RecommendedActivitiesAdapter(events);
@@ -129,13 +136,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
-
-        //from subscriptions part
-        recyclerViewYourEvents = findViewById(R.id.recycler_view_your_event);
-        yourEventAdapter = new YourEventsAdapter(new ArrayList<>());
-        recyclerViewYourEvents.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)); // This line can be omitted if layoutManager is set in XML
-        recyclerViewYourEvents.setAdapter(yourEventAdapter);
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -287,6 +287,39 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void loadSubscribedEvents() {
+        String uid=mAuth.getCurrentUser().getUid();
+        db.getLoggedInUser(uid, new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                User current_user=data.get(0);
+                ArrayList<String> subscribedList=current_user.getSubscribedList();
+                db.fetchEventsByOrganizerIds(subscribedList, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isAll) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        yourEventAdapter.setEvents(data);
+                        yourEventAdapter.notifyDataSetChanged();
+                        Log.d("Main", "size of organizer: " + data.size());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+    }
 
 
     //Request to open notifications
@@ -326,7 +359,7 @@ public class MainActivity extends BaseActivity {
         Notification notification = new Notification.Builder(this, "followers")
                 .setContentTitle("Congratulations!")
                 .setContentText("You have reached 5 followers!")
-                .setSmallIcon(R.mipmap.ievent_logo)  // 确保这里的图标文件存在
+                .setSmallIcon(R.mipmap.ievent_logo)
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(1, notification);

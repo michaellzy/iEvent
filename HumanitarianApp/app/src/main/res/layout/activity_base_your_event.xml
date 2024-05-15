@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="130dp"
+    android:padding="10dp"
+    android:background="@android:color/transparent"
+    app:cardBackgroundColor="#90EEEEEE"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardElevation="0dp"
     android:layout_margin="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,6 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginStart="7dp"
             app:layout_constraintTop_toBottomOf="@id/base_event_imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:layout_marginStart="7dp"
             app:layout_constraintTop_toBottomOf="@id/base_event_activity_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

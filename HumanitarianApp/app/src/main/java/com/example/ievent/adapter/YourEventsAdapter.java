@@ -71,7 +71,7 @@ public class YourEventsAdapter extends RecyclerView.Adapter<YourEventsAdapter.Vi
             super(view);
             imageView = view.findViewById(R.id.base_event_imageView);
             name = view.findViewById(R.id.base_event_activity_name);
-            organizer = view.findViewById(R.id.textView_recommended_activities_organizer);
+            organizer = view.findViewById(R.id.base_event_organizer_name);
         }
     }
 }

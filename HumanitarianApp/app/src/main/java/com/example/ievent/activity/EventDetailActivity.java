@@ -11,8 +11,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ievent.R;
-import com.example.ievent.database.data_manager.OrganizerDataManager;
-import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityEventDetailBinding;
@@ -21,6 +19,7 @@ import com.example.ievent.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EventDetailActivity extends BaseActivity {
 
@@ -34,18 +33,13 @@ public class EventDetailActivity extends BaseActivity {
         setContentView(eventDetailBinding.getRoot());
 
         setVariables();
-        eventDetailBinding.imageViewDetailBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        eventDetailBinding.imageViewDetailBackBtn.setOnClickListener(v -> finish());
         setupTicketButton();
     }
 
     private void setupTicketButton() {
         Event event = (Event) getIntent().getSerializableExtra("event");
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Adjust based on your user session management
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();  // Adjust based on your user session management
 
         eventDetailBinding.buttonGetTicket.setOnClickListener(v -> {
             if (event != null && userId != null) {
@@ -245,12 +239,27 @@ public class EventDetailActivity extends BaseActivity {
                 .into(eventDetailBinding.imageViewDetailEventPic);
 
 
-        Glide.with(this)
-                .load("https://t.mwm.moe/mp")
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.drawable.default_avatar)
-                .into(eventDetailBinding.imageViewDetailOrganizerPic);
+        db.getUserById(event.getOrgId(), new UserDataListener() {
+            @Override
+            public void onSuccess(ArrayList<User> data) {
+                if (!data.isEmpty() && data.get(0).getAvatar() != null && !EventDetailActivity.this.isDestroyed()) {
+                    User organizer = data.get(0);
+
+                    Glide.with(EventDetailActivity.this)
+                            .load(organizer.getAvatar())
+                            .placeholder(R.drawable.default_avatar)
+                            .into(eventDetailBinding.imageViewDetailOrganizerPic);
+                }else{
+                    eventDetailBinding.imageViewDetailOrganizerPic.setImageResource(R.drawable.default_avatar);
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("organizer", "Failed to get organizer: " + errorMessage);
+            }
+        });
+
 
 
         eventDetailBinding.textViewDetailActivityName.setText(event.getTitle());
