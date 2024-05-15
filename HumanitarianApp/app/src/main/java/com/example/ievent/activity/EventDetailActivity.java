@@ -11,13 +11,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ievent.R;
+import com.example.ievent.database.data_manager.OrganizerDataManager;
+import com.example.ievent.database.data_manager.UserDataManager;
+import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityEventDetailBinding;
 import com.example.ievent.entity.Event;
 import com.example.ievent.entity.User;
 import com.google.firebase.auth.FirebaseAuth;
-
+import android.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -230,6 +233,52 @@ public class EventDetailActivity extends BaseActivity {
             });
         });
 
+        eventDetailBinding.imageViewBlock.setOnClickListener(v ->{
+            String senderId = mAuth.getUid();
+            String receiverId = event.getOrgId();
+            if (senderId == null || receiverId == null) {
+                Toast.makeText(EventDetailActivity.this, "User ID or Organizer ID is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d("BlockOperation", "Attempting to change block status for: " + senderId + " and " + receiverId);
+            db.CheckBlockStatus(senderId, receiverId, new BlockstateListener() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    db.getLoggedInUser(receiverId, new UserDataListener() {
+                        @Override
+                        public void onSuccess(ArrayList<User> data) {
+                            User user = data.get(0);
+                            String username = user.getUserName();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(EventDetailActivity.this);
+                            builder.setTitle(result ? "Unblock " + username : "Block " + username);
+                            builder.setMessage(result ? "Now you can talk with he/she" : "He/She can not be able to talk with you.");
+
+
+                            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+                            builder.setPositiveButton(result ? "Unblock" : "Block", (dialog, which) -> {
+                                db.AddBlockMessage(senderId, receiverId); // 调用unblock函数
+                            });
+
+                            builder.create().show();
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(EventDetailActivity.this, "Failed to retrieve user data: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+                @Override
+                public void onFailure(String error) {
+                    Toast.makeText(EventDetailActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
 
 
 
@@ -268,4 +317,5 @@ public class EventDetailActivity extends BaseActivity {
         eventDetailBinding.textViewDetailActivityPriceContent.setText(" AUD " + event.getPrice() );
         eventDetailBinding.textViewDetailActivityDescriptionContent.setText(event.getDescription());
     }
+
 }

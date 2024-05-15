@@ -1,8 +1,14 @@
 package com.example.ievent.database.data_manager;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ievent.activity.P2PChatActivity;
+import com.example.ievent.database.listener.BlockListener;
+import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.entity.ChatMessage;
 import com.google.firebase.database.ChildEventListener;
@@ -10,6 +16,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -24,11 +32,13 @@ public class ChatDataManager {
 
     private DatabaseReference chatRef;
 
-
+    private DatabaseReference blockRef;
 
     private ChatDataManager(){
         chatRef = FirebaseDatabase.getInstance().getReference("chats");
+        blockRef = FirebaseDatabase.getInstance().getReference("block");
     }
+
 
 
     public synchronized static ChatDataManager getInstance(){
@@ -42,6 +52,84 @@ public class ChatDataManager {
         return instance;
     }
 
+
+    // ----------------------------------- Chat Operations ----------------------------------- //
+    public synchronized void blockMessage(String senderId, String receiverId, BlockListener listener){
+        blockRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String result = "00"; // 默认结果，表示没有阻止或阻止未生效
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    String key = childSnapshot.getKey(); // 获取键，例如 "a-b"
+                    Boolean isBlocked = childSnapshot.getValue(Boolean.class); // 获取阻止状态的值
+                    if (isBlocked != null && isBlocked) { // 确保值为true
+                        String[] parts = key.split("-");
+                        if (parts.length == 2) {
+                            if (parts[0].equals(senderId) && parts[1].equals(receiverId)) {
+                                result = "11"; // 第一个是senderId
+                                break;
+                            } else if (parts[0].equals(receiverId) && parts[1].equals(senderId)) {
+                                result = "10"; // 第一个是receiverId
+                                break;
+                            }
+                        }
+                    }
+                }
+                listener.onSuccess(result); // 使用回调返回结果
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailure(databaseError.getMessage()); // 处理错误
+            }
+        });
+    }
+
+
+    public synchronized void CheckBlockStatus(String senderId, String receiverId, BlockstateListener listener) {
+        DatabaseReference blockRef = FirebaseDatabase.getInstance().getReference("block");
+        String key = senderId + "-" + receiverId;
+        blockRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Boolean isBlocked = dataSnapshot.getValue(Boolean.class);
+                    listener.onSuccess(isBlocked);
+                    Log.d("isBlocked", "isBlocked: " + isBlocked);
+                } else {
+                    listener.onSuccess(false);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailure(databaseError.getMessage());
+                Log.e("AddBlockMessage", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public synchronized void AddBlockMessage(String senderId, String receiverId) {
+        DatabaseReference blockRef = FirebaseDatabase.getInstance().getReference("block");
+        String key = senderId + "-" + receiverId;
+        blockRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Boolean isBlocked = dataSnapshot.getValue(Boolean.class);
+                    if (isBlocked != null) {
+                        dataSnapshot.getRef().setValue(!isBlocked);
+                        Log.d("AddBlockMessage", "Block status changed for: " + key + " to: " + isBlocked);
+                    }
+                } else {
+                    dataSnapshot.getRef().setValue(true);
+                    Log.d("AddBlockMessage", "New block added: " + key);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("AddBlockMessage", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
 
     /**
      * store new message to the database

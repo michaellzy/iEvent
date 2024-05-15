@@ -8,6 +8,8 @@ import com.example.ievent.database.data_manager.EventDataManager;
 import com.example.ievent.database.data_manager.MediaManager;
 import com.example.ievent.database.data_manager.OrganizerDataManager;
 import com.example.ievent.database.data_manager.UserDataManager;
+import com.example.ievent.database.listener.BlockListener;
+import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.EventDataListener;
 import com.example.ievent.database.listener.FollowerNumListener;
@@ -185,8 +187,18 @@ public class IEventDatabase{
         EventDataManager.getInstance().getAllEventsByIds(ids, listener);
     }
 
-
     // ----------------------------------- Chat Operations ----------------------------------- //
+    public void blockMessage(String senderId, String receiverId, BlockListener listener){
+        ChatDataManager.getInstance().blockMessage(senderId, receiverId, listener);
+    }
+
+    public void CheckBlockStatus(String senderId, String receiverId, BlockstateListener listener){
+        ChatDataManager.getInstance().CheckBlockStatus(senderId, receiverId, listener);
+    }
+    public void AddBlockMessage(String senderId, String receiverId){
+        ChatDataManager.getInstance().AddBlockMessage(senderId, receiverId);
+    }
+
     /**
      * store new message to the database
      * @param senderId the id of the sender
