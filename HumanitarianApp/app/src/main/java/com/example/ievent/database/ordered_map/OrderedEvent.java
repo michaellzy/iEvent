@@ -58,7 +58,6 @@ public class OrderedEvent<K extends Comparable<K>, V> implements Container {
                 return null;
             }
             AVLTree<K, V> node = stack.pop();
-            // K key = node.value.getKey();
             LinkedList<V> value = node.value.getValue();
             if (node.rightNode != null && !(node.rightNode instanceof AVLTree.EmptyAVL)) {
                 pushLeft((AVLTree<K, V>) node.rightNode);

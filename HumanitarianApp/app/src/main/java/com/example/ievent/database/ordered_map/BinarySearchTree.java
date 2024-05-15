@@ -81,7 +81,6 @@ public class BinarySearchTree<K extends Comparable<K>, V> extends Tree<K, V> {
 
     @Override
     public Tree<K, V> delete(K key) {
-        // Optional: Implement delete logic according to AVL deletion rules
         return this; // Placeholder
     }
 

@@ -10,7 +10,6 @@ import java.util.LinkedList;
  */
 public class Pair<K extends Comparable<K>, V> {
     private K key;
-    // private List<V> value = new LinkedList<>();
     private LinkedList<V> value;
 
 
