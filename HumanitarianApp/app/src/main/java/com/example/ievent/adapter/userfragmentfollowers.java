@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ievent.R;
+import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.entity.User;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
                 .into(holder.imageView);
 
         holder.chatImage.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), P2PChatAdapter.class);
+            Intent intent = new Intent(v.getContext(), P2PChatActivity.class);
             intent.putExtra("receiver", UserList.get(position));
             startActivity(v.getContext(), intent, null);
         });
