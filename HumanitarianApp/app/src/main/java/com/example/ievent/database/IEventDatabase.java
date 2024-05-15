@@ -303,6 +303,10 @@ public class IEventDatabase{
         OrganizerDataManager.getInstance().addFollower(organizerId,followerId,listener);
     }
 
+    public void removeFollower(String organizerId, String followerId, DataListener<Void> listener) {
+        OrganizerDataManager.getInstance().removeFollower(organizerId,followerId,listener);
+    }
+
     /**
      * Adds a user to the current user's subscription list.
      * @param currentUserId The UID of the user who is subscribing.

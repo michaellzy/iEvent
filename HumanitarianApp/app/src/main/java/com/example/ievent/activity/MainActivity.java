@@ -410,8 +410,9 @@ public class MainActivity extends BaseActivity {
         int itemId = menuItem.getItemId();
         if (itemId == R.id.nav_home) {
             // Handle navigation to home
-        } else if (itemId == R.id.nav_settings) {
-            // Handle navigation to settings
+        } else if (itemId == R.id.nav_tickets) {
+            intent = new Intent(MainActivity.this, TicketActivity.class);
+            startActivity(intent);
         } else if (itemId == R.id.nav_logout) {
             // Handle logout
             intent = new Intent(MainActivity.this, LoginActivity.class);
