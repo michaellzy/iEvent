@@ -1,18 +1,7 @@
 package com.example.ievent.database.data_manager;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
-
-import com.example.ievent.R;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.FollowerNumListener;
 import com.example.ievent.database.listener.OrgDataListener;
@@ -21,17 +10,22 @@ import com.example.ievent.entity.Organizer;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class is used to manage the data of the organizer
+ * @author Zhiyuan Lu
+ * @author Qianwen Shen
+ * @author Xuan Li
+ */
 public class OrganizerDataManager {
     private static OrganizerDataManager instance;
 
@@ -56,18 +50,27 @@ public class OrganizerDataManager {
         return instance;
     }
 
+    /**
+     * Add an organizer to the database
+     * @param uid the user id
+     * @param org the organizer object
+     */
     public synchronized void addOrganizer(String uid, Organizer org) {
         orgRef.document(uid).set(org);
     }
 
 
+    /**
+     * Get the organizer from the database
+     * @param uid the user id
+     * @param listener the listener to handle the result
+     */
     public synchronized void getOrganizer(String uid, OrgDataListener listener) {
         DocumentReference docRef = orgRef.document(uid);
         docRef.get().addOnCompleteListener(task -> {
             DocumentSnapshot document = task.getResult();
             if (task.isSuccessful()) {
                 if (document.exists()) {
-                    // User user = document.toObject(User.class);
                     Organizer org = document.toObject(Organizer.class);
                     ArrayList<Organizer> organizers = new ArrayList<>();
                     organizers.add(org);
@@ -81,6 +84,11 @@ public class OrganizerDataManager {
         });
     }
 
+    /**
+     * Add an event to the organized event list
+     * @param uid the user id
+     * @param eventId the event id
+     */
     public synchronized void addOrganizedEvent(String uid, String eventId) {
         DocumentReference docRef = orgRef.document(uid);
         docRef.update("organizedEventList", FieldValue.arrayUnion(eventId)).
@@ -88,10 +96,11 @@ public class OrganizerDataManager {
                 addOnFailureListener(e -> Log.e("UserDataManager", "Error adding event", e));
     }
 
-    public synchronized DocumentReference getOrgRef(String uid) {
-        return orgRef.document(uid);
-    }
-
+    /**
+     * Remove an event from the organized event list
+     * @param uid the user id
+     * @param listener the listener to handle the result
+     */
     public synchronized void fetchOragnizedData(String uid, OrganizedEventListener listener) {
         DocumentReference docRef = orgRef.document(uid);
 
@@ -120,18 +129,12 @@ public class OrganizerDataManager {
         });
     }
 
-//    public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
-//        DocumentReference organizerRef = orgRef.document(organizerId);
-//        organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
-//                .addOnSuccessListener(aVoid -> {
-//                    Log.d("OrganizerDataManager", "Follower added successfully!");
-//                    listener.onSuccess(new ArrayList<Void>()); // Pass an empty ArrayList
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.e("OrganizerDataManager", "Error adding follower", e);
-//                    listener.onFailure(e.getMessage());
-//                });
-//    }
+    /**
+     * Add a follower to the organizer
+     * @param organizerId the organizer id
+     * @param followerId the follower id
+     * @param listener the listener to handle the result
+     */
     public void addFollower(String organizerId, String followerId, DataListener<Void> listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
         organizerRef.update("followersList", FieldValue.arrayUnion(followerId))
@@ -146,38 +149,37 @@ public class OrganizerDataManager {
     }
 
 
+    /**
+     * setup a listener to listen to the number of followers of an organizer and notify the listener when the number of followers reaches 5
+     * @param organizerId the organizer id
+     * @param listener the listener to handle the result
+     */
     public void setupFollowerListener(String organizerId, FollowerNumListener listener) {
         DocumentReference organizerRef = orgRef.document(organizerId);
-        // 记录上次的粉丝数量，初始值为 0
+        // record the previous number of followers, initial value is 0
         AtomicInteger previousFollowerCount = new AtomicInteger(0);
-        organizerRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.e("MainActivity", "Listen failed.", e);
-                    return;
-                }
+        organizerRef.addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                Log.e("MainActivity", "Listen failed.", e);
+                return;
+            }
 
-                if (snapshot != null && snapshot.exists()) {
-                    List<String> followersList = (List<String>) snapshot.get("followersList");
-                    if (followersList != null) {
-                        int currentFollowerCount = followersList.size();
-                        // 检查粉丝数量是否从四变为五
-                        if (previousFollowerCount.get() == 4 && currentFollowerCount == 5) {
-                            // 达到5个粉丝，触发通知.
-                            listener.reached(true);
-                            Log.i("OrganizerDataManager", "reached num of followers");
-                        }
-                        // 更新上次的粉丝数量
-                        previousFollowerCount.set(currentFollowerCount);
+            if (snapshot != null && snapshot.exists()) {
+                List<String> followersList = (List<String>) snapshot.get("followersList");
+                if (followersList != null) {
+                    int currentFollowerCount = followersList.size();
+                    // check if the number of followers has changed from 4 to 5
+                    if (previousFollowerCount.get() == 4 && currentFollowerCount == 5) {
+                        // notify the listener that the number of followers has reached 5
+                        listener.reached(true);
+                        Log.i("OrganizerDataManager", "reached num of followers");
                     }
-                } else {
-                    Log.d("MainActivity", "Current data: null");
+                    // update the previous number of followers
+                    previousFollowerCount.set(currentFollowerCount);
                 }
+            } else {
+                Log.d("MainActivity", "Current data: null");
             }
         });
     }
-
-
 }

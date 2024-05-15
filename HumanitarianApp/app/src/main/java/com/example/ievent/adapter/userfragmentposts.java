@@ -18,7 +18,12 @@ import com.example.ievent.entity.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对于推荐活动的RecyclerView
+/**
+ * Adapter for user posts
+ * This class is used to handle the user posts adapter
+ * @author Xuan Li
+ * @author Qianwen Shen
+ */
 public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.ViewHolder> {
     private List<Event> eventList;
 
@@ -37,13 +42,11 @@ public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.Vi
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        ActivityModel activity = activitiesList.get(position);
-        // 在这里设置你的ImageView和TextViews
+
         Event event = eventList.get(position);
         holder.name.setText(event.getTitle());
         holder.time.setText(event.getDateTime());
         holder.price.setText("$" + event.getPrice());
-        // holder.organizer.setText(event.getOrganizer());
 
         Glide.with(holder.itemView.getContext()).
                 load(event.getImg()).
@@ -59,13 +62,11 @@ public class userfragmentposts extends RecyclerView.Adapter<userfragmentposts.Vi
 
     @Override
     public int getItemCount() {
-//        return activitiesList.size();
         return eventList.size();
     }
 
     public void setEvents(ArrayList<Event> events) {
         eventList.addAll(events);
-        // notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -15,13 +15,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.ievent.R;
-import com.example.ievent.entity.Participant;
+import com.example.ievent.entity.ConcreteUserFactory;
 import com.example.ievent.entity.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * This class is used to handle the sign-up activity.
+ * @author Zhiyuan Lu
+ * @author HaoLin Li
+ */
 public class SignupActivity  extends BaseActivity{
     private TextInputEditText userNameText;
     private TextInputEditText emailEditText;
@@ -52,6 +57,9 @@ public class SignupActivity  extends BaseActivity{
         });
     }
 
+    /***
+     * Create a new user account with email and password
+     */
     private void createUser() {
         String userName = userNameText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
@@ -64,7 +72,6 @@ public class SignupActivity  extends BaseActivity{
                 // if pwd != confirm, show the fail message
                 passwordEditText.setError("passwords do not match");
                 confirmEditText.setError("passwords do not match");
-                // Toast.makeText(SignupActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             } else {
                 // pwd correct
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -74,11 +81,7 @@ public class SignupActivity  extends BaseActivity{
                                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                 if (firebaseUser != null) {
                                     String uid = mAuth.getCurrentUser().getUid();
-                                    // User user = new User(uid);
-//                                    User user = UserFactory.createUser("user", uid);
-//                                    user.setUserName(userName);
-//                                    user.setEmail(email);
-                                    User user = new Participant(uid, email, userName);
+                                    User user = ConcreteUserFactory.getInstance().createUser("Participant", uid, email, userName);
                                     db.addNewUser(uid, user);
                                     Toast.makeText(SignupActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(SignupActivity.this, MainActivity.class);
@@ -102,6 +105,10 @@ public class SignupActivity  extends BaseActivity{
 
     }
 
+    /***
+     * Hide the keyboard
+     * @param view The view that the keyboard is hiding from.
+     */
     private void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null && view != null) {

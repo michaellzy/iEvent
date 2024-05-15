@@ -1,12 +1,10 @@
 package com.example.ievent.database.data_manager;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.ievent.activity.P2PChatActivity;
 import com.example.ievent.database.listener.BlockListener;
 import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
@@ -24,6 +22,8 @@ import java.util.Objects;
 
 /**
  * use Realtime database to load, store and update chat information
+ * @author Tengkai Wang
+ * @author Xuan Li
  */
 public class ChatDataManager {
 
@@ -58,28 +58,30 @@ public class ChatDataManager {
         blockRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String result = "00"; // 默认结果，表示没有阻止或阻止未生效
+                // the default value is "00", which means the sender and receiver are not blocked
+                String result = "00";
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String key = childSnapshot.getKey(); // 获取键，例如 "a-b"
-                    Boolean isBlocked = childSnapshot.getValue(Boolean.class); // 获取阻止状态的值
-                    if (isBlocked != null && isBlocked) { // 确保值为true
+
+                    String key = childSnapshot.getKey();
+                    Boolean isBlocked = childSnapshot.getValue(Boolean.class);
+                    if (isBlocked != null && isBlocked) {
                         String[] parts = key.split("-");
                         if (parts.length == 2) {
                             if (parts[0].equals(senderId) && parts[1].equals(receiverId)) {
-                                result = "11"; // 第一个是senderId
+                                result = "11";
                                 break;
                             } else if (parts[0].equals(receiverId) && parts[1].equals(senderId)) {
-                                result = "10"; // 第一个是receiverId
+                                result = "10";
                                 break;
                             }
                         }
                     }
                 }
-                listener.onSuccess(result); // 使用回调返回结果
+                listener.onSuccess(result);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                listener.onFailure(databaseError.getMessage()); // 处理错误
+                listener.onFailure(databaseError.getMessage());
             }
         });
     }
@@ -177,8 +179,6 @@ public class ChatDataManager {
     public synchronized void getMessagesEndCertainTime(int number, String senderId, String receiverId, long time, DataListener<ChatMessage> listener){
         String chatKey = getChatKey(senderId, receiverId);
 
-
-        // TODO: Maybe can remove orderByChild("time") and use limitToLast(number) only
         chatRef.child(chatKey).orderByChild("time").endAt(time).limitToLast(number).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<ChatMessage> chatMessages = new ArrayList<>();

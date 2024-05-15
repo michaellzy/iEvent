@@ -1,5 +1,12 @@
 package com.example.ievent.database.ordered_map;
 
+/**
+ * Abstract class for a tree.
+ * @param <K> key
+ * @param <V> value
+ * @author Zhiyuan Lu
+ * @author Tengkai Wang
+ */
 public abstract class Tree<K extends Comparable<K>, V> {
     /**
      * Here we store our class fields.

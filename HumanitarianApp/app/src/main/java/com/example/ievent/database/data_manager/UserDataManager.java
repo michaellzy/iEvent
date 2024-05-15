@@ -24,6 +24,9 @@ import java.util.Objects;
 /**
  * use Firestore database to load, store and update user information
  * This is a Singleton class with thread-safe implementation
+ * @author Zhiyuan Lu
+ * @author Qianwen Shen
+ * @author Tengkai Wang
  */
 public class UserDataManager {
 
@@ -60,8 +63,6 @@ public class UserDataManager {
     public synchronized void addNewUser(String uid, User user) {
         userRef.document(uid).set(user);
     }
-
-
 
 
     /**
@@ -228,9 +229,4 @@ public class UserDataManager {
                     listener.onFailure(e.getMessage());
                 });
     }
-
-
-
-
-
 }

@@ -3,7 +3,11 @@ package com.example.ievent.entity;
 import com.google.firebase.firestore.PropertyName;
 import java.util.ArrayList;
 
-
+/**
+ * Event implementation.
+ * @author Tengkai Wang
+ * @author Zhiyuan Lu
+ */
 public class Event implements java.io.Serializable{
     private String type;
     private String title;

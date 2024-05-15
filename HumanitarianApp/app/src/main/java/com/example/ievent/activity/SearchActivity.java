@@ -2,7 +2,6 @@ package com.example.ievent.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -28,9 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ievent.R;
 import com.example.ievent.adapter.RecommendedActivitiesAdapter;
 import com.example.ievent.database.listener.EventDataListener;
+import com.example.ievent.database.listener.OnFilterAppliedListener;
 import com.example.ievent.database.ordered_map.Iterator;
 import com.example.ievent.database.ordered_map.OrderedEvent;
-import com.example.ievent.database.listener.OnFilterAppliedListener;
 import com.example.ievent.entity.Event;
 import com.example.ievent.global.Utility;
 import com.example.ievent.tokenparser.AndExp;
@@ -54,10 +53,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+
+/**
+ * This class is responsible for searching events based on user input.
+ * @author Haolin Li
+ */
 public class SearchActivity extends BaseActivity implements OnFilterAppliedListener {
 
     private RecyclerView recyclerView;
@@ -96,39 +99,34 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
         });
         orderedEvents = new OrderedEvent<>();
 
-        sortbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (eventList.isEmpty()) {
-                    Toast.makeText(SearchActivity.this, "No events available to sort.", Toast.LENGTH_SHORT).show();
-                    return; // Prevent further execution
-                }
-                if (!isAscending) {
-                    // If currently in descending order, reverse to ascending
-                    Collections.reverse(eventList);  // Reverse the list to make it ascending
-//                    sortbutton.setText("Now Descending");  // Update button text to reflect the next possible action
-                    sortbutton.animate().rotation(0).setDuration(0).start();
-                } else {
-                    // Sort the list in ascending order if not already sorted
-                    orderedEvents = new OrderedEvent<Double, Event>(); // Initialize
-                    for (Event event : eventList) {
-                        orderedEvents.insert(event.getPrice(), event);
-                    }
-                    // Use the iterator to get sorted list
-                    Iterator it = orderedEvents.getIterator();
-                    ArrayList<Event> sortedEvents = new ArrayList<>();
-                    while (it.hasNext()) {
-                        LinkedList<Event> eventsLinkedList = (LinkedList<Event>) it.next();
-                        sortedEvents.addAll(new ArrayList<>(eventsLinkedList));
-                    }
-                    eventList.clear();
-                    eventList.addAll(sortedEvents);  // Now eventList is sorted in ascending
-//                    sortbutton.setText("Now Ascending");  // Update button text to reflect the next possible action
-                    sortbutton.animate().rotation(180).setDuration(0).start();
-                }
-                recommendedActivitiesAdapter.notifyDataSetChanged();  // Notify the adapter
-                isAscending = !isAscending;  // Toggle the sort order for the next click
+        sortbutton.setOnClickListener(v -> {
+            if (eventList.isEmpty()) {
+                Toast.makeText(SearchActivity.this, "No events available to sort.", Toast.LENGTH_SHORT).show();
+                return; // Prevent further execution
             }
+            if (!isAscending) {
+                // If currently in descending order, reverse to ascending
+                Collections.reverse(eventList);  // Reverse the list to make it ascending
+                sortbutton.animate().rotation(0).setDuration(0).start();
+            } else {
+                // Sort the list in ascending order if not already sorted
+                orderedEvents = new OrderedEvent<Double, Event>(); // Initialize
+                for (Event event : eventList) {
+                    orderedEvents.insert(event.getPrice(), event);
+                }
+                // Use the iterator to get sorted list
+                Iterator it = orderedEvents.getIterator();
+                ArrayList<Event> sortedEvents = new ArrayList<>();
+                while (it.hasNext()) {
+                    LinkedList<Event> eventsLinkedList = (LinkedList<Event>) it.next();
+                    sortedEvents.addAll(new ArrayList<>(eventsLinkedList));
+                }
+                eventList.clear();
+                eventList.addAll(sortedEvents);  // Now eventList is sorted in ascending
+                sortbutton.animate().rotation(180).setDuration(0).start();
+            }
+            recommendedActivitiesAdapter.notifyDataSetChanged();  // Notify the adapter
+            isAscending = !isAscending;  // Toggle the sort order for the next click
         });
 
 
@@ -146,10 +144,8 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_home) {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    // finish();
                     return true;
                 } else if (itemId == R.id.navigation_search) {
-//                    startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                     return true;
                 } else if (itemId == R.id.navigation_ticket) {
                     startActivity(new Intent(getApplicationContext(), TicketActivity.class));
@@ -172,20 +168,16 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(SearchActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
+                        (view, year1, monthOfYear, dayOfMonth) -> {
+                            // Set date chosen through picker to EditText using formatted string
+                            Calendar selectedDate = Calendar.getInstance();
+                            selectedDate.set(year1, monthOfYear, dayOfMonth);
 
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                // Set date chosen through picker to EditText using formatted string
-                                Calendar selectedDate = Calendar.getInstance();
-                                selectedDate.set(year, monthOfYear, dayOfMonth);
+                            // Formatting date as "yy-MM-dd"
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
+                            dateFormat.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
 
-                                // Formatting date as "yy-MM-dd"
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy", Locale.ENGLISH);
-                                dateFormat.setTimeZone(TimeZone.getTimeZone("Australia/Sydney"));
-
-                                dateField.setText(dateFormat.format(selectedDate.getTime()));
-                            }
+                            dateField.setText(dateFormat.format(selectedDate.getTime()));
                         }, year, month, day);
                 datePickerDialog.show();
             }
@@ -442,10 +434,6 @@ public class SearchActivity extends BaseActivity implements OnFilterAppliedListe
                 eventList.addAll(events);
                 recommendedActivitiesAdapter.notifyDataSetChanged();
 
-//                if (!eventList.isEmpty()) {
-//                    Event firstEvent = eventList.get(0);
-//                    Log.d("SearchActivity", "First event price: " + firstEvent.getPrice());
-//                }
                 if (eventList.isEmpty()) {
                     Toast.makeText(SearchActivity.this, "No events found.", Toast.LENGTH_SHORT).show();
                 }

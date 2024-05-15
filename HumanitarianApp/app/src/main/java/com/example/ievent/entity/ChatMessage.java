@@ -2,6 +2,10 @@ package com.example.ievent.entity;
 
 import java.io.Serializable;
 
+/**
+ * Chat message implementation.
+ * @author Tengkai Wang
+ */
 public class ChatMessage implements Serializable {
     private String message;
 

@@ -19,6 +19,11 @@ import android.app.AlertDialog;
 import java.util.ArrayList;
 
 
+/**
+ * This class is used to display the chat room between two users.
+ * @author Tengkai Wang
+ * @author Xuan Li
+ */
 public class P2PChatActivity extends BaseActivity {
 
 
@@ -53,7 +58,10 @@ public class P2PChatActivity extends BaseActivity {
     /** the adapter of the current recycleView */
     P2PChatAdapter P2pAdapter;
 
+
+    /** check whether the user is sending the message */
     boolean isSending = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +76,6 @@ public class P2PChatActivity extends BaseActivity {
     }
 
 
-
     /** set Variables such as the intent data, UI Listeners and layout of the */
     private void setVariables() {
         // --- initialize data --- //
@@ -76,114 +83,38 @@ public class P2PChatActivity extends BaseActivity {
         if(senderId == null || senderId.isEmpty()) {
             senderId = "3";
         }
-
         receiver = (User) getIntent().getSerializableExtra("receiver");
-        Log.i("RECEIVER111", "setVariables: " + receiver);
-
         String receiverId = receiver.getUid();
 
 
-
         // ---  bind listeners to recycleView and send button --- //
-        binding.chatRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+        setRecycleViewScrollListener();
+        setSendButtonListener(senderId, receiverId);
 
-                // check whether the user scrolls to the top
-                if (!recyclerView.canScrollVertically(-1)) {
-                    loadMoreMessages();
-                }
-            }
-        });
-        String finalSenderId = senderId;
-        binding.buttonSend.setOnClickListener(v -> {
-            db.blockMessage(finalSenderId, receiverId, new BlockListener() {
-                @Override
-                public void onSuccess(String result) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(P2PChatActivity.this);
-                    builder.setTitle("message");
-                    builder.setPositiveButton("verify", (dialog, which) -> {
-                        dialog.dismiss();
-                    });
-                    if ("11".equals(result)) {
-                        builder.setMessage("Receiver is blocked by yourself. Please unblock first.");
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    } else if ("10".equals(result)) {
-                        builder.setMessage("You are blocked by the receiver.");
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    } else{
-                        String message = binding.edittextChat.getText().toString();
-                        if(message.isEmpty()) {
-                            Toast.makeText(P2PChatActivity.this, "Please enter the message", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        // send the message
-                        db.SendMessage(finalSenderId, receiver.getUid(), message);
-                        isSending = true;
-                        binding.edittextChat.setText("");
-                    }
-                }
-                @Override
-                public void onFailure(String error) {
-                    // 处理可能的错误
-                    Toast.makeText(P2PChatActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
 
+
+        // --- set the layout manager --- //
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         binding.chatRecyclerView.setLayoutManager(layoutManager);
-        // get the last n messages and set the adapter: the first round of fetching data after user enters the chat room
-        db.getTheLastChatMessage(senderId, receiver.getUid(), n, new DataListener<ChatMessage>() {
-            @Override
-            public void onSuccess(ArrayList<ChatMessage> data) {
-                Log.i(TAG, "onSuccess: " + "success to get the message");
-                Log.i(TAG, "onSuccess: " + data.size());
-
-                messages = data;
 
 
-                // if message size is not only 1 update the timeEnd
-                if(!messages.isEmpty()){
-                    timeEnd = messages.get(0).getTime() - 1;
-                }
-
-
-                // update the layout of the recyclerView based on the number of messages
-                updateRecyclerViewLayout(data.size());
-
-                db.getLoggedInUser(finalSenderId, new UserDataListener() {
-                    @Override
-                    public void onSuccess(ArrayList<User> data) {
-                        if (!data.isEmpty()) {
-                            User sender = data.get(0);
-                            P2pAdapter = new P2PChatAdapter(messages, receiver, sender);
-                            binding.chatRecyclerView.setAdapter(P2pAdapter);
-                        }
-                    }
-                    @Override
-                    public void onFailure(String errorMessage) {
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        // --- get the recent messages --- //
+        getRecentMessages(senderId, receiver);
 
 
 
         // search from when the user enters the chat room
-        timeStart = System.currentTimeMillis();
         // if the data added in database, then update the adapter
+        getNewMessages(senderId, receiver);
+    }
+
+    /**
+     * get the new messages, invocked when new messages are sent or received
+     * @param senderId
+     * @param receiver
+     */
+    private void getNewMessages(String senderId, User receiver){
         db.getNewMessages(senderId, receiver.getUid(), timeStart, new DataListener<ChatMessage>() {
             @Override
             public void onSuccess(ArrayList<ChatMessage> data) {
@@ -195,7 +126,7 @@ public class P2PChatActivity extends BaseActivity {
                 if (!data.isEmpty()) {
                     timeStart = messages.get(messages.size() - 1).getTime() + 1;
                     if(!isChatLogSet){
-                        db.setChatLog(finalSenderId, receiver.getUid(), new DataListener<Boolean>() {
+                        db.setChatLog(senderId, receiver.getUid(), new DataListener<Boolean>() {
                             @Override
                             public void onSuccess(ArrayList<Boolean> data) {
                                 isChatLogSet = true;
@@ -224,6 +155,117 @@ public class P2PChatActivity extends BaseActivity {
             @Override
             public void onFailure(String errorMessage) {
                 Log.i(TAG, "onFailure: " + "fail to get the message");
+            }
+        });
+    }
+
+    /**
+     * get the recent messages
+     * @param senderId the id of the sender
+     * @param receiver the receiver
+     */
+    private void getRecentMessages(String senderId, User receiver) {
+        // get the last n messages and set the adapter: the first round of fetching data after user enters the chat room
+        db.getTheLastChatMessage(senderId, receiver.getUid(), n, new DataListener<ChatMessage>() {
+            @Override
+            public void onSuccess(ArrayList<ChatMessage> data) {
+                Log.i(TAG, "onSuccess: " + "success to get the message");
+                Log.i(TAG, "onSuccess: " + data.size());
+
+                messages = data;
+
+
+                // if message size is not only 1 update the timeEnd
+                if(!messages.isEmpty()){
+                    timeEnd = messages.get(0).getTime() - 1;
+                }
+
+
+                // update the layout of the recyclerView based on the number of messages
+                updateRecyclerViewLayout(data.size());
+
+                db.getLoggedInUser(senderId, new UserDataListener() {
+                    @Override
+                    public void onSuccess(ArrayList<User> data) {
+                        if (!data.isEmpty()) {
+                            User sender = data.get(0);
+                            P2pAdapter = new P2PChatAdapter(messages, receiver, sender);
+                            binding.chatRecyclerView.setAdapter(P2pAdapter);
+                        }
+                    }
+                    @Override
+                    public void onFailure(String errorMessage) {
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(P2PChatActivity.this, "fail to get the message", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    /**
+     * set the send button listener
+     * @param senderId the id of the sender
+     * @param receiverId the id of the receiver
+     */
+    private void setSendButtonListener(String senderId, String receiverId) {
+        binding.buttonSend.setOnClickListener(v -> {
+            db.blockMessage(senderId, receiverId, new BlockListener() {
+                @Override
+                public void onSuccess(String result) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(P2PChatActivity.this);
+                    builder.setTitle("message");
+                    builder.setPositiveButton("verify", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
+                    if ("11".equals(result)) {
+                        builder.setMessage("Receiver is blocked by yourself. Please unblock first.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else if ("10".equals(result)) {
+                        builder.setMessage("You are blocked by the receiver.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else{
+                        String message = binding.edittextChat.getText().toString();
+                        if(message.isEmpty()) {
+                            Toast.makeText(P2PChatActivity.this, "Please enter the message", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        // send the message
+                        db.SendMessage(senderId, receiver.getUid(), message);
+                        isSending = true;
+                        binding.edittextChat.setText("");
+                    }
+                }
+                @Override
+                public void onFailure(String error) {
+                    // handle possible mistakes
+                    Toast.makeText(P2PChatActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+
+    /**
+     * set the recycleView scroll listener to load more messages when the user scrolls to the top
+     */
+    private void setRecycleViewScrollListener() {
+        binding.chatRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                // check whether the user scrolls to the top
+                if (!recyclerView.canScrollVertically(-1)) {
+                    loadMoreMessages();
+                }
             }
         });
     }

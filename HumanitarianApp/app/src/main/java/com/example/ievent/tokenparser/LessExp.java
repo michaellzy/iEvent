@@ -1,5 +1,9 @@
 package com.example.ievent.tokenparser;
 
+/**
+ * Represents an LESS expression in the grammar.
+ * @author Haolin Li
+ */
 public class LessExp extends Exp {
     private Exp left;
     private Exp right;
@@ -20,8 +24,4 @@ public class LessExp extends Exp {
     public Object getRight(){
         return right;
     }
-
-    // public int evaluate() {
-    //     // 实现逻辑OR的求值逻辑
-    // }
 }

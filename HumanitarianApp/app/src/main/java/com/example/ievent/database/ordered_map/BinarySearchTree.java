@@ -1,6 +1,13 @@
 package com.example.ievent.database.ordered_map;
 import java.util.LinkedList;
 
+/**
+ * Binary Search Tree implementation.
+ * @param <K> key
+ * @param <V> value
+ * @author Zhiyuan Lu
+ * @author Tengkai Wang
+ */
 public class BinarySearchTree<K extends Comparable<K>, V> extends Tree<K, V> {
     public BinarySearchTree() {
         super();

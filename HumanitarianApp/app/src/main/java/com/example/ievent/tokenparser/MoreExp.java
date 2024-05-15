@@ -1,5 +1,9 @@
 package com.example.ievent.tokenparser;
 
+/**
+ * Represents an MORE expression in the grammar.
+ * @author Haolin Li
+ */
 public class MoreExp extends Exp {
     private Exp left;
     private Exp right;
@@ -20,8 +24,4 @@ public class MoreExp extends Exp {
     public Object getRight(){
         return right;
     }
-
-    // public int evaluate() {
-    //     // 实现逻辑OR的求值逻辑
-    // }
 }

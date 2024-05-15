@@ -16,7 +16,12 @@ import com.example.ievent.entity.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对于推荐活动的RecyclerView
+/**
+ * Adapter for user tickets
+ * This class is used to handle the user tickets adapter
+ * @author Xuan Li
+ * @author Qianwen Shen
+ */
 public class userfragmentticketsAdapter extends RecyclerView.Adapter<userfragmentticketsAdapter.ViewHolder> {
     private List<Event> eventList;
 

@@ -1,6 +1,13 @@
 package com.example.ievent.database.ordered_map;
 import java.util.LinkedList;
 
+/**
+ * AVL Tree implementation.
+ * @param <K> key
+ * @param <V> value
+ * @author Zhiyuan Lu
+ * @author Tengkai Wang
+ */
 public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> {
 
     public AVLTree(K key, V value) {

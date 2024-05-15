@@ -1,10 +1,15 @@
 package com.example.ievent.entity;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Observer, Serializable {
+/**
+ * User class that represents a user in the system.
+ * @author Zhiyuan Lu
+ * @author Tengkai Wang
+ * @author Qianwen Shen
+ */
+public class User implements Serializable {
     private String userName;
     private String email;
 
@@ -68,11 +73,4 @@ public class User implements Observer, Serializable {
         subscribedList.remove(userId);
     }
 
-
-    @Override
-    public void update(Event event) {
-        // 在这里处理接收到的通知，比如显示通知消息
-        System.out.println(userName + " received notification for event: " + event);
-
-    }
 }

@@ -9,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ievent.R;
-import com.example.ievent.database.data_manager.OrganizerDataManager;
-import com.example.ievent.database.data_manager.UserDataManager;
 import com.example.ievent.database.listener.BlockstateListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
@@ -24,6 +21,13 @@ import android.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Activity for displaying event details
+ * @author Qianwen Shen
+ * @author Tengkai Wang
+ * @author Xuan Li
+ * @author HaoLin Li
+ */
 public class EventDetailActivity extends BaseActivity {
 
     ActivityEventDetailBinding eventDetailBinding;
@@ -40,6 +44,9 @@ public class EventDetailActivity extends BaseActivity {
         setupTicketButton();
     }
 
+    /**
+     * Setup the ticket tab to allow users to get their tickets
+     */
     private void setupTicketButton() {
         Event event = (Event) getIntent().getSerializableExtra("event");
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();  // Adjust based on your user session management
@@ -64,6 +71,10 @@ public class EventDetailActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Handle the follow button click event
+     * @param view The view that was clicked
+     */
     public void onAddFollowClick(View view) {
         Event event = (Event) getIntent().getSerializableExtra("event");
         String userId = mAuth.getCurrentUser().getUid();
@@ -118,6 +129,13 @@ public class EventDetailActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * Add a follower and subscribe to an organizer
+     * @param organizerID The ID of the organizer
+     * @param userId The ID of the user
+     * @param view The view that was clicked
+     */
     private void addFollowerAndSubscribe(String organizerID, String userId, View view) {
         ImageView followIcon = findViewById(R.id.imageView_add_follow);
         db.addFollower(organizerID, userId, new DataListener<Void>() {
@@ -157,20 +175,27 @@ public class EventDetailActivity extends BaseActivity {
         });
     }
 
+
+    /**
+     * Set the variables for the event details
+     */
     @SuppressLint("SetTextI18n")
     private void setVariables() {
         Event event = (Event) getIntent().getSerializableExtra("event");
-
-        // pre-process the event fields
+        String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        String organizerId = event.getOrgId();
         assert event != null;
-        // rewrite the empty fields
-        Event.preprocessData(event);
 
-        String uid=mAuth.getCurrentUser().getUid();
-        String organizerId=event.getOrgId();
-        // Check if the user is viewing their own event
+
+        setStaticDataToView(event);
+
+
+        // Check if the user is viewing their own event, remove unnecessary views
         if (uid != null && uid.equals(organizerId)) {
-            eventDetailBinding.imageViewAddFollow.setVisibility(View.GONE); // Hide follow button
+            // Hide follow button
+            eventDetailBinding.imageViewAddFollow.setVisibility(View.GONE);
+            eventDetailBinding.imageViewChat.setVisibility(View.GONE);
+            eventDetailBinding.imageViewBlock.setVisibility(View.GONE);
         } else {
             eventDetailBinding.imageViewAddFollow.setVisibility(View.VISIBLE);
             // Check if the user has already subscribed to this organizer
@@ -185,23 +210,19 @@ public class EventDetailActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(String errorMessage) {
-
+                    // placeholder here
                 }
             });
         }
 
-        // bind event to map button
+
+
+        // bind event listeners
         eventDetailBinding.imageViewMap.setOnClickListener(v -> {
             // Open map activity and add description to the intent
             Intent intent = new Intent(this, MapActivity.class);
             // here put the name of destination
             intent.putExtra("destination", event.getLocation());
-            startActivity(intent);
-        });
-
-        eventDetailBinding.imageViewDetailOrganizerPic.setOnClickListener(v -> {
-            // Open organizer profile activity
-            Intent intent = new Intent(this, UserAcitivity.class);
             startActivity(intent);
         });
 
@@ -278,16 +299,12 @@ public class EventDetailActivity extends BaseActivity {
                 }
             });
         });
+    }
 
-
-
-
-        // bind data to the view
-        Glide.with(this)
-                .load(event.getImg())
-                .into(eventDetailBinding.imageViewDetailEventPic);
-
-
+    /**
+     *  bind the data to the event detail views
+     */
+    private void setStaticDataToView(Event event){
         db.getUserById(event.getOrgId(), new UserDataListener() {
             @Override
             public void onSuccess(ArrayList<User> data) {
@@ -310,7 +327,10 @@ public class EventDetailActivity extends BaseActivity {
         });
 
 
-
+        // bind data to the detailEventPic
+        Glide.with(this)
+                .load(event.getImg())
+                .into(eventDetailBinding.imageViewDetailEventPic);
         eventDetailBinding.textViewDetailActivityName.setText(event.getTitle());
         eventDetailBinding.textViewDetailActivityTime.setText(event.getDateTime());
         eventDetailBinding.textViewDetailActivityLocationContent.setText(event.getLocation());
