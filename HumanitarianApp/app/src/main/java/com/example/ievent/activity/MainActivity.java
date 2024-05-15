@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private YourEventsAdapter yourEventAdapter;
+
     private RecyclerView recyclerViewYourEvents;
 
     private RecyclerView recyclerViewRec;

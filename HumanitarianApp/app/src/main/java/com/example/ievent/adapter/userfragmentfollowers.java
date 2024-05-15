@@ -1,6 +1,9 @@
 package com.example.ievent.adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +45,12 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
                 .load(user.getAvatar())  // Ensure 'getImg()' returns a valid URL or path to the image
                 .placeholder(R.drawable.default_avatar)  // Default image if none found
                 .into(holder.imageView);
+
+        holder.chatImage.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), P2PChatAdapter.class);
+            intent.putExtra("receiver", UserList.get(position));
+            startActivity(v.getContext(), intent, null);
+        });
     }
 
     @Override
@@ -64,10 +73,13 @@ public class userfragmentfollowers extends RecyclerView.Adapter<userfragmentfoll
         TextView name;
         ImageView imageView;
 
+        ImageView chatImage;
+
         public ViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.subscriber_name);
             imageView = view.findViewById(R.id.subscriber_image);
+            chatImage = view.findViewById(R.id.chat_icon);
         }
     }
 }
