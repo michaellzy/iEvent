@@ -39,10 +39,11 @@ The key area(s) of responsibilities for each member
 
 | UID   |  Name  |   Role |
 |:------|:------:|-------:|
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
+| u7690985 | Zhiyuan Lu | Project Manager |
+| u7733280 | Tengkai Wang | Android Developer(API) |
+| u7709518 | Xuan Li | Android Developer(Backend) |
+| u7726387 | Qianwen Shen | Android Developer(Frontend) |
+| u7772332 | Haolin Li | Android Developer(Backend) |
 
 
 ## Summary of Individual Contributions
