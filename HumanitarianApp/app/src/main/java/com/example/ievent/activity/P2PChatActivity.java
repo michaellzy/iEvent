@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ievent.adapter.P2PChatAdapter;
+import com.example.ievent.database.listener.BlockListener;
 import com.example.ievent.database.listener.DataListener;
 import com.example.ievent.database.listener.UserDataListener;
 import com.example.ievent.databinding.ActivityP2pChatBinding;
 import com.example.ievent.entity.ChatMessage;
 import com.example.ievent.entity.User;
-
+import android.app.AlertDialog;
 import java.util.ArrayList;
 
 
@@ -79,6 +80,8 @@ public class P2PChatActivity extends BaseActivity {
         receiver = (User) getIntent().getSerializableExtra("receiver");
         Log.i("RECEIVER111", "setVariables: " + receiver);
 
+        String receiverId = receiver.getUid();
+
 
 
         // ---  bind listeners to recycleView and send button --- //
@@ -95,19 +98,41 @@ public class P2PChatActivity extends BaseActivity {
         });
         String finalSenderId = senderId;
         binding.buttonSend.setOnClickListener(v -> {
-            String message = binding.edittextChat.getText().toString();
-            if(message.isEmpty()) {
-                Toast.makeText(this, "Please enter the message", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // send the message
-            db.SendMessage(finalSenderId, receiver.getUid(), message);
-            isSending = true;
-            binding.edittextChat.setText("");
+            db.blockMessage(finalSenderId, receiverId, new BlockListener() {
+                @Override
+                public void onSuccess(String result) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(P2PChatActivity.this);
+                    builder.setTitle("message");
+                    builder.setPositiveButton("verify", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
+                    if ("11".equals(result)) {
+                        builder.setMessage("Receiver is blocked by yourself. Please unblock first.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else if ("10".equals(result)) {
+                        builder.setMessage("You are blocked by the receiver.");
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else{
+                        String message = binding.edittextChat.getText().toString();
+                        if(message.isEmpty()) {
+                            Toast.makeText(P2PChatActivity.this, "Please enter the message", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        // send the message
+                        db.SendMessage(finalSenderId, receiver.getUid(), message);
+                        isSending = true;
+                        binding.edittextChat.setText("");
+                    }
+                }
+                @Override
+                public void onFailure(String error) {
+                    // 处理可能的错误
+                    Toast.makeText(P2PChatActivity.this, "Error checking block status: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
-
-
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
@@ -202,10 +227,6 @@ public class P2PChatActivity extends BaseActivity {
             }
         });
     }
-
-
-
-
 
 
     /**
