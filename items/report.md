@@ -32,18 +32,18 @@ Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submis
    - Confirm: I have already added comp21006442@gmail.com as a Developer to the Firebase project prior to due date.
 - Two user accounts for markers' access are usable on the app's APK (do not change the username and password unless there are exceptional circumstances. Note that they are not real e-mail addresses in use):
    - Username: comp2100@anu.edu.au	Password: comp2100
-   - Username: comp6442@anu.edu.au	Password: comp6442
+     - Username: comp6442@anu.edu.auPassword: comp6442
 
 ## Team Members and Roles
 The key area(s) of responsibilities for each member
 
-| UID   |  Name  |   Role |
-|:------|:------:|-------:|
-| u7690985 | Zhiyuan Lu | Project Manager |
-| u7733280 | Tengkai Wang | Android Developer(API) |
-| u7709518 | Xuan Li | Android Developer(Backend) |
+| UID      |     Name     |                        Role |
+| :------- | :----------: | --------------------------: |
+| u7690985 |  Zhiyuan Lu  |             Project Manager |
+| u7733280 | Tengkai Wang |      Android Developer(API) |
+| u7709518 |   Xuan Li    |  Android Developer(Backend) |
 | u7726387 | Qianwen Shen | Android Developer(Frontend) |
-| u7772332 | Haolin Li | Android Developer(Backend) |
+| u7772332 |  Haolin Li   |  Android Developer(Backend) |
 
 
 ## Summary of Individual Contributions
@@ -66,8 +66,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
 1. **u7772332, Haolin Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
     - Feature [Search], [Search-Filter],[Tokenizer and Parser] A3 - class SearchActivity: [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java);[Token.java]();[Tokenizer.java]();[Parser.java]()
-    <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
-    <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
+      <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
+      <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
   - **Code and App Design** 
     - [AVLTree with sort of search]
@@ -120,10 +120,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
    * [Ticket]
      * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/TicketActivity.java)
    * [Navigation drawer]
-   
+
       * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L419-453:~:text=%7D-,//navigation%20drawer,%7D,-/**)
   * [User Profile]
-  
+
       * [UserActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
 
 
@@ -134,58 +134,55 @@ Note that the core criteria of contribution is based on `code contribution` (the
          * [activity_main.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_main.xml?ref_type=heads)
          * [activity_event_detail.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_event_detail.xml?ref_type=heads)
          * [nav_drawer.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/nav_drawer.xml?ref_type=heads)
-    
 
 
 
 - **Others**: (only if significant and significantly different from an "average contribution")
     - Meeting recording
     - Report writing<br><br>
-      
+
 
 4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
   - [LogIn/FB-Auth] We use firebase auth to authenticate users based on email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time. Users could also tap on any blank space to hide the keyboard.
-  
+
     - [LoginActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads)
     - [SignupActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
-  
+
   - [LoadShowData] Load and display data (event instance) from firestore. We would load 25 data instance each time. When user scrolls the list and reaches 25th data, we would load more from database in order to reduce memory usage.
-  
+
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L460-492)
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254)
-  
+
   - [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time.
-  
+
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88)
-    -  [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
+    - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
     - [ReleaseActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
-  
+
   - [DataStream] The new events are loaded every 20 seconds.
-  
+
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
-  
+
   - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
-  
+
     - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
 
 - **Code and App Design**
-  
+
   - [Backbone code logic] Implement the Firestore CRUD code so that everyone could just modify a small number of code to handle Firestore queries.
   - [UI design] I implement the page to release new event:
     - [upload_event.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_upload_event.xml?ref_type=heads)
   - [AVL tree test] I implement the unit test for avl tree as well as the iterator to ensure it is bug-free
     - [OrderedMapTest.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/OrderedMapTest.java?ref_type=heads)
-  
+
 - **Others**
 
   - Manage project's progress
   - Lead the team and make critical decisions
   - uml design
-  
-    
-  
+
 
 
 ## Application Description
@@ -270,12 +267,16 @@ Here is a partial (short) example for the subsection `Data Structures`:*
    * *Code Locations*: defined in 
       * [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
    * *Reasons:*
-      * The search and insert operation is O(logn) because of the self balancing factor. AVL tree could update and balance  quickly while maintaining fast search times makes them suitable for database indexing, co-work with the firebase.
+      * The insert operation is O(logn) because of the self balancing factor, which is quit efficient.  An inorder traversal of an AVL tree will yield the elements in sorted order. This is useful to retrieve the events in sorted order.
 2. Double Ended Queue
    * *Objective*: Used for storing the chat messages in chatroom.
    * *Code Locations*: Used in [P2PChatActivity]([HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java · main · Zhiyuan Lu / GP-24s1 · GitLab (anu.edu.au)](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads)); The front queue operation in function [loadMoreMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-309); The end queue operation in function [getNewMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-160)
    * *Reasons*:
      * In our chatroom, the chat messages involve only two operations: loading old messages and retrieving new messages created by chatters. These two types of messages can be added to the front end and back end, respectively, without affecting existing data. This means the chat message list can be abstracted as a deque structure that allows only addition, not removal.
+3. LinkedList
+   - Objective: In our AVLTree, we store key-value pair, and we would insert the node based on key. If the node's key is already existed in tree, then both of the nodes' values would store in linked list.
+   - Code Locations: Used in [AVLTree.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map/AVLTree.java?ref_type=heads)
+   - Reasons: Since I do not need to frequently access the elements stored, insert to LinkedList is generally more efficient.
 
 <hr>
 
@@ -304,7 +305,6 @@ Here is a partial (short) example for the subsection `Data Structures`:*
      * Provides a simple and consistent interface for traversing the tree nodes, making it easier for developers to access and manipulate tree elements.
      * Simplifies the maintenance of the tree's codebase by isolating traversal logic in a dedicated iterator class, making the code more modular and easier to manage.
 
-   
 
 ### Parser
 
@@ -352,14 +352,14 @@ The project used Tokenizer and Parser in the search function, which implement co
    * Code:
    * Description of Features:
    * Description of Implementation:
-   
+
 4. [DataStream]
 
 5. [Search] Users are able to search for information in IEvent. (medium)
    * Code:
    * Description of Features:
    * Description of Implementation:
-   
+
    <br>
 
 
@@ -375,9 +375,9 @@ The project used Tokenizer and Parser in the search function, which implement co
    ... ...
    <br><br> -->
    Feature Category: Search-related features <br>
-1. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
+3. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
    * [EventDatabaseManager.java]
-2. [Search-Filter] Sort and filter the result of events of search. (easy).
+4. [Search-Filter] Sort and filter the result of events of search. (easy).
    * [SearchActivity.java]
 
 <!-- Feature Category: UI Design and Testing
@@ -400,7 +400,7 @@ Feature Category: Firebase Integration <br>
    * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
    * Description of your implementation: ... 
 2. [FB-Persist]
-   * 
+   * ​
 
 Feature Category: Peer to Peer Messaging <br>
 1. [P2P-DM] Users can send messages to organizers in chat room and check the chat log persistently (hard).
@@ -443,9 +443,9 @@ Feature Category: User Interactivity <br>
    * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads#L74-198)
    * [OrganizerDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
    * *Description of your implementation*: 
-   In the EventDetailActivity, the follow functionality is triggered when a user interacts with the follow button positioned at the bottom right of the organizer's avatar. This interaction is handled by the method onAddFollowClick, which retrieves the event and user information from the intent and the current Firebase authentication session, respectively. Depending on whether the user is already following the organizer, the appropriate actions are taken:
-   If the user is already following the organizer, the removeFollowerAndSubscription method is called, which removes the user's follow state and updates the UI to reflect this change. 
-   If the user is not following the organizer, the addFollowerAndSubscribe method is invoked. This method adds the organizer to the user's followed list and updates the UI to indicate a successful follow.
+     In the EventDetailActivity, the follow functionality is triggered when a user interacts with the follow button positioned at the bottom right of the organizer's avatar. This interaction is handled by the method onAddFollowClick, which retrieves the event and user information from the intent and the current Firebase authentication session, respectively. Depending on whether the user is already following the organizer, the appropriate actions are taken:
+     If the user is already following the organizer, the removeFollowerAndSubscription method is called, which removes the user's follow state and updates the UI to reflect this change. 
+     If the user is not following the organizer, the addFollowerAndSubscribe method is invoked. This method adds the organizer to the user's followed list and updates the UI to indicate a successful follow.
 
 
 2. [Interact-Noti] The IEvent will send notification when user has 5th followers. (medium)
