@@ -112,8 +112,40 @@ Note that the core criteria of contribution is based on `code contribution` (the
       * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.      
 
 3. **u7726387, Qianwen Shen**  I have 20% contribution, as follows: <br>
-   - **Code Contribution in the final App**
-   - Feature 
+- Code Contribution in the final App
+
+    * [Interaction-Follow] allows users to follow or unfollow the organizers of events through a button in the event detail page.
+
+        * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads#L74-198)
+   * [Interaction-Noti] send notification when user has 5th followers.
+
+       * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L346-416)
+   * [Ticket]
+      
+      * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/TicketActivity.java)
+  * [Navigation drawer]
+
+      * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L419-453:~:text=%7D-,//navigation%20drawer,%7D,-/**)
+  * [User Profile]
+  
+      * [UserActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
+
+
+
+- **Code and App Design**
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?] 
+       * Responsible for UI framework, modifying file layout and the overall visual appearance of the application.
+         * [activity_main.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_main.xml?ref_type=heads)
+         * [activity_event_detail.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_event_detail.xml?ref_type=heads)
+         * [nav_drawer.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/nav_drawer.xml?ref_type=heads)
+      
+  
+
+
+- **Others**: (only if significant and significantly different from an "average contribution")
+    - Meeting recording
+    - Report writing<br><br>
+      
 
 4. **UID3, Name3**  I have xx% contribution, as follows: <br>
 - ...
