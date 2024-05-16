@@ -239,15 +239,28 @@ The project used Tokenizer and Parser in the search function, which implement co
 ### Basic Features
 1. [LogIn]. Description of the feature ... (easy)
    * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * Description of feature: ... <br>
-   * Description of your implementation: ... <br>
+   * Description of Feature: ... <br>
+   * Description of Implementation: ... <br>
 
-2. [DataFiles]. Description  ... ... (...)
+2. [DataFiles]. Description  ... ... (easy)
    * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
    * Link to the Firebase repo: ...
 
-3. ...
+3. [LoadShowData] Load and display data instances from your dataset. (easy)
+   * Code:
+   * Description of Features:
+   * Description of Implementation:
+   
+4. [DataStream]
+
+5. [Search] Users are able to search for information in IEvent. (medium)
+   * Code:
+   * Description of Features:
+   * Description of Implementation:
+   
    <br>
+
+
 
 ### Custom Features
 Feature Category: Privacy <br>
@@ -264,7 +277,14 @@ Feature Category: Firebase Integration <br>
 3. [FB-Auth] Description of the feature (easy)
    * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
    * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
-   * Description of your implementation: ... <br>
+   * Description of your implementation: ... 
+   
+4. [Search-Filter] Sort and filter the result of events of search. (easy).
+   * [SearchActivity.java]
+
+5. [P2P-DM]
+6. [P2P-Block]
+<br>
 
 <hr>
 
