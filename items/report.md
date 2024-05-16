@@ -182,6 +182,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
   - Manage project's progress
   - Lead the team and make critical decisions
+  - uml design
   
     
   
@@ -237,7 +238,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application UML
 
-![ClassDiagramExample](media/_examples/ClassDiagramExample.png) <br>
+![ClassDiagramExample](./media/Assets/iEvent-uml.png) <br>
 *[Replace the above with a class diagram. You can look at how we have linked an image here as an example of how you can do it too.]*
 
 <hr>
@@ -265,8 +266,9 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 *I used the following data structures in my project:*
 
 1. AVL Tree
-   * *Objective*: used for store the events based on price, and use for range query based on price.
-   * *Code Locations*: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+   * *Objective*: used for sort the event list based on the given key.
+   * *Code Locations*: defined in 
+      * [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
    * *Reasons:*
       * The search and insert operation is O(logn) because of the self balancing factor. AVL tree could update and balance  quickly while maintaining fast search times makes them suitable for database indexing, co-work with the firebase.
 2. Double Ended Queue
