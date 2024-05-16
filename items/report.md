@@ -144,8 +144,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - Report writing<br><br>
       
 
-4. **UID3, Name3**  I have xx% contribution, as follows: <br>
-- ...
+4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
+- Code Contribution in the final App
+  - [LogIn] We use firebase auth to authenticate user based on
+
 
 
 
@@ -519,5 +521,4 @@ This shall include an agreed procedure for situations including (but not limited
   * Temporary Reassignment: Tasks and responsibilities of the affected member will be reassigned among the team for the duration of their absence.
   * Regular Check-Ins: The team will maintain regular communication with the absent member, when possible, to provide updates and moral support.
   * Resource Adjustment: If necessary, the team will consult with project supervisors to discuss resource adjustments or timeline extensions to accommodate the reduced capacity.
-
 
