@@ -443,11 +443,11 @@ Feature Category: Privacy <br>
 * Your meetings should also have a reasonable date spanning across Week 6 to 11.*
 
 
-- *[Team Meeting 1](meeting-template.md)*
-- ...
-- ...
-- [Team Meeting 4](link_to_md_file.md)
-- ... (Add any descriptions if needed) ...
+- *[Team Meeting 1](meeting-0411.md)*
+- *[Team Meeting 2](meeting-0416.md)*
+- *[Team Meeting 3](meeting-0426.md)*
+- *[Team Meeting 4](meeting-0503.md)*
+- *[Team Meeting 5](meeting-0516.md)*
 
 <hr>
 
@@ -459,3 +459,33 @@ This shall include an agreed procedure for situations including (but not limited
 - e.g., if a member fails to meet the initial plan and/or deadlines
 - e.g., if your group has issues, how will your group reach consensus or solve the problem?
 - e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project? 
+
+General Principles
+- Open Communication: Encourage open and honest dialogue. All team members should feel comfortable expressing their thoughts and concerns without fear of judgment or retribution.
+
+- Respect and Understanding: Respect each team member's opinions and differences. Strive to understand the perspectives and constraints of others.
+
+- Prompt Addressing of Issues: Address conflicts and issues as soon as they arise to prevent escalation.
+
+Specific Situations and Procedures
+- Failure to Meet Deadlines or Commitments
+  * Immediate Notification: The member who anticipates missing a deadline must inform the team as early as possible.
+  * Discussion and Support: The team will hold a brief meeting to discuss the reasons for the delay and explore possible support for the member, such as redistribution of workload or extension of deadlines if feasible.
+  * Documentation: Adjustments and commitments are documented and shared with all members to maintain transparency.
+
+- Reaching Consensus
+  * Structured Discussion: When the team faces a decision and cannot initially agree, a structured discussion will be facilitated, where each member presents their viewpoint and alternative solutions.
+  * Vote: If consensus is still not reached after discussion, the decision will be made by a majority vote.
+  * Mediation: In cases where a vote is split evenly, an external advisor or mediator (e.g., a project supervisor) will be consulted to help resolve the impasse.
+
+- Illness or Unavailability of a Member
+  * Notification and Adjustment: Affected members should notify the team as soon as possible. The team will adjust responsibilities temporarily to cover the absent member's tasks.
+  * Backup Plan: At the start of the project, each member will outline their critical tasks and suggest backup personnel who can take over in their absence. This backup plan will be reviewed and updated bi-weekly to accommodate the project's progress and any changes in team dynamics.
+  * Flexibility and Support: Team members are encouraged to offer help and flexibility, recognizing that unexpected events can affect anyone.
+
+- Long-Term Unforeseen Incidents
+  * Temporary Reassignment: Tasks and responsibilities of the affected member will be reassigned among the team for the duration of their absence.
+  * Regular Check-Ins: The team will maintain regular communication with the absent member, when possible, to provide updates and moral support.
+  * Resource Adjustment: If necessary, the team will consult with project supervisors to discuss resource adjustments or timeline extensions to accommodate the reduced capacity.
+
+
