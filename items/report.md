@@ -1,4 +1,4 @@
-# [G0 - Team Name] Report
+# [G7 - G7777777] Report
 
 The following is a report template to help your team successfully provide all the details necessary for your report in a structured and organised manner. Please give a straightforward and concise report that best demonstrates your project. Note that a good report will give a better impression of your project to the reviewers.
 
@@ -295,8 +295,8 @@ Feature Category: Firebase Integration <br>
    * 
 
 Feature Category: Peer to Peer Messaging <br>
-1. [P2P-DM]
-2. [P2P-Block]
+1. [P2P-DM] Users can send messages to organizers in event page. (hard)
+2. [P2P-Block] Users can block other users. (medium)
 
 
 Feature Category: User Interactivity <br>
