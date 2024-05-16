@@ -111,8 +111,12 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
       * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.      
 
-3. **UID3, Name3**  I have xx% contribution, as follows: <br>
-  - ...
+3. **u7726387, Qianwen Shen**  I have 20% contribution, as follows: <br>
+   - **Code Contribution in the final App**
+   - Feature 
+
+4. **UID3, Name3**  I have xx% contribution, as follows: <br>
+- ...
 
 
 
@@ -314,13 +318,13 @@ The project used Tokenizer and Parser in the search function, which implement co
 
 Feature Category: Search-related features <br>
 1. [Data-Profile]  IEvent create a Profile Page for Users and any Entities. (easy)
-   * [UserActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
-   * [EventDetailActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
-   * [activity_user.xml] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_user.xml?ref_type=heads[)
-   * [activity_event_detail.xml] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_event_detail.xml?ref_type=heads)
+   * [UserActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
+   * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
+   * [activity_user.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_user.xml?ref_type=heads[)
+   * [activity_event_detail.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_event_detail.xml?ref_type=heads)
 2. [Data-GPS]
-   * [EventDetailActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
-   * [MapActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads#L242-249)
+   * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
+   * [MapActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads#L242-249)
 3. [Data-Deletion]
 
 Feature Category: Firebase Integration <br>
@@ -338,9 +342,9 @@ Feature Category: Peer to Peer Messaging <br>
 
 Feature Category: User Interactivity <br>
 1. [Interact-Follow] The IEvent allows users to follow or unfollow the organizers of events through a button in the event detail page. (medium)
-   * [UserDataManager.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)
-   * [EventDetailActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads#L74-198)
-   * [OrganizerDataManager.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
+   * [UserDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)
+   * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads#L74-198)
+   * [OrganizerDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
    * Description of your implementation: 
    In the EventDetailActivity, the follow functionality is triggered when a user interacts with the follow button positioned at the bottom right of the organizer's avatar. This interaction is handled by the method onAddFollowClick, which retrieves the event and user information from the intent and the current Firebase authentication session, respectively. Depending on whether the user is already following the organizer, the appropriate actions are taken:
    If the user is already following the organizer, the removeFollowerAndSubscription method is called, which removes the user's follow state and updates the UI to reflect this change. 
@@ -348,8 +352,8 @@ Feature Category: User Interactivity <br>
 
 
 2. [Interact-Noti] The IEvent will send notification when user has 5th followers. (medium)
-    * [OrganizerDataManager.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
-    * [MainActivity.java] (https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=headsL346-416)
+    * [OrganizerDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
+    * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=headsL346-416)
     * Description of your implementation: 
       First, the app checks if notification permissions are enabled. If not, it prompts the user to enable them through a dialog that provides a shortcut to the system settings. This ensures that the user can receive notifications from the app.(promptForNotificationPermission()).
       Once the fifth follower is confirmed and permissions are assured, the app generates a local notification congratulating the user on achieving this milestone. This is handled by showLocalNotification, which sets up the necessary notification channel and details for displaying the notification.(showLocalNotification())
