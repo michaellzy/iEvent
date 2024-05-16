@@ -1,0 +1,118 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Label and Dropdown menu for selecting event type -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Type"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/spinnerFilterOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Label and Two side-by-side EditText fields for price range -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Price"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/minPrice"
+            android:hint="Min price"
+            android:inputType="numberDecimal"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:layout_gravity="center_vertical" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/maxPrice"
+            android:hint="Max price"
+            android:inputType="numberDecimal"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- Label and LinearLayout for selecting date range -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Date"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingBottom="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/startDate"
+            android:hint="Start date"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:layout_gravity="center_vertical" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/endDate"
+            android:hint="End date"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- Placeholder for other buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm"
+            android:layout_marginRight="12dp"/>
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:layout_marginLeft="12dp"/>
+    </LinearLayout>
+
+</LinearLayout>
