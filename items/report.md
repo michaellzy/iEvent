@@ -118,10 +118,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
        * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L346-416)
    * [Ticket]
-     
-      * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/TicketActivity.java)
-  * [Navigation drawer]
-
+     * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/TicketActivity.java)
+   * [Navigation drawer]
+   
       * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L419-453:~:text=%7D-,//navigation%20drawer,%7D,-/**)
   * [User Profile]
   
@@ -146,9 +145,46 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
-  - [LogIn] We use firebase auth to authenticate user based on
+  - [LogIn/FB-Auth] We use firebase auth to authenticate users based on email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time. Users could also tap on any blank space to hide the keyboard.
+  
+    - [LoginActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads)
+    - [SignupActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
+  
+  - [LoadShowData] Load and display data (event instance) from firestore. We would load 25 data instance each time. When user scrolls the list and reaches 25th data, we would load more from database in order to reduce memory usage.
+  
+    - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L460-492)
+    - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254)
+  
+  - [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time.
+  
+    - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88)
+    -  [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
+    - [ReleaseActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
+  
+  - [DataStream] The new events are loaded every 20 seconds.
+  
+    - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293)
+    - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
+  
+  - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
+  
+    - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
 
+- **Code and App Design**
+  
+  - [Backbone code logic] Implement the Firestore CRUD code so that everyone could just modify a small number of code to handle Firestore queries.
+  - [UI design] I implement the page to release new event:
+    - [upload_event.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_upload_event.xml?ref_type=heads)
+  - [AVL tree test] I implement the unit test for avl tree as well as the iterator to ensure it is bug-free
+    - [OrderedMapTest.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/OrderedMapTest.java?ref_type=heads)
+  
+- **Others**
 
+  - Manage project's progress
+  - Lead the team and make critical decisions
+  
+    
+  
 
 
 ## Application Description
