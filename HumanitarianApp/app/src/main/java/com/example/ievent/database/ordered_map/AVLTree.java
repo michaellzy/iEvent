@@ -7,6 +7,7 @@ import java.util.LinkedList;
  * @param <V> value
  * @author Zhiyuan Lu
  * @author Tengkai Wang
+ * adopt from comp2100: Lab 4 - AVL Trees, modified by Zhiyuan, Tengkai
  */
 public class AVLTree<K extends Comparable<K>, V> extends BinarySearchTree<K, V> {
 

@@ -129,7 +129,7 @@ public class ReleaseActivity extends BaseActivity {
             db.getOrganizer(mAuth.getCurrentUser().getUid(), new OrgDataListener() {
                 @Override
                 public void onSuccess(ArrayList<Organizer> data) {
-                    //
+                    // if current user is already an organizer, add new events into the database
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                     Organizer curOrg = data.get(0);
@@ -139,9 +139,10 @@ public class ReleaseActivity extends BaseActivity {
 
                 @Override
                 public void onFailure(String errorMessage) {
-
+                    // if current user is not an organizer, save the current user into "Organizer" database
                     Organizer org = (Organizer) ConcreteUserFactory.getInstance().createUser("Organizer", mAuth.getCurrentUser().getUid(), email, userName);
                     db.addNewOrganizer(mAuth.getCurrentUser().getUid(), org);
+                    // then add new event into the database.
                     db.addNewEvent(event);
                     Toast.makeText(ReleaseActivity.this, "Events added!", Toast.LENGTH_SHORT).show();
                 }

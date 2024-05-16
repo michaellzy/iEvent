@@ -3,7 +3,7 @@ package com.example.ievent.database.ordered_map;
 import java.util.LinkedList;
 
 /**
- * Pair implementation.
+ * Pair implementation, specify key-value pair
  * @param <K> key
  * @param <V> value
  * @author Zhiyuan Lu

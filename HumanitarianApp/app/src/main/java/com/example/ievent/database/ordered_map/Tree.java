@@ -6,6 +6,7 @@ package com.example.ievent.database.ordered_map;
  * @param <V> value
  * @author Zhiyuan Lu
  * @author Tengkai Wang
+ * adopt from comp2100: Lab 4 - AVL Trees, modified by Zhiyuan, Tengkai
  */
 public abstract class Tree<K extends Comparable<K>, V> {
     /**

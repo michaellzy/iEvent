@@ -92,11 +92,13 @@ public class MainActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         EventDataManager.getInstance().removeEventListener(updateListener);
+        handler.removeCallbacks(loadDocumentRunnable);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        postNewEvent();
     }
 
 
@@ -124,46 +126,19 @@ public class MainActivity extends BaseActivity {
         recyclerViewRec.setAdapter(recEventAdapter);
 
         ArrayList<Event> cachedEvents = EventCache.getInstance().getEvents();
+        // cache loaded events to avoid the events disappear after the activity's lifecycle ends
         if (!cachedEvents.isEmpty()) {
             recEventAdapter.setEvents(cachedEvents);
             recEventAdapter.notifyDataSetChanged();
         } else {
-            // show events stored in FireStore
+            // load initial 25 events stored in FireStore
             if (updateListener == null)
                 loadMoreEvents();
         }
 
-        loadDocumentRunnable = new Runnable() {
-            @Override
-            public void run() {
-                db.loadLatestEvent(timestamp, new EventDataListener() {
-                    @Override
-                    public void isAllData(boolean isAll) {
+        postNewEvent();
 
-                    }
-
-                    @Override
-                    public void onSuccess(ArrayList<Event> data) {
-                        MainActivity.this.timestamp = data.get(0).getTimestamp() - 1;
-                        runOnUiThread(() -> {
-                            events.addAll(0, data);
-                            recEventAdapter.notifyItemRangeInserted(0, data.size());
-                            Toast.makeText(MainActivity.this, "new events found", Toast.LENGTH_SHORT).show();
-                        });
-
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage) {
-
-                    }
-                });
-                handler.postDelayed(this, 15000);
-            }
-        };
-        handler.post(loadDocumentRunnable);
-
-
+        // when user scrolls to bottom, load more events from database
         recyclerViewRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -179,7 +154,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -257,6 +231,7 @@ public class MainActivity extends BaseActivity {
                 db.getLoggedInUser(mAuth.getCurrentUser().getUid(), new UserDataListener() {
                     @Override
                     public void onSuccess(ArrayList<User> data) {
+                        // pass on the current user info
                         User curUser = data.get(0);
                         Intent intent = new Intent(MainActivity.this, ReleaseActivity.class);
                         intent.putExtra("userName", curUser.getUserName());
@@ -277,7 +252,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onEventsUpdated(List<Event> data) {
                 runOnUiThread(() -> {
-                    // Additional check for safety
                     events.addAll(0, data);
                     recEventAdapter.notifyItemRangeInserted(0, data.size());
                     Toast.makeText(MainActivity.this, "Updated data", Toast.LENGTH_SHORT).show();
@@ -479,7 +453,10 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
+    /**
+     * load more data from database if user has already scrolled specific number of events.
+     * We load data chunk by chunk, in order to save memories.
+     */
     private void loadMoreEvents() {
         progressBar.setVisibility(View.VISIBLE);
         db.getEvents(25, new EventDataListener() {
@@ -512,5 +489,40 @@ public class MainActivity extends BaseActivity {
             }
 
         });
+    }
+
+    /**
+     * Simulate the user's interaction, add a new event on top of the page every 15 seconds
+     */
+    private void postNewEvent() {
+        loadDocumentRunnable = new Runnable() {
+            @Override
+            public void run() {
+                db.loadLatestEvent(timestamp, new EventDataListener() {
+                    @Override
+                    public void isAllData(boolean isAll) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Event> data) {
+                        MainActivity.this.timestamp = data.get(0).getTimestamp() - 1;
+                        runOnUiThread(() -> {
+                            events.addAll(0, data);
+                            recEventAdapter.notifyItemRangeInserted(0, data.size());
+                            Toast.makeText(MainActivity.this, "new events found", Toast.LENGTH_SHORT).show();
+                        });
+
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
+                });
+                handler.postDelayed(this, 15000);
+            }
+        };
+        handler.post(loadDocumentRunnable);
     }
 }

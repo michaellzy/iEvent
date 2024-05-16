@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 /**
- * Ordered Event implementation.
+ * To iterate the Event instance and sort the event list based on specified key.
  * @param <K> key
  * @param <V> value
  * @author Zhiyuan Lu
@@ -28,6 +28,11 @@ public class OrderedEvent<K extends Comparable<K>, V> implements Container {
         return new EventIterator<>(root);
     }
 
+    /**
+     * Iterate the AVL tree based on inorder traversal
+     * @param <K> key
+     * @param <V> value
+     */
     private class EventIterator<K extends Comparable<K>, V> implements Iterator {
         private Stack<AVLTree<K, V>> stack;
 

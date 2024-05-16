@@ -3,6 +3,7 @@ package com.example.ievent.database.ordered_map;
 /**
  * To avoid null pointer errors (and because this implementation is immutable)
  * we have a class that represents an 'empty' tree.
+ * adopt from comp2100: Lab 4 - AVL Trees, modified by Zhiyuan, Tengkai
  */
 public abstract class EmptyTree<K extends Comparable<K>, V> extends Tree<K, V> {
     // Will need to be implemented by the subclass inheriting this class.
