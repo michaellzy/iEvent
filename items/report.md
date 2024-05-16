@@ -81,7 +81,37 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - Report writing
     - Writing the use cases as well as Use Case Diagram <br><br>
 
-2. **UID2, Name2**  I have xx% contribution, as follows: <br>
+2. **u7733280, Tengkai Wang**  I have 20% contribution, as follows: <br>
+  - Code Contribution in the final App
+      
+      * [GPS] integrate google map into app.
+      
+         * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
+      * [P2p Messaging] P2P messaging, implement P2p chatroom and P2p message notification.
+         
+         *  [P2pActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
+      * [Persistent Data Api] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
+
+         * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
+      
+      * [Factory Pattern]
+
+         * [UserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/interfaces/UserFactory.java?ref_type=heads), [ConcreteUserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/entity/ConcreteUserFactory.java?ref_type=heads) 
+
+      * [CropImage] Crop the images for pictures in the App 
+
+         * [ImageCropper](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/global/Utility.java?ref_type=heads#L113-133) 
+
+
+
+   - Code and App design
+
+      *  [Project Structure Contribution] Actively communicated with teammates and helped maintain the project structure, ensuring proper documentation through comments, organizing the file structure, and ensuring functional rationality.
+   - Others
+
+      * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.      
+
+3. **UID3, Name3**  I have xx% contribution, as follows: <br>
   - ...
 
 
