@@ -63,11 +63,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 *Here is an example: (Note that you should remove the entire section (e.g. "others") if it is not applicable)*
 
-1. **UID1, Name1**  I have 30% contribution, as follows: <br>
+1. **u7772332, Haolin Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+    - Feature [Search], [Search-Filter],[Tokenizer and Parser] A3 - class SearchActivity: [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)[Token.java]()[Tokenizer.java]()[Parser.java]()
+    <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
+    <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
   - **Code and App Design** 
     - [What design patterns, data structures, did the involved member propose?]*
@@ -92,16 +92,16 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application Use Cases and or Examples
 
-*[Provide use cases and examples of people using your application. Who are the target users of your application? How do the users use your application?]*
+<!-- *[Provide use cases and examples of people using your application. Who are the target users of your application? How do the users use your application?]* -->
 
-*Here is a pet training application example*
+<!-- *Here is a pet training application example* -->
 
-*Molly wants to inquiry about her cat, McPurr's recent troublesome behaviour*
-1. *Molly notices that McPurr has been hostile since...*
-2. *She makes a post about... with the tag...*
-3. *Lachlan, a vet, writes a reply to Molly's post...*
-4. ...
-5. *Molly gives Lachlan's reply a 'tick' response*
+*Adam wants to held a charity boat race, he need a platform to inform interesetd people to join. *
+1. *Adam posts detailed information about the boat race including name, type, time, date and event information. *
+2. *He uploaded the event in the IEvent platform.*
+3. *Michael, a professional boat rider, saw the posted event and get the ticket of the event.*
+4. *After received the ticket, Michael chat with Adam to ask for further information.*
+5. *Adam responsed to Michael after received the notification.*
 
 *Here is a map navigation application example*
 
