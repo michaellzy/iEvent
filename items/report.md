@@ -404,7 +404,7 @@ Feature Category: Privacy <br>
 - If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprise feature specifications).
 - State that "Suprised feature is not implemented" otherwise.
 
-<br> <hr>
+<br> <hr> 
 
 ## Summary of Known Errors and Bugs
 
