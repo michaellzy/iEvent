@@ -88,11 +88,13 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ## Application Description
 
-*[What is your application, what does it do? Include photos or diagrams if necessary]*
+<!-- *[What is your application, what does it do? Include photos or diagrams if necessary]*
 
 *Here is a pet specific application example*
 
-*PetBook is a social media application specifically targetting pet owners... it provides... certified practitioners, such as veterians are indicated by a label next to their profile...*
+*PetBook is a social media application specifically targetting pet owners... it provides... certified practitioners, such as veterians are indicated by a label next to their profile...* -->
+*IEvent is an event management and ticketing platform that enables users to browse, create, and promote local events. It provides functions for event organizers to manage ticket sales, registrations, and event promotion. Additionally, the platform features a user-friendly interface where attendees can search for events based on their interests, location, and date, making it easy to find events that suit their preferences.*
+
 
 ### Application Use Cases and or Examples
 
@@ -114,7 +116,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 * *Users can use IEvent to post events thet held.*
 * *Users can see the event they posted, for further operations*
-* *Users can received messages from other users who interesetd in the event they have posted.*
+* *Users can receive messages from other users who interesetd in the event they have posted.*
+* *Users can receive notification when the 5th user follows them.
 * *Users can block other users from receving their messages.*
 
 *Target Users: Those who want to join charity events*
@@ -124,9 +127,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
 * *Users can filter the search result.*
 * *Users can view details of specific event.*
 * *Users can get ticket of event and send messages to organizer of the event.*
+* *Users can follow other users for further event notification.*
 * *Users can block other users from receving their messages.*
 
-*List all the use cases in text descriptions or create use case diagrams. Please refer to https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/ for use case diagram.*
+<!-- *List all the use cases in text descriptions or create use case diagrams. Please refer to https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/ for use case diagram.* -->
 
 <hr> 
 
