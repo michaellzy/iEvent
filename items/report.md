@@ -70,7 +70,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
   - **Code and App Design** 
-    - [AVLTree with sort of search]*
+    - [AVLTree with sort of search]
       The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
     - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]*
       The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
@@ -83,17 +83,16 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 2. **u7733280, Tengkai Wang**  I have 20% contribution, as follows: <br>
   - Code Contribution in the final App
-    
+
       * [GPS] integrate google map into app.
-      
+
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
-      * [P2p Messaging] P2P messaging, implement P2p chatroom and P2p message notification.
-        
-         *  [P2pActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
+      * [P2P Messaging] P2P Messaging, implement P2P Chatroom and P2P message notification.
+         *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
       * [Persistent Data Api] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
 
          * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
-      
+
       * [Factory Pattern]
 
          * [UserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/interfaces/UserFactory.java?ref_type=heads), [ConcreteUserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/entity/ConcreteUserFactory.java?ref_type=heads) 
@@ -101,8 +100,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
       * [CropImage] Crop the images for pictures in the App 
 
          * [ImageCropper](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/global/Utility.java?ref_type=heads#L113-133) 
-
-
 
    - Code and App design
 
@@ -121,7 +118,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
        * [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L346-416)
    * [Ticket]
-      
+     
       * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/TicketActivity.java)
   * [Navigation drawer]
 
@@ -138,8 +135,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
          * [activity_main.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_main.xml?ref_type=heads)
          * [activity_event_detail.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_event_detail.xml?ref_type=heads)
          * [nav_drawer.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/nav_drawer.xml?ref_type=heads)
-      
-  
+    
+
 
 
 - **Others**: (only if significant and significantly different from an "average contribution")
@@ -261,6 +258,12 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 
 3. Iterator Pattern
 
+   * *Objective*: Used to iterate the AVL tree nodes, Keeps the tree's structure hidden, ensuring that modifications are controlled and safe.
+   * *Code Location*: Defined in [Iterator](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map/Iterator.java?ref_type=heads), [Pair](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map/Pair.java?ref_type=heads); Used in [OrderedEvent](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map/OrderedEvent.java?ref_type=heads).
+   * *Reasons*：
+     * Provides a simple and consistent interface for traversing the tree nodes, making it easier for developers to access and manipulate tree elements.
+     * Simplifies the maintenance of the tree's codebase by isolating traversal logic in a dedicated iterator class, making the code more modular and easier to manage.
+
    
 
 ### Parser
@@ -360,7 +363,37 @@ Feature Category: Firebase Integration <br>
    * 
 
 Feature Category: Peer to Peer Messaging <br>
-1. [P2P-DM] Users can send messages to organizers in event page. (hard)
+1. [P2P-DM] Users can send messages to organizers in chat room and check the chat log persistently (hard).
+
+   * Code: [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
+
+   * Diagram of implementation
+
+     ![1715852838925](F:\project\idea_java_projects\comp2100\gp-24s1\items\media\Assets\p2pmodel.png)
+
+   * Description of implementation
+
+     * *Data design*: Every chat message includes "message content", "the id of sender", "timestamp of  the message" .
+
+     * *Static binding*: To render the chat bubbles on the view based on the data, we maintain a deque of chat messages in the chat room. This deque serves as the source for our chat bubbles. To render the bubbles:
+
+       1. **Compare Sender ID**: For each message, compare the `senderId` with the user ID of the current user.
+       2. **Determine Bubble Type**:
+          - If the `senderId` matches the current user's ID, render the bubble as "yours".
+          - If the `senderId` does not match, render the bubble as "theirs".
+
+       This approach ensures that messages sent by the current user are visually distinct from those sent by other chat participants.
+
+     * *Lazy loading and dynamical update*:  To avoid slow performance caused by loading too much data at once, we implemented lazy loading. When users initially enter the chat page, they see only a small number of messages. New data is loaded from Firebase only when the user scrolls up to the top.
+
+       To achieve this, we maintain a timestamp pointer that always points to the timestamp of the first element in the deque. When more chat history needs to be loaded, we use this timestamp to search upwards in the chat data, which is naturally ordered by timestamp. We then update the top of the deque with this data from Firebase.
+
+       When a user sends a message, the new message is added to the bottom of the deque from the database, dynamically updating the chat.
+
+     * *User Interaction*: To provide a better user experience, the chat interface offers two layout modes. When there are fewer messages than can fill a page, messages are arranged from top to bottom. Conversely, when there are many messages, users are automatically positioned at the latest message, with messages arranged from bottom to top. This is achieved by dynamically adjusting the RecyclerView's item arrangement based on the deque length.
+
+       Additionally, after a user sends a message, the interface automatically scrolls to the latest message, allowing the user to easily view the conversation context. For user convenience, chat entry points are available in the Notification Center, User Profile, and Event Detail, making it easy to access the chat from various contexts.
+
 2. [P2P-Block] Users can block other users. (medium)
 
 
@@ -369,7 +402,7 @@ Feature Category: User Interactivity <br>
    * [UserDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)
    * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads#L74-198)
    * [OrganizerDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/OrganizerDataManager.java?ref_type=heads)
-   * Description of your implementation: 
+   * *Description of your implementation*: 
    In the EventDetailActivity, the follow functionality is triggered when a user interacts with the follow button positioned at the bottom right of the organizer's avatar. This interaction is handled by the method onAddFollowClick, which retrieves the event and user information from the intent and the current Firebase authentication session, respectively. Depending on whether the user is already following the organizer, the appropriate actions are taken:
    If the user is already following the organizer, the removeFollowerAndSubscription method is called, which removes the user's follow state and updates the UI to reflect this change. 
    If the user is not following the organizer, the addFollowerAndSubscribe method is invoked. This method adds the organizer to the user's followed list and updates the UI to indicate a successful follow.
@@ -452,22 +485,21 @@ Feature Category: Privacy <br>
 <hr>
 
 ### Conflict Resolution Protocol
-<!-- *[Write a well defined protocol your team can use to handle conflicts. That is, if your group has problems, what is the procedure for reaching consensus or solving a problem?
-(If you choose to make this an external document, link to it here)]*
-
 This shall include an agreed procedure for situations including (but not limited to):
 - e.g., if a member fails to meet the initial plan and/or deadlines
 - e.g., if your group has issues, how will your group reach consensus or solve the problem?
 - e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project?  -->
 
-General Principles
+**General Principles**
+
 - Open Communication: Encourage open and honest dialogue. All team members should feel comfortable expressing their thoughts and concerns without fear of judgment or retribution.
 
 - Respect and Understanding: Respect each team member's opinions and differences. Strive to understand the perspectives and constraints of others.
 
 - Prompt Addressing of Issues: Address conflicts and issues as soon as they arise to prevent escalation.
 
-Specific Situations and Procedures
+**Specific Situations and Procedures**
+
 - Failure to Meet Deadlines or Commitments
   * Immediate Notification: The member who anticipates missing a deadline must inform the team as early as possible.
   * Discussion and Support: The team will hold a brief meeting to discuss the reasons for the delay and explore possible support for the member, such as redistribution of workload or extension of deadlines if feasible.
