@@ -263,7 +263,7 @@ The project used Tokenizer and Parser in the search function, which implement co
 
 
 ### Custom Features
-Feature Category: Privacy <br>
+<!-- Feature Category: Privacy <br>
 1. [Privacy-Request]. Description of the feature  (easy)
    * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
    * Description of your implementation: ... <br>
@@ -271,19 +271,43 @@ Feature Category: Privacy <br>
 
 2. [Privacy-Block]. Description ... ... (medium)
    ... ...
-   <br><br>
+   <br><br> -->
+Feature Category: Search-related features <br>
+1. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
+   * [EventDatabaseManager.java]
+2. [Search-Filter] Sort and filter the result of events of search. (easy).
+   * [SearchActivity.java]
+
+<!-- Feature Category: UI Design and Testing
+1. [UI-Layout]  -->
+
+Feature Category: Search-related features <br>
+1. [Data-Profile]
+2. [Data-GPS]
+3. [Data-Deletion]
 
 Feature Category: Firebase Integration <br>
-3. [FB-Auth] Description of the feature (easy)
+1. [FB-Auth] Description of the feature (easy)
    * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
    * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
    * Description of your implementation: ... 
-   
-4. [Search-Filter] Sort and filter the result of events of search. (easy).
-   * [SearchActivity.java]
+2. [FB-Persist]
+   * 
 
-5. [P2P-DM]
-6. [P2P-Block]
+Feature Category: Peer to Peer Messaging <br>
+1. [P2P-DM]
+2. [P2P-Block]
+
+
+Feature Category: User Interactivity <br>
+1. [Interact-Micro] The IEvent enables users to block other users. (easy)
+2. [Interact-Follow] The IEvent enables users to follow other users. (medium)
+3. [Interact-Noti] The IEvent will send notification when user has 5th followers. (medium)
+
+
+Feature Category: Privacy <br>
+1. [Privacy-Block]
+
 <br>
 
 <hr>
