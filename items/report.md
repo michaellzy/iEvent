@@ -369,7 +369,7 @@ Feature Category: Peer to Peer Messaging <br>
 
    * Diagram of implementation
 
-     ![1715852838925](F:\project\idea_java_projects\comp2100\gp-24s1\items\media\Assets\p2pmodel.png)
+     ![1715852838925](./media/Assets/p2pmodel.png)
 
    * Description of implementation
 
