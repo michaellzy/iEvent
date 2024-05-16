@@ -4,49 +4,39 @@
 
 **Absent:**
 None
-**Lead/scribe:**Xuan Li
+**Lead/scribe:**
+Xuan Li
 
 ## Agreed Procedure
 
-Before the meeting, team members were required to complete all tasks related to their assigned activities and prepare for final integration tests. Each member needed to review their sections for usability and functional issues and be ready to discuss their findings.
-
-Stand-Up Procedure:
-- Present the final implementations of assigned features.
-- Review the results of JUnit tests and discuss any adjustments needed.
-- Discuss strategies for integrating user feedback received during initial testing.
+Before the meeting, all team members were to finalize their contributions and ensure thorough testing of the final product. This included:
+- multiple runs of the application to spot any remaining bugs 
+- a final code review to prepare for the merging process with the main branch
 
 ## Agenda Items
 
-| Number |                                                Item |
-|:-------|----------------------------------------------------:|
-| [1]    |         Presentation of Completed Research Activity |
-| [2]    |                           Review of Ticket Activity |
-| [3]    |            Discussion on JUnit Testing for AVL Tree |
-| [4]    |       Preparation Plans for presentation and report |
+| Number |                                               Item |
+|:-------|---------------------------------------------------:|
+| [1]    |         Final Presentation of Implemented Features |
+| [2]    |            Final Testing of the Entire Application |
+| [3]    |                              Review and Merge Code |
+| [4]    | Finalize Submission Materials (Video, UML, Report) |
 
 ## Meeting Minutes
 
-- Research Activity: The research activity has been successfully completed, creating a dedicated space within the app for users to explore detailed information about events and related topics. This feature is designed to enhance user engagement by providing valuable content that adds depth to the event experience.
+- implemented Features: Each member presented the features they completed, discussing in detail the functionalities and their impact on the overall application.
 
-- Ticket Activity: The ticket activity has been finalized, allowing users to efficiently manage and find their event tickets. This feature is critical for ensuring a smooth user experience, especially during large events.
+- Application Testing: The team tested the entire application multiple times to ensure stability and functionality. All features integrated smoothly, and no significant bugs were detected during these tests.
 
-- Notification Activity Layout: The layout for the notification activity has been designed to keep users informed about updates, messages, and alerts regarding their events. The layout emphasizes clarity and accessibility to ensure that users can quickly understand and respond to notifications.
+- Code Review and Merging: The code was thoroughly reviewed one last time, ensuring all coding standards were met and that there were no remaining issues. Subsequently, the code was successfully merged with the main branch.
 
-- JUnit Testing for AVL Tree: Extensive JUnit testing was conducted on the AVL tree implementation. These tests ensure that the event data is managed efficiently and integrates seamlessly with the database. The results were positive, confirming the reliability of the AVL tree structure in handling complex data operations.
+- Submission Materials: A finalized the submission video, B and C confirmed the UML diagrams, and C along with D finalized the project report ensuring that all documentation was ready for submission.
 
 ## Action Items
 
-| Task                                       | Assigned To  |  Due Date  |
-|:-------------------------------------------|:------------:|:----------:|
-|                                            |  Haolin Li   | May 3rd |
-| Complete implementation of AVL tree       | Zhiyuan Lu,Tengkai Wang  | May 3rd |
-| Develop P2P DM functionality              |   Xuan Li    | May 3rd |
-| Notification Activity and observer pattern | Qianwen Shen |  May 3rd   |
+| Task                                      |       Assigned To       | Due Date |
+|:------------------------------------------|:-----------------------:|:--------:|
+| Confirm accuracy of UML diagrams          |   Zhiyuan Lu, Xuan Li   | May 17th  |
+| Review and finalize the project report    | Haolin Li, Tengkai Wang | May 17th  |
+| Finalize and submit the project video     |      Qianwen Shen       | May 17th |
 
-## Scribe Rotation
-
-The following dictates who will scribe in this and the next meeting.
-
-|    Name    |
-|:----------:|
-| Zhiyuan Lu |
