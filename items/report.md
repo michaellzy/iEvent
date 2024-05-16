@@ -83,12 +83,12 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 2. **u7733280, Tengkai Wang**  I have 20% contribution, as follows: <br>
   - Code Contribution in the final App
-      
+    
       * [GPS] integrate google map into app.
       
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
       * [P2p Messaging] P2P messaging, implement P2p chatroom and P2p message notification.
-         
+        
          *  [P2pActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
       * [Persistent Data Api] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
 
@@ -230,46 +230,38 @@ Here is a partial (short) example for the subsection `Data Structures`:*
 *I used the following data structures in my project:*
 
 1. AVL Tree
-   * *Objective: used for store the events based on price, and use for range query based on price. *
-   * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+   * *Objective*: used for store the events based on price, and use for range query based on price.
+   * *Code Locations*: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
    * *Reasons:*
       * The search and insert operation is O(logn) because of the self balancing factor. AVL tree could update and balance  quickly while maintaining fast search times makes them suitable for database indexing, co-work with the firebase.
-2. HashMap
-   - Objective: used for store loaded events to avoid loading duplicated events.
-
-3. ...
+2. Double Ended Queue
+   * *Objective*: Used for storing the chat messages in chatroom.
+   * *Code Locations*: Used in [P2PChatActivity]([HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java · main · Zhiyuan Lu / GP-24s1 · GitLab (anu.edu.au)](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads)); The front queue operation in function [loadMoreMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-309); The end queue operation in function [getNewMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-160)
+   * *Reasons*:
+     * In our chatroom, the chat messages involve only two operations: loading old messages and retrieving new messages created by chatters. These two types of messages can be added to the front end and back end, respectively, without affecting existing data. This means the chat message list can be abstracted as a deque structure that allows only addition, not removal.
 
 <hr>
 
 ### Design Patterns
-1. * Singleton Pattern
+1. Singleton Pattern
 
-   * *Objective: used for Firebase's user and event databases in order to make sure everyone accesses the same database*
-   * *Code Locations: defined in /database
+   * *Objective: used for Firebase's user and event databases in order to make sure everyone accesses the same database*.
+   * *Code Locations*: defined in database.
    * *Reasons:*
       * The singleton pattern ensures that there is only one instance of the database connection manager throughout the application, to avoid multiple instances that could lead to excessive connections to the database.
       * To use synchronization keyword to avoid multiple operations occur at the same time. i.e. load and update the data at the same time.
 
 2. Factory Pattern
 
-   - Objective: used for create different types of user, such as administrator, organizer and participants.
-
-   - Reasons:
-
-      -  class hides the instantiation logic from the client and solely focuses on returning the correct type of user object.
-
-      
+   - *Objective*: Used for create different types of user, such as administrator, organizer and participants.
+   - *Code Locations*: Defined in [UserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/interfaces/UserFactory.java?ref_type=heads), used in [ConcreteUserFactory](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/entity/ConcreteUserFactory.java?ref_type=heads) 
+   - *Reasons*:
+      -  class hides the instantiation logic from the client and solely focuses on returning the correct type of user object.		
 
 
-3. Obeserver Pattern 
+3. Iterator Pattern
 
-- Objective: used for notify the subscribed participants about new events uploaded.
-- Reasons:
-   - The organizer does not need to know how many participants should be notified. The participants automatically subscribed the organizer and get notified when new events are uploaded.
-   - Organizer does not need to make assumptions about who the participants are. 
-
-
-​				
+   
 
 ### Parser
 
