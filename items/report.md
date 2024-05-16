@@ -100,25 +100,31 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 <!-- *Here is a pet training application example* -->
 
-*Adam wants to held a charity boat race, he need a platform to inform interesetd people to join. *
-1. *Adam posts detailed information about the boat race including name, type, time, date and event information. *
+*Adam wants to held a charity boat race, he need a platform to inform interesetd people to join.**
+1. *Adam posts detailed information about the boat race including name, type, time, date and event information.*
 2. *He uploaded the event in the IEvent platform.*
 3. *Michael, a professional boat rider, saw the posted event and get the ticket of the event.*
 4. *After received the ticket, Michael chat with Adam to ask for further information.*
 5. *Adam responsed to Michael after received the notification.*
+6. *Michael follows Adam for he shall received notification as long as Adam posts any new events.*
 
-*Here is a map navigation application example*
+<!-- *Here is a map navigation application example* -->
 
-*Targets Users: Drivers*
+*Targets Users: Organizer*
 
-* *Users can use it to navigate in order to reach the destinations.*
-* *Users can learn the traffic conditions*
-* ...
+* *Users can use IEvent to post events thet held.*
+* *Users can see the event they posted, for further operations*
+* *Users can received messages from other users who interesetd in the event they have posted.*
+* *Users can block other users from receving their messages.*
 
-*Target Users: Those who want to find some good restaurants*
+*Target Users: Those who want to join charity events*
 
-* *Users can find nearby restaurants and the application can give recommendations*
-* ...
+* *Users can view events recently posted by other users.*
+* *Users can search for specific events in search page.*
+* *Users can filter the search result.*
+* *Users can view details of specific event.*
+* *Users can get ticket of event and send messages to organizer of the event.*
+* *Users can block other users from receving their messages.*
 
 *List all the use cases in text descriptions or create use case diagrams. Please refer to https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/ for use case diagram.*
 
