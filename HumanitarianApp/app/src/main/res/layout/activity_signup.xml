@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_2"
+    android:padding="25dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SignupActivity">
+<!--    android:background="@drawable/login_background_image"-->
+
+    <!-- Title: Sign Up -->
+
+    <!-- Username Label -->
+
+    <!-- Username EditText -->
+
+    <!-- Email Label -->
+
+    <TextView
+        android:id="@+id/textView_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/abril_regular"
+        android:text="Sign Up"
+        android:textColor="#171b2e"
+        android:textSize="36sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_signup_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Username:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_signup" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_signup_uname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text"
+        android:fontFamily="@font/poppins_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_signup_username"
+         />
+
+    <TextView
+        android:id="@+id/textView_signup_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email:"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/editText_signup_uname"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Email EditText -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_signup_EmailAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:fontFamily="@font/poppins_light"
+        app:layout_constraintTop_toBottomOf="@id/textView_signup_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Password Label -->
+    <TextView
+        android:id="@+id/textView_signup_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/editText_signup_EmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Password EditText -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_signup_pwd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/poppins_light"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/textView_signup_pwd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Confirm Password Label -->
+    <TextView
+        android:id="@+id/textView_signup_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm your password:"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/editText_signup_pwd"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Confirm Password EditText -->
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_signup_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:fontFamily="@font/poppins_light"
+        app:layout_constraintTop_toBottomOf="@id/textView_signup_confirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Log In Button -->
+
+    <!-- Sign Up Button -->
+
+    <!-- Already got an account? Text -->
+
+    <ProgressBar
+        android:id="@+id/progress_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/button_signup_signup"
+        app:layout_constraintEnd_toEndOf="@+id/editText_signup_confirm"
+        app:layout_constraintStart_toStartOf="@+id/editText_signup_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/editText_signup_confirm" />
+
+    <Button
+        android:id="@+id/button_signup_signup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/poppins_semibold"
+        android:textFontWeight="600"
+        android:text="Sign Up"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_signup_confirm"
+        app:layout_constraintWidth_percent="0.95" />
+
+    <Button
+        android:id="@+id/button_signup_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/poppins_semibold"
+        android:textFontWeight="600"
+        android:text="Login"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_signup_signup"
+        app:layout_constraintWidth_percent="0.95" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already got an account?"
+        android:fontFamily="@font/poppins_light"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/button_signup_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"  />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,9 +71,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
   - **Code and App Design** 
     - [AVLTree with sort of search]*
-   The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
+      The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
     - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]*
-   The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
+      The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
 
 
   - **Others**: (only if significant and significantly different from an "average contribution") 
@@ -253,6 +253,7 @@ Production Rules:
 ### <u>Tokenizers and Parsers</u>
 
 The project used Tokenizer and Parser in the search function, which implement conditional search with defined tokens. With the implementation of Tokenizer and Parser, user can search for specific events with conditions they want.
+
 <hr>
 
 ### Others
@@ -302,7 +303,7 @@ The project used Tokenizer and Parser in the search function, which implement co
 2. [Privacy-Block]. Description ... ... (medium)
    ... ...
    <br><br> -->
-Feature Category: Search-related features <br>
+   Feature Category: Search-related features <br>
 1. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
    * [EventDatabaseManager.java]
 2. [Search-Filter] Sort and filter the result of events of search. (easy).
