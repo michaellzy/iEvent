@@ -222,7 +222,12 @@ Production Rules:
 
 ### <u>Tokenizers and Parsers</u>
 
+<<<<<<< HEAD
 The project used Tokenizer and Parser in the search function, which implement conditional search with defined tokens. With the implementation of Tokenizer and Parser, user can search for specific events with conditions they want.
+=======
+The project used Tokenizer and Parser in the search function, which implement conditional search with defined tokens. 
+
+>>>>>>> v2-extension
 <hr>
 
 ### Others

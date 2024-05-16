@@ -1,0 +1,80 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="#85FFFFFF"
+    android:background="@drawable/bg_pur"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+<!--        <com.github.mmin18.widget.RealtimeBlurView-->
+<!--            android:id="@+id/blurView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:realtimeBlurRadius="10dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            app:realtimeOverlayColor="#AAFFFFFF"/> &lt;!&ndash; Overlay color with alpha for glass effect &ndash;&gt;-->
+
+        <ImageView
+            android:id="@+id/imageView_recommended_activities"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_add" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/imageView_recommended_activities"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_recommended_activities_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity Name"
+                android:textColor="#0c1334"
+                android:fontFamily="@font/plus_extra"
+                android:textFontWeight="900"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView_recommended_activities_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:fontFamily="@font/plus_bold"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView_recommended_activities_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:fontFamily="@font/plus_bold"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView_recommended_activities_organizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organizer"
+                android:fontFamily="@font/plus_bold"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="UnderlineEditText" parent="@android:style/Widget.EditText">
+        <item name="android:textColorHighlight">@color/quantum_pink200</item>
+    </style>
+<!--    <item name="android:textColorHighlight">@color/quantum_pink200</item>-->
+
+    <style name="NavigationViewStyle" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/arvo_regular</item>
+    </style>
+
+    <style name="arvoTextStyle">
+        <item name="android:fontFamily">@font/arvo_bold</item>
+    </style>
+</resources>
