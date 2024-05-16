@@ -452,13 +452,13 @@ Feature Category: Privacy <br>
 <hr>
 
 ### Conflict Resolution Protocol
-*[Write a well defined protocol your team can use to handle conflicts. That is, if your group has problems, what is the procedure for reaching consensus or solving a problem?
+<!-- *[Write a well defined protocol your team can use to handle conflicts. That is, if your group has problems, what is the procedure for reaching consensus or solving a problem?
 (If you choose to make this an external document, link to it here)]*
 
 This shall include an agreed procedure for situations including (but not limited to):
 - e.g., if a member fails to meet the initial plan and/or deadlines
 - e.g., if your group has issues, how will your group reach consensus or solve the problem?
-- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project? 
+- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project?  -->
 
 General Principles
 - Open Communication: Encourage open and honest dialogue. All team members should feel comfortable expressing their thoughts and concerns without fear of judgment or retribution.
