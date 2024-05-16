@@ -70,12 +70,16 @@ Note that the core criteria of contribution is based on `code contribution` (the
     <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
   - **Code and App Design** 
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+    - [AVLTree with sort of search]*
+   The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]*
+   The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
+
 
   - **Others**: (only if significant and significantly different from an "average contribution") 
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+    - Meeting recording
+    - Report writing
+    - Writing the use cases as well as Use Case Diagram <br><br>
 
 2. **UID2, Name2**  I have xx% contribution, as follows: <br>
   - ...
