@@ -67,9 +67,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
   - **Code Contribution in the final App**
     - [Search]
      * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+     * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
     - [Search-Filter]
      * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-     * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
     - [Tokenizer and Parser] <br>
       * [Token.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Token.java?ref_type=heads)
       * [Tokenizer.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Tokenizer.java?ref_type=heads)
