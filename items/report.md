@@ -359,8 +359,9 @@ The project used Tokenizer and Parser in the search function, which implement co
    * Description of Feature: We use firebase auth to authenticate users based on correct email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time.<br>
    * Description of Implementation: Check user's input fields (email and password) are matched with the information stored in Firebase Auth. For remember password, I use [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences) to store email and password locally.<br>
 
-2. [DataFiles]. Description  ... ... (easy)
-   * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
+2. [DataFiles]. Users can see a variety of activities on the website(easy)
+   * Code to the Data File [eventbrite_data.json](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/data-resource/eventbrite_data.json?ref_type=heads), 
+   * Description of Feature: We selected activities from eventbrite, selected 14 different categories of activities. The  total number of activities is 372. We obtained their title,img, link, data-time, location, price and address respectively.
    * Link to the Firebase repo: [Firebase Console](https://console.firebase.google.com/u/1/project/ievent-455e0/overview)
 
 3. [LoadShowData] Load and display data instances from your dataset. (easy)
@@ -486,14 +487,6 @@ Feature Category: User Interactivity <br>
       Once the fifth follower is confirmed and permissions are assured, the app generates a local notification congratulating the user on achieving this milestone. This is handled by showLocalNotification, which sets up the necessary notification channel and details for displaying the notification.(showLocalNotification())
       The follower listener is set up in the onCreate method. It uses a custom FollowerNumListener that specifically checks for the condition of reaching five followers. Once this condition is met, the notification sequence is initiated.
 
-
-Feature Category: Privacy <br>
-1. [Privacy-Block]
-
-   <br>
-
-<hr>
-
 ### Surprise Features
 
 - Surprise feature is not implemented
@@ -523,10 +516,10 @@ Feature Category: Privacy <br>
 *Here is an example:*
 
 1. Tests for Search
-   - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java) for the [Tokenizer Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43)
-   - *Number of test cases: ...*
-   - *Code coverage: ...*
-   - *Types of tests created and descriptions: ...*
+   - Code: [TokenizerTest Class, entire file(]https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/ParserTest.java?ref_type=heads)
+   - 3 test cases
+   - Covered most situation of tokenizer, including "+", "/","()" ,"=", invalid tests
+   - the test includes both invalid & extreme cases tests as well as normal situation cases, which further include simple and complex situation.
 
 2. Tests for EventIterator
    - Code: [OrderedMapTest Class](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/OrderedMapTest.java?ref_type=heads)
