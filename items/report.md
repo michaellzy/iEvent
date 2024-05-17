@@ -161,11 +161,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254)
     
   - [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time.
-
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
     - [ReleaseActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
-  
+    
   - [DataStream] The new events are loaded every 20 seconds.
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
@@ -207,6 +206,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - [P2P-block] <br>
        designed the p2p interface, complete the p2p-block function.
   - **Others**:<br>
+    
     - Report writing
     - uml design <br><br>
 
@@ -403,8 +403,12 @@ The project used Tokenizer and Parser in the search function, which implement co
    Feature Category: Search-related features <br>
 1. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
    * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
+   * Description of Features: When user input the part of an event's name, the app will shows all the related events which contained the input name.
+   * Description of Implementation: By calling the interface in firestore, such function can be implemented. 
 2. [Search-Filter] Sort and filter the result of events of search. (easy).
    * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SearchActivity.java?ref_type=heads)
+   * Description of Features: When user received an event list, user can filter the list with the function filter.
+   * Description of Implementation: By storing all required info in filter and calling the interface designed for all features, app can refresh the event list with the contained features.
 
 
 <!-- Feature Category: UI Design and Testing
@@ -419,15 +423,14 @@ Feature Category: Search-related features <br>
 2. [Data-GPS]
    * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
    * [MapActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads#L242-249)
-3. [Data-Deletion]
 
 Feature Category: Firebase Integration <br>
-1. [FB-Auth] Description of the feature (easy)
-   * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
-   * Description of your implementation: ... 
-2. [FB-Persist]
-   * 
+1. [FB-Auth] Use Firebase to implement User Authentication (easy)
+   * Code: [LoginActivity.java, entire fire](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads) and [SignupActivity.java, entirecode](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
+   * Description of your implementation: I check user's input fields (email and password) are matched with the information stored in Firebase Auth, by following the [Firebase Authentication manual](https://firebase.google.com/docs/auth/android/start#java_2): 
+2. [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time. (hard)
+   * Code:  [EventDataManager.java - L41-88](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88), [MainActivity.java - L251-259](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259), [ReleaseActivity.java, entire file](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
+   * Description of your implementation: I follow the guide on [Get realtime updates with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/listen). When the data on "Event" reference get changed, a listener would get notified and add documents into `Event` objects. These new events are then communicated to all registered listeners via the `notifyEventUpdate` method to parse the new Event object to be shown on top of the`RecyclerView`.
 
 Feature Category: Peer to Peer Messaging <br>
 1. [P2P-DM] Users can send messages to organizers in chat room and check the chat log persistently (hard).
@@ -489,10 +492,9 @@ Feature Category: User Interactivity <br>
 
 ### Surprise Features
 
-- If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprise feature specifications).
-- State that "Suprised feature is not implemented" otherwise.
+- Surprise feature is not implemented
 
-<br> <hr> 
+ <hr> 
 
 ## Summary of Known Errors and Bugs
 
