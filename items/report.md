@@ -65,8 +65,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 1. **u7772332, Haolin Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
-    - Feature [Search], [Search-Filter],[Tokenizer and Parser] <br>
-      [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java);[Token.java]();[Tokenizer.java]();[Parser.java]()
+    - [Search]
+     [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - [Search-Filter]
+    - [Tokenizer and Parser] <br>
+      ;[Token.java]();[Tokenizer.java]();[Parser.java]()
       <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
       <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
