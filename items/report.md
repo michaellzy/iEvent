@@ -243,7 +243,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 * *Users can use IEvent to post events thet held.*
 * *Users can see the event they posted, for further operations*
 * *Users can receive messages from other users who interesetd in the event they have posted.*
-* *Users can receive notification when the 5th user follows them.
+* *Users can receive notification when the 5th user follows them.*
 * *Users can block other users from receving their messages.*
 
 *Target Users: Those who want to join charity events*
