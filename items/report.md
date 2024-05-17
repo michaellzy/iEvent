@@ -82,7 +82,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
       * [Data-GPS] integrate google map into app.
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
-      * [P2P-DM] P2P Messaging, implement P2P Chatroom and P2P message notification.
+      * [P2P-DM] P2P Messaging, implement P2P Chatroom and P2P message notification, including the data structure design and code strategy.
          *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads),[ChatDataManger](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads), [EventDetailActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads).
       * [FB-Persist-extension] I contributed to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
          * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
@@ -210,7 +210,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 <!-- *Here is a pet training application example* -->
 
-*Adam wants to held a charity boat race, he need a platform to inform interesetd people to join.**
+**Adam wants to held a charity boat race, he need a platform to inform interesetd people to join.**
 1. *Adam posts detailed information about the boat race including name, type, time, date and event information.*
 2. *He uploaded the event in the IEvent platform.*
 3. *Michael, a professional boat rider, saw the posted event and get the ticket of the event.*
@@ -220,7 +220,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 <!-- *Here is a map navigation application example* -->
 
-*Targets Users: Organizer*
+**Targets Users: Organizer**
 
 * *Users can use IEvent to post events thet held.*
 * *Users can see the event they posted, for further operations*
@@ -228,7 +228,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 * *Users can receive notification when the 5th user follows them.*
 * *Users can block other users from receving their messages.*
 
-*Target Users: Those who want to join charity events*
+**Target Users: Those who want to join charity events**
 
 * *Users can view events recently posted by other users.*
 * *Users can search for specific events in search page.*
@@ -245,7 +245,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 ### Application UML
 
 ![ClassDiagramExample](./media/Assets/iEvent-uml.png) <br>
-*[Replace the above with a class diagram. You can look at how we have linked an image here as an example of how you can do it too.]*
 
 <hr>
 
@@ -259,15 +258,11 @@ This is an important section of your report and should include all technical dec
 
 - Details about the design patterns used (where in the code, justification of the choice, etc)
 
-*Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
+* Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
 
 <hr>
 
 ### Data Structures
-
-*[What data structures did your team utilise? Where and why?]*
-
-Here is a partial (short) example for the subsection `Data Structures`:*
 
 *I used the following data structures in my project:*
 
@@ -337,8 +332,6 @@ The project used Tokenizer and Parser in the search function, which implement co
 <hr>
 
 ## Implemented Features
-*[What features have you implemented? where, how, and why?]* <br>
-*List all features you have completed in their separate categories with their feature Id. THe features must be one of the basic/custom features, or an approved feature from Voice Four Feature.*
 
 ### Basic Features
 1. [LogIn]. Users are able to login if and only if both email and password are correct (easy)
@@ -529,10 +522,6 @@ Feature Category: User Interactivity <br>
 <hr>
 
 ### Conflict Resolution Protocol
-This shall include an agreed procedure for situations including (but not limited to):
-- e.g., if a member fails to meet the initial plan and/or deadlines
-- e.g., if your group has issues, how will your group reach consensus or solve the problem?
-- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project?  -->
 
 **General Principles**
 
