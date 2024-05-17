@@ -95,9 +95,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
       * [Data-GPS] integrate google map into app.
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
       * [P2P-DM] P2P Messaging, implement P2P Chatroom and P2P message notification.
-         *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
+         *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads),[ChatDataManger](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads), [EventDetailActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads).
       * [FB-Persist-extension] I contributed to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
-
          * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
 
       * [Factory Pattern]
@@ -115,8 +114,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
       * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.
       * Complete the design strategy and initial version of the web crawler for obtaining data in the early stages of the project, laying the foundation for acquiring over 2,000 data entries.
-        
+
          * [Spider.py](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/data-resource/spider.py?ref_type=heads)      
+      * Report writing.
 
 3. **u7726387, Qianwen Shen**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
@@ -136,8 +136,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
       * [UserActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
 
-
-
 - **Code and App Design**
     - [UI Design. Specify what design did the involved member propose? What tools were used for the design?] 
        * Responsible for UI framework, modifying file layout and the overall visual appearance of the application.
@@ -147,9 +145,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 
 
-- **Others**: (only if significant and significantly different from an "average contribution")
+- **Others**: 
     - Meeting recording
-    - Report writing<br><br>
+    - Report writing
 
 
 4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
@@ -190,6 +188,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 5. **u7709518, Xuan Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
+
     - [Personal page]
      * [userfragmentfollowers.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentfollowers.java?ref_type=heads)
      * [userfragmentposts.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentposts.java?ref_type=heads)
@@ -209,7 +208,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
        designed the p2p interface, complete the p2p-block function.
   - **Others**:<br>
     - Report writing
-    - uml design <br><br>
+    - uml design 
 
 ## Application Description
 
