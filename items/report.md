@@ -203,11 +203,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
      * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
   - **Code and App Design** 
     - [Crawlers] <br>
-      utilized crawler technology to gather activity data
+      used crawler technology to help the group obtain activity information
     - [Personal page] <br>
        designed the personal page interface, and managed database integration for data display.
-    - [P2P-block] <br>
-       designed the p2p interface, complete the p2p-block function.
+    - [P2P] , [P2P-block] <br>
+       completed the production of p2p interface and the presentation of the block function in p2p; during this period, I was responsible for building the block function database. 
   - **Others**:<br>
     - Report writing
     - uml design <br><br>
@@ -464,7 +464,12 @@ Feature Category: Peer to Peer Messaging <br>
        Additionally, after a user sends a message, the interface automatically scrolls to the latest message, allowing the user to easily view the conversation context. For user convenience, chat entry points are available in the Notification Center, User Profile, and Event Detail, making it easy to access the chat from various contexts.
 
 2. [P2P-Block] Users can block other users. (medium)
-
+   * Code: [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), 
+         [EventDetailActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blame/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
+   * Description of implementation
+     * *Data design*: Block message includes "the id of sender" , "the id of receiver","block state"
+     * *User Interaction*: The user can click the block button next to the avatar on the main page of the activity interface to decide whether to block the user. After the block user, both parties can not send messages anymore, but they will receive different information prompts, indicating whether to block others or be blocked by others. In addition, we can click the block button again to unbind.
+     * *Interactive method*: After the user confirms that the block is clicked, check whether the senderId-receiverid combination exists in the database, review the block state if it does, and add it if not.
 
 Feature Category: User Interactivity <br>
 1. [Interact-Follow] The IEvent allows users to follow or unfollow the organizers of events through a button in the event detail page. (medium)
@@ -489,7 +494,7 @@ Feature Category: User Interactivity <br>
 Feature Category: Privacy <br>
 1. [Privacy-Block]
 
-<br>
+   <br>
 
 <hr>
 
