@@ -95,9 +95,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
       * [GPS] integrate google map into app.
 
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
-      * [P2P Messaging] P2P Messaging, implement P2P Chatroom and P2P message notification.
+      * [[P2P-DM] P2P Messaging, implement P2P Chatroom and P2P message notification.
          *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
-      * [Persistent Data Api] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
+      * [FB-Persist-extension] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
 
          * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
 
@@ -114,7 +114,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
       *  [Project Structure Contribution] Actively communicated with teammates and helped maintain the project structure, ensuring proper documentation through comments, organizing the file structure, and ensuring functional rationality.
    - Others
 
-      * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.      
+      * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.
+      * Complete the design strategy and initial version of the web crawler for obtaining data in the early stages of the project, laying the foundation for acquiring over 2,000 data entries.
+         
+         * [Spider.py](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/data-resource/spider.py?ref_type=heads)      
 
 3. **u7726387, Qianwen Shen**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
