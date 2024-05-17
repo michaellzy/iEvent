@@ -65,18 +65,20 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 1. **u7772332, Haolin Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
+    
     - [Search]
-     * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-     * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
+      - [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+      - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
+    
     - [Search-Filter]
-     * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+       * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
     - [Tokenizer and Parser] 
       * [Token.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Token.java?ref_type=heads)
       * [Tokenizer.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Tokenizer.java?ref_type=heads)
       * [Parser.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Parser.java?ref_type=heads)
       <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
       <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
-
+    
   - **Code and App Design** 
     - [AVLTree with sort of search] <br>
       The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
@@ -504,8 +506,6 @@ Feature Category: User Interactivity <br>
    - When user switches an activity to another activity, the uploaded events would visually loss on recycler view due to life cycle ends. But the new events has already stored in database, one can check the posted events under `Avatar`->`posts`
 2. *Bug 2:* When user switches activities on bottom navigation bar and scrolls back, the returned page does not seem to be correct. 
 3. Bug 3: Threading issue: when user upload an event, such event maybe loaded and updated at the same time, so duplicate copies of events may shown. I have tried to solve this issue by adding flags to avoid such bug, so that this bug rarely happens, but still exists. Since this course do not focus intensively on concurrency issue, I've tried to minimize this bug occurs.
-
-<br> <hr>
 
 
 ## Testing Summary
