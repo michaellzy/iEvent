@@ -65,21 +65,22 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 1. **u7772332, Haolin Li**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
-    - Feature [Search], [Search-Filter],[Tokenizer and Parser] A3 - class SearchActivity: [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java);[Token.java]();[Tokenizer.java]();[Parser.java]()
+    - Feature [Search], [Search-Filter],[Tokenizer and Parser] <br>
+      [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java);[Token.java]();[Tokenizer.java]();[Parser.java]()
       <!-- - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL) -->
       <!-- - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br> -->
 
   - **Code and App Design** 
-    - [AVLTree with sort of search]
+    - [AVLTree with sort of search] <br>
       The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
-    - [UI Design]*
+    - [UI Design] <br>
       The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
 
 
-  - **Others**: (only if significant and significantly different from an "average contribution") 
+  - **Others**:<br>
     - Meeting recording
     - Report writing
-    - Writing the use cases as well as Use Case Diagram <br><br>
+    - Writing the use cases <br><br>
 
 2. **u7733280, Tengkai Wang**  I have 20% contribution, as follows: <br>
   - Code Contribution in the final App
