@@ -72,7 +72,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
   - **Code and App Design** 
     - [AVLTree with sort of search]
       The member suggest to combine AVLTree with the result for search function. With the help of AVLTree, users can get sorted event list.
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]*
+    - [UI Design]*
       The member involved in the decision of using Activity or Fragment and implement the navigation bar based on the decision. After discussion, the group agreed on using Activity instead of intent.
 
 
