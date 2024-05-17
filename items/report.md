@@ -508,11 +508,9 @@ Feature Category: Privacy <br>
 *Here is an example:*
 
 1. *Bug 1:* Activity Lifecycle issue
-   - 
-   - ...
-
-2. *Bug 2:*
-3. ...
+   - When user switches an activity to another activity, the uploaded events would visually loss on recycler view due to life cycle ends. But the new events has already stored in database, one can check the posted events under `Avatar`->`posts`
+2. *Bug 2:* When user switches activities on bottom navigation bar and scrolls back, the returned page does not seem to be correct. 
+3. Bug 3: Threading issue: when user upload an event, such event maybe loaded and updated at the same time, so duplicate copies of events may shown. I have tried to solve this issue by adding flags to avoid such bug, so that this bug rarely happens, but still exists. Since this course do not focus intensively on concurrency issue, I've tried to minimize this bug occurs.
 
 <br> <hr>
 
@@ -530,11 +528,18 @@ Feature Category: Privacy <br>
    - *Code coverage: ...*
    - *Types of tests created and descriptions: ...*
 
-2. xxx
+2. Tests for EventIterator
+   - Code: [OrderedMapTest Class](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/OrderedMapTest.java?ref_type=heads)
+   - Number of test cases: 6
+   - Code coverage: 95%
+   - Types of tests created and descriptions:
+     - testInsertion(): Verifies that elements are inserted correctly and can be iterated in ascending order based on their keys.
+     - testEmptyTree(): Ensures that iterating over an empty tree correctly results in no elements being returned.
+     - testTreeBalance(): Checks if the tree maintains balance after multiple insertions
+     - testIterativeOrder(): Test that elements are retrieved in the correct sorted order.
+     - testDuplicateKey(): Tests the tree's ability to handle duplicate keys by storing multiple values under the same key and ensuring both values can be retrieved.
+     - testIterativeWithDuplicate(): An extended version of the duplicate keys test that also includes checks for correct ordering among multiple keys with duplicates.
 
-...
-
-<br> <hr>
 
 
 ## Team Management
