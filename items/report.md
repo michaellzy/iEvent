@@ -176,7 +176,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
   - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
 
     - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
-
 - **Code and App Design**
 
   - [Backbone code logic] Implement the Firestore CRUD code so that everyone could just modify a small number of code to handle Firestore queries.
@@ -184,14 +183,34 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - [upload_event.xml](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/res/layout/activity_upload_event.xml?ref_type=heads)
   - [AVL tree test] I implement the unit test for avl tree as well as the iterator to ensure it is bug-free
     - [OrderedMapTest.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/OrderedMapTest.java?ref_type=heads)
-
 - **Others**
 
   - Manage project's progress
   - Lead the team and make critical decisions
   - uml design
 
-
+5. **u7709518, Xuan Li**  I have 20% contribution, as follows: <br>
+  - **Code Contribution in the final App**
+    - [Personal page]
+     * [userfragmentfollowers.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentfollowers.java?ref_type=heads)
+     * [userfragmentposts.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentposts.java?ref_type=heads)
+     * [userfragmentsubscriptionAdapter.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentsubscriptionAdapter.java?ref_type=heads)
+     * [userfragmentticketsAdapter.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/userfragmentticketsAdapter.java?ref_type=heads)
+    - [P2P-block]
+     * [ChatDataManger.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads)
+     * [P2PChatAdapter.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/adapter/P2PChatAdapter.java?ref_type=heads)
+     * [P2PChatActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads)
+     * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
+  - **Code and App Design** 
+    - [Crawlers] <br>
+      utilized crawler technology to gather activity data
+    - [Personal page] <br>
+       designed the personal page interface, and managed database integration for data display.
+    - [P2P-block] <br>
+       designed the p2p interface, complete the p2p-block function.
+  - **Others**:<br>
+    - Report writing
+    - uml design <br><br>
 
 ## Application Description
 
@@ -364,9 +383,10 @@ The project used Tokenizer and Parser in the search function, which implement co
 4. [DataStream]
 
 5. [Search] Users are able to search for information in IEvent. (medium)
-   * Code:
-   * Description of Features:
-   * Description of Implementation:
+   * Code: [SearchActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SearchActivity.java?ref_type=heads); [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
+   * Description of Features: By clicking search icon in the navigation bar, users are able ot access to search page. By input query, users can get related events.
+   * Description of Implementation: The implementation of search is achieved by the interface for firebase. By creating necessary interface in EventDataManager.java, the search page can response to different types of user requirements. What's more, with the implementation of Token and Parser, users are able to search under different condition they want.
+
 
    <br>
 
@@ -383,10 +403,11 @@ The project used Tokenizer and Parser in the search function, which implement co
    ... ...
    <br><br> -->
    Feature Category: Search-related features <br>
-3. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
-   * [EventDatabaseManager.java]
-4. [Search-Filter] Sort and filter the result of events of search. (easy).
-   * [SearchActivity.java]
+1. [Search-Invalid] IEvent support fuzzy search for users who do not input the full query. (medium)
+   * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
+2. [Search-Filter] Sort and filter the result of events of search. (easy).
+   * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SearchActivity.java?ref_type=heads)
+
 
 <!-- Feature Category: UI Design and Testing
 1. [UI-Layout]  -->
@@ -408,7 +429,7 @@ Feature Category: Firebase Integration <br>
    * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
    * Description of your implementation: ... 
 2. [FB-Persist]
-   * ​
+   * 
 
 Feature Category: Peer to Peer Messaging <br>
 1. [P2P-DM] Users can send messages to organizers in chat room and check the chat log persistently (hard).
