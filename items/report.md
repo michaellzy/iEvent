@@ -279,7 +279,7 @@ Here is a partial (short) example for the subsection `Data Structures`:*
       * The insert operation is O(logn) because of the self balancing factor, which is quit efficient.  An inorder traversal of an AVL tree will yield the elements in sorted order. This is useful to retrieve the events in sorted order.
 2. Double Ended Queue
    * *Objective*: Used for storing the chat messages in chatroom.
-   * *Code Locations*: Used in [P2PChatActivity]([HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java · main · Zhiyuan Lu / GP-24s1 · GitLab (anu.edu.au)](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads)); The front queue operation in function [loadMoreMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-309); The end queue operation in function [getNewMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-160)
+   * *Code Locations*: Used in [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads); The front queue operation in function [loadMoreMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-309); The end queue operation in function [getNewMessages](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads#L117-160)
    * *Reasons*:
      * In our chatroom, the chat messages involve only two operations: loading old messages and retrieving new messages created by chatters. These two types of messages can be added to the front end and back end, respectively, without affecting existing data. This means the chat message list can be abstracted as a deque structure that allows only addition, not removal.
 3. LinkedList
@@ -502,7 +502,7 @@ Feature Category: User Interactivity <br>
 *Here is an example:*
 
 1. Tests for Search
-   - Code: [TokenizerTest Class, entire file(]https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/ParserTest.java?ref_type=heads)
+   - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/ParserTest.java?ref_type=heads)
    - 3 test cases
    - Covered most situation of tokenizer, including "+", "/","()" ,"=", invalid tests
    - the test includes both invalid & extreme cases tests as well as normal situation cases, which further include simple and complex situation.
