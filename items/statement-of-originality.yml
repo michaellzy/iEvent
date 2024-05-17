@@ -22,55 +22,55 @@ declaration: >-
   I declare that everything I have submitted in this assignment is entirely our
   own work, with the following exceptions:
   
-
-# add as many "name+comment" entries as necessary
-# (or remove it altogether if you haven't collaborated with anyone outside your group)
-collaboration:
-  - name:
-    comment: >-
   
 
 # add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
-    licence:
+  - comment: "AVL Tree implementation from lab4" 
+    url: https://gitlab.cecs.anu.edu.au/comp2100/labs/comp2100-lab-04
+    licence: fair use
+  - comment: "Tokenizer from lab" 
+    url: https://gitlab.cecs.anu.edu.au/comp2100/labs/comp2100-lab-06
+    licence: fair use
+
 
 
 # add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
   # NOTE: "Bliss" is just here as an example, you SHOULD REMOVE IT
-  - comment: "_Bliss_ by Charles O'Rear"
-    url: https://en.wikipedia.org/wiki/Bliss_(image)
-    licence: fair use
+  - comment: "Android Image Cropper"
+    url: https://github.com/ArthurHub/Android-Image-Cropper
+    licence: Apache License Version 2.0
 
 
 ### Questions (answer before final submission):
 1. You (as a group) completed this work (tick the most appropriate option):
   - [ ] by yourself (as a group) without the help of others;
-      [ ] with Gen AI tools (e.g., ChatGPT, Co-Pilot).
+      [X] with Gen AI tools (e.g., ChatGPT, Co-Pilot).
       [ ] using online resources (e.g., Stackoverflow, blogs)
 
 2. If not completed by yourself only, how did the use of Gen AI tools (and which ones), contribute to completing this assignment?
-  - Tool(s): <tools used here>
+  - Tool(s): Chatgpt, Copilot
   
 3. How did they contribute to the completion of this assignment?
-  - <your answer here>
+  - an average of 20% effort from each person
 
 4. How long did it take to complete this assignment (approximately, in hours)?
-  - <your answer here> hours
+  -  approximately 200 hours
 
 
 
 # for each member, sign by inputting your name and uid here (remove any empty "name+uid" entries)
 members:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+  - name: Zhiyuan Lu
+    uid: u7690985
+  - name: Tengkai Wang
+    uid: u7733280
+  - name: Xuan Li
+    uid: u7709518
+  - name: Qianwen Shen
+    uid: u7726387
+  - name: Haolin Li
+    uid: u7772332

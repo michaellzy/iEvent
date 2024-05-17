@@ -70,7 +70,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
      * [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads)
     - [Search-Filter]
      * [SearchActivity.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - [Tokenizer and Parser] <br>
+    - [Tokenizer and Parser] 
       * [Token.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Token.java?ref_type=heads)
       * [Tokenizer.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Tokenizer.java?ref_type=heads)
       * [Parser.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/tokenparser/Parser.java?ref_type=heads)
@@ -92,13 +92,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
 2. **u7733280, Tengkai Wang**  I have 20% contribution, as follows: <br>
   - Code Contribution in the final App
 
-      * [GPS] integrate google map into app.
-
+      * [Data-GPS] integrate google map into app.
          * [MapActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MapActivity.java?ref_type=heads)
-      * [P2P Messaging] P2P Messaging, implement P2P Chatroom and P2P message notification.
-         *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads)
-      * [Persistent Data Api] I contributed significantly to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
-
+      * [P2P-DM] P2P Messaging, implement P2P Chatroom and P2P message notification.
+         *  [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads),[ChatDataManger](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [Notification](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/NotificationActivity.java?ref_type=heads), [EventDetailActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads).
+      * [FB-Persist-extension] I contributed to the Firebase persistent data implementation and the Data API development alongside my teammates. Below is a list of the files I worked on, ordered from most to least contribution:
          * [ChatDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/ChatDataManager.java?ref_type=heads), [MediaManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/MediaManager.java?ref_type=heads), [EventDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads), [UserDataManager](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/UserDataManager.java?ref_type=heads)...
 
       * [Factory Pattern]
@@ -114,7 +112,11 @@ Note that the core criteria of contribution is based on `code contribution` (the
       *  [Project Structure Contribution] Actively communicated with teammates and helped maintain the project structure, ensuring proper documentation through comments, organizing the file structure, and ensuring functional rationality.
    - Others
 
-      * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.      
+      * Slightly refactored the project before the final code commit by removing redundant comments, methods, classes, and resources.
+      * Complete the design strategy and initial version of the web crawler for obtaining data in the early stages of the project, laying the foundation for acquiring over 2,000 data entries.
+
+         * [Spider.py](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/data-resource/spider.py?ref_type=heads)      
+      * Report writing.
 
 3. **u7726387, Qianwen Shen**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
@@ -134,8 +136,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
       * [UserActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/UserAcitivity.java?ref_type=heads)
 
-
-
 - **Code and App Design**
     - [UI Design. Specify what design did the involved member propose? What tools were used for the design?] 
        * Responsible for UI framework, modifying file layout and the overall visual appearance of the application.
@@ -145,9 +145,9 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 
 
-- **Others**: (only if significant and significantly different from an "average contribution")
+- **Others**: 
     - Meeting recording
-    - Report writing<br><br>
+    - Report writing
 
 
 4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
@@ -155,25 +155,21 @@ Note that the core criteria of contribution is based on `code contribution` (the
   - [LogIn/FB-Auth] We use firebase auth to authenticate users based on email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time. Users could also tap on any blank space to hide the keyboard.
     - [LoginActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads)
     - [SignupActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
-    
   - [LoadShowData] Load and display data (event instance) from firestore. We would load 25 data instance each time. When user scrolls the list and reaches 25th data, we would load more from database in order to reduce memory usage.
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L460-492)
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254)
-    
   - [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time.
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
     - [ReleaseActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
-    
+  
   - [DataStream] The new events are loaded every 20 seconds.
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
-    
-  - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
-  
-    - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
-  
 
+  - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
+
+    - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
 - **Code and App Design**
   - [Backbone code logic] Implement the Firestore CRUD code so that everyone could just modify a small number of code to handle Firestore queries.
   - [UI design] I implement the page to release new event:
@@ -200,15 +196,15 @@ Note that the core criteria of contribution is based on `code contribution` (the
      * [EventDetailActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
   - **Code and App Design** 
     - [Crawlers] <br>
-      utilized crawler technology to gather activity data
+      used crawler technology to help the group obtain activity information
     - [Personal page] <br>
        designed the personal page interface, and managed database integration for data display.
-    - [P2P-block] <br>
-       designed the p2p interface, complete the p2p-block function.
+    - [P2P] , [P2P-block] <br>
+       completed the production of p2p interface and the presentation of the block function in p2p; during this period, I was responsible for building the block function database. 
   - **Others**:<br>
     
     - Report writing
-    - uml design <br><br>
+    - uml design 
 
 ## Application Description
 
@@ -364,7 +360,6 @@ The project used Tokenizer and Parser in the search function, which implement co
    * Description of Implementation: Check user's input fields (email and password) are matched with the information stored in Firebase Auth. For remember password, I use [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences) to store email and password locally.<br>
 
 2. [DataFiles]. Description  ... ... (easy)
-
    * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
    * Link to the Firebase repo: [Firebase Console](https://console.firebase.google.com/u/1/project/ievent-455e0/overview)
 
@@ -465,7 +460,12 @@ Feature Category: Peer to Peer Messaging <br>
        Additionally, after a user sends a message, the interface automatically scrolls to the latest message, allowing the user to easily view the conversation context. For user convenience, chat entry points are available in the Notification Center, User Profile, and Event Detail, making it easy to access the chat from various contexts.
 
 2. [P2P-Block] Users can block other users. (medium)
-
+   * Code: [P2PChatActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/P2PChatActivity.java?ref_type=heads), 
+         [EventDetailActivity](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blame/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/EventDetailActivity.java?ref_type=heads)
+   * Description of implementation
+     * *Data design*: Block message includes "the id of sender" , "the id of receiver","block state"
+     * *User Interaction*: The user can click the block button next to the avatar on the main page of the activity interface to decide whether to block the user. After the block user, both parties can not send messages anymore, but they will receive different information prompts, indicating whether to block others or be blocked by others. In addition, we can click the block button again to unbind.
+     * *Interactive method*: After the user confirms that the block is clicked, check whether the senderId-receiverid combination exists in the database, review the block state if it does, and add it if not.
 
 Feature Category: User Interactivity <br>
 1. [Interact-Follow] The IEvent allows users to follow or unfollow the organizers of events through a button in the event detail page. (medium)
@@ -486,7 +486,11 @@ Feature Category: User Interactivity <br>
       Once the fifth follower is confirmed and permissions are assured, the app generates a local notification congratulating the user on achieving this milestone. This is handled by showLocalNotification, which sets up the necessary notification channel and details for displaying the notification.(showLocalNotification())
       The follower listener is set up in the onCreate method. It uses a custom FollowerNumListener that specifically checks for the condition of reaching five followers. Once this condition is met, the notification sequence is initiated.
 
-<br>
+
+Feature Category: Privacy <br>
+1. [Privacy-Block]
+
+   <br>
 
 <hr>
 
@@ -503,8 +507,8 @@ Feature Category: User Interactivity <br>
 
 *Here is an example:*
 
-1. *Bug 1:*
-   - *A space bar (' ') in the sign in email will crash the application.*
+1. *Bug 1:* Activity Lifecycle issue
+   - 
    - ...
 
 2. *Bug 2:*
