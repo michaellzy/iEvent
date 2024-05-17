@@ -39,7 +39,7 @@ The key area(s) of responsibilities for each member
 
 | UID      |     Name     |                        Role |
 | :------- | :----------: | --------------------------: |
-| u7690985 |  Zhiyuan Lu  |             Project Manager |
+| u7690985 |  Zhiyuan Lu  |              Project Leader |
 | u7733280 | Tengkai Wang |      Android Developer(API) |
 | u7709518 |   Xuan Li    |  Android Developer(Backend) |
 | u7726387 | Qianwen Shen | Android Developer(Frontend) |
@@ -146,30 +146,27 @@ Note that the core criteria of contribution is based on `code contribution` (the
 4. **u7690985, Zhiyuan Lu**  I have 20% contribution, as follows: <br>
 - Code Contribution in the final App
   - [LogIn/FB-Auth] We use firebase auth to authenticate users based on email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time. Users could also tap on any blank space to hide the keyboard.
-
     - [LoginActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads)
     - [SignupActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
-
+    
   - [LoadShowData] Load and display data (event instance) from firestore. We would load 25 data instance each time. When user scrolls the list and reaches 25th data, we would load more from database in order to reduce memory usage.
-
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L460-492)
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254)
-
+    
   - [FB-Persist-extension] When a user publish a new event, the event would show on main page synchronously as the remote database updated. All users will be able to see new event at the same time.
 
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L41-88)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L251-259)
     - [ReleaseActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/ReleaseActivity.java?ref_type=heads)
-
+  
   - [DataStream] The new events are loaded every 20 seconds.
-
     - [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293)
     - [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
-
+    
   - [AVLTree+Sort Events] I adopt AVL Tree from lab 4, and change the structure so that the tree could hold key-value pair, then use AVL tree as a backbone to implement an iterator so that the event list could be sorted by a specific key (i.e. based on price, time). I used iterator pattern to design this feature.
-
+  
     - [/ordered_map](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/tree/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/ordered_map?ref_type=heads)
-
+  
 - **Code and App Design**
 
   - [Backbone code logic] Implement the Firestore CRUD code so that everyone could just modify a small number of code to handle Firestore queries.
@@ -328,35 +325,37 @@ The project used Tokenizer and Parser in the search function, which implement co
 
 <hr>
 
-### Others
-
-*[What other design decisions have you made which you feel are relevant? Feel free to separate these into their own subheadings.]*
-
-<br>
-<hr>
-
 ## Implemented Features
 *[What features have you implemented? where, how, and why?]* <br>
-*List all features you have completed in their separate categories with their featureId. THe features must be one of the basic/custom features, or an approved feature from Voice Four Feature.*
+*List all features you have completed in their separate categories with their feature Id. THe features must be one of the basic/custom features, or an approved feature from Voice Four Feature.*
 
 ### Basic Features
-1. [LogIn]. Description of the feature ... (easy)
-   * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-   * Description of Feature: ... <br>
-   * Description of Implementation: ... <br>
+1. [LogIn]. Users are able to login if and only if both email and password are correct (easy)
+
+   * Code: [LoginActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/LoginActivity.java?ref_type=heads), [SignupActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/SignupActivity.java?ref_type=heads)
+   * Description of Feature: We use firebase auth to authenticate users based on correct email and password. We create a sign up page to store basic user information. We also implement a remember password feature so that users do not need to re-enter email and password every time.<br>
+   * Description of Implementation: Check user's input fields (email and password) are matched with the information stored in Firebase Auth. For remember password, I use [SharedPreferences](https://developer.android.com/reference/android/content/SharedPreferences) to store email and password locally.<br>
 
 2. [DataFiles]. Description  ... ... (easy)
+
    * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
-   * Link to the Firebase repo: ...
+   * Link to the Firebase repo: [Firebase Console](https://console.firebase.google.com/u/1/project/ievent-455e0/overview)
 
 3. [LoadShowData] Load and display data instances from your dataset. (easy)
-   * Code:
-   * Description of Features:
-   * Description of Implementation:
+   * Code: [EventDataManager.java - loadEvents()](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L239-254), [MainActivity.java - loadMoreEvents()](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L460-492)
+   * Description of Feature: Load and display data (event instance) from firestore. We would load 25 data instance each time. When user scrolls the list and reaches 25th data, we would load more from database in order to reduce memory usage.
+   * Description of Implementation: I follow the Firestore documentation about [Paginate a Query](https://firebase.google.com/docs/firestore/query-data/query-cursors) and load 25 documents each time, then I keep track of the "lastVisible" variable to see how many documents have already loaded.
 
-4. [DataStream]
+4. [DataStream] Simulate user's action, load data at regular time intervals and visualize on App
+
+   - Code: [EventDataManager.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/database/data_manager/EventDataManager.java?ref_type=heads#L290-293), [MainActivity.java](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/main/java/com/example/ievent/activity/MainActivity.java?ref_type=heads#L497-527)
+
+   - Description of Feature: The new events would load every 20 seconds and show on top of the page.
+
+   - Description of Implementation: I would start a new thread which executed every 15 seconds to post a new event from firestore, by using `handler.postDelayed(this, 15000)`
 
 5. [Search] Users are able to search for information in IEvent. (medium)
+
    * Code:
    * Description of Features:
    * Description of Implementation:
@@ -401,7 +400,7 @@ Feature Category: Firebase Integration <br>
    * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
    * Description of your implementation: ... 
 2. [FB-Persist]
-   * ​
+   * 
 
 Feature Category: Peer to Peer Messaging <br>
 1. [P2P-DM] Users can send messages to organizers in chat room and check the chat log persistently (hard).
@@ -456,10 +455,6 @@ Feature Category: User Interactivity <br>
       First, the app checks if notification permissions are enabled. If not, it prompts the user to enable them through a dialog that provides a shortcut to the system settings. This ensures that the user can receive notifications from the app.(promptForNotificationPermission()).
       Once the fifth follower is confirmed and permissions are assured, the app generates a local notification congratulating the user on achieving this milestone. This is handled by showLocalNotification, which sets up the necessary notification channel and details for displaying the notification.(showLocalNotification())
       The follower listener is set up in the onCreate method. It uses a custom FollowerNumListener that specifically checks for the condition of reaching five followers. Once this condition is met, the notification sequence is initiated.
-
-
-Feature Category: Privacy <br>
-1. [Privacy-Block]
 
 <br>
 
