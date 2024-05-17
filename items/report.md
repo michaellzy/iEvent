@@ -483,10 +483,6 @@ Feature Category: User Interactivity <br>
 
 ## Summary of Known Errors and Bugs
 
-*[Where are the known errors and bugs? What consequences might they lead to?]*
-*List all the known errors and bugs here. If we find bugs/errors that your team does not know of, it shows that your testing is not thorough.*
-
-*Here is an example:*
 
 1. *Bug 1:* Activity Lifecycle issue
    - When user switches an activity to another activity, the uploaded events would visually loss on recycler view due to life cycle ends. But the new events has already stored in database, one can check the posted events under `Avatar`->`posts`
@@ -495,11 +491,6 @@ Feature Category: User Interactivity <br>
 
 
 ## Testing Summary
-
-*[What features have you tested? What is your testing coverage?]*
-*Please provide some screenshots of your testing summary, showing the achieved testing coverage. Feel free to provide further details on your tests.*
-
-*Here is an example:*
 
 1. Tests for Search
    - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7690985/gp-24s1/-/blob/main/HumanitarianApp/app/src/test/java/com/example/ievent/ParserTest.java?ref_type=heads)
